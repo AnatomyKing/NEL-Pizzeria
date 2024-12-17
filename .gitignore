@@ -1,0 +1,85 @@
+#########################
+# Laravel Ignored Files #
+#########################
+
+# Vendor and Node Modules
+/vendor
+/node_modules
+
+# Environment Files
+.env
+
+# Laravel IDE Helper
+.phpstorm.meta.php
+_ide_helper.php
+_ide_helper_models.php
+
+# PHPUnit
+.phpunit.result.cache
+
+# Storage and Cache
+/storage/*.key
+/storage/framework/*
+!storage/framework/.gitignore
+/storage/logs/*
+!storage/logs/.gitignore
+
+# Public Storage
+/public/storage
+/public/hot
+/public/mix-manifest.json
+/public/css/*.css
+/public/js/*.js
+/public/build
+
+# Backup and Temporary Files
+*.bak
+*.tmp
+*.swp
+*~
+
+#########################
+# C# WPF Ignored Files  #
+#########################
+
+# Visual Studio Specific
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.sln.ide
+*.sln.cache
+
+# Build Output
+bin/
+obj/
+TestResults/
+
+# NuGet Packages
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+
+# Debug and Log Files
+*.log
+*.tlog
+*.trace
+*.dbmdl
+*.pdb
+
+# Publish Files
+.publish/
+*.publish.xml
+
+# IDE Settings
+_ReSharper*
+*.DotSettings.user
+.idea/
+
+# Temporary Files
+*.tmp
+*.bak
+*.swp
+*~
