@@ -3,7 +3,7 @@ using System.Data;
 using System.Windows;
 using NELpizza.Databases;
 using NELpizza.View;
-using NELpizza.ViewModels;
+using NELpizza.ViewModel;
 
 namespace NELpizza
 {

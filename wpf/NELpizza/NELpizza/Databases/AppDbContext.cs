@@ -6,13 +6,11 @@ namespace NELpizza.Databases
 {
     internal class AppDbContext : DbContext
     {
-        public DbSet<ParentItem> ParentItems { get; set; }
-        public DbSet<CustomModelData> CustomModelDataItems { get; set; }
-        public DbSet<BlockType> BlockTypes { get; set; }
-        public DbSet<CustomVariation> CustomVariations { get; set; }
-        public DbSet<ShaderArmorColorInfo> ShaderArmorColorInfos { get; set; }
-        public DbSet<CustomModel_BlockType> CustomModel_BlockTypes { get; set; }
-        public DbSet<CustomModel_ShaderArmor> CustomModel_ShaderArmors { get; set; }
+        public DbSet<Klant> Klanten { get; set; }
+        public DbSet<Bestelling> Bestellingen { get; set; }
+        public DbSet<Bestelregel> Bestelregels { get; set; }
+        public DbSet<Pizza> Pizzas { get; set; }
+        public DbSet<Ingredient> Ingredienten { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -27,46 +25,22 @@ namespace NELpizza.Databases
         {
             base.OnModelCreating(modelBuilder);
 
-            // CustomModel_BlockType many-to-many relationship
-            modelBuilder.Entity<CustomModel_BlockType>()
-                .HasKey(cb => new { cb.CustomModelDataID, cb.BlockTypeID });
+            // Define relationships and table configurations here if needed
+            modelBuilder.Entity<Bestelregel>()
+                .HasOne(br => br.Pizza)
+                .WithMany()
+                .HasForeignKey(br => br.PizzaID);
 
-            modelBuilder.Entity<CustomModel_BlockType>()
-                .HasOne(cb => cb.CustomModelData)
-                .WithMany(cd => cd.BlockTypes)
-                .HasForeignKey(cb => cb.CustomModelDataID);
+            modelBuilder.Entity<Bestelregel>()
+                .HasOne(br => br.Bestelling)
+                .WithMany(b => b.Bestelregels)
+                .HasForeignKey(br => br.BestellingID);
 
-            modelBuilder.Entity<CustomModel_BlockType>()
-                .HasOne(cb => cb.BlockType)
-                .WithMany(bt => bt.CustomModelDataItems)
-                .HasForeignKey(cb => cb.BlockTypeID);
-
-            // CustomModel_ShaderArmor many-to-many relationship
-            modelBuilder.Entity<CustomModel_ShaderArmor>()
-                .HasKey(cs => new { cs.CustomModelDataID, cs.ShaderArmorColorInfoID });
-
-            modelBuilder.Entity<CustomModel_ShaderArmor>()
-                .HasOne(cs => cs.CustomModelData)
-                .WithMany(cd => cd.ShaderArmors)
-                .HasForeignKey(cs => cs.CustomModelDataID);
-
-            modelBuilder.Entity<CustomModel_ShaderArmor>()
-                .HasOne(cs => cs.ShaderArmorColorInfo)
-                .WithMany(sa => sa.CustomModelDataItems)
-                .HasForeignKey(cs => cs.ShaderArmorColorInfoID);
-
-            // CustomVariation relationship
-            modelBuilder.Entity<CustomVariation>()
-                .HasOne(cv => cv.CustomModelData)
-                .WithMany(cmd => cmd.CustomVariations)
-                .HasForeignKey(cv => cv.CustomModelDataID);
-
-            modelBuilder.Entity<CustomVariation>()
-                .HasOne(cv => cv.BlockType)
-                .WithMany(bt => bt.CustomVariations)
-                .HasForeignKey(cv => cv.BlockTypeID);
+            modelBuilder.Entity<Bestelling>()
+                .HasOne(b => b.Klant)
+                .WithMany(k => k.Bestellingen)
+                .HasForeignKey(b => b.KlantID);
         }
-
 
         public static void InitializeDatabase()
         {
@@ -77,10 +51,8 @@ namespace NELpizza.Databases
                     // drop database
                     //context.Database.EnsureDeleted();
 
-                    //create database
-                    //context.Database.EnsureCreated();
-
-                    context.Database.Migrate();  // Apply migrations
+                    // create database
+                    context.Database.EnsureCreated();
                 }
                 catch (Exception ex)
                 {

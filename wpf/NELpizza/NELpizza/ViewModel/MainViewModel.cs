@@ -1,50 +1,71 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using NELpizza.Databases;
 using NELpizza.Helpers;
 using NELpizza.Model;
-using NELpizza.ViewModels;
-using NELpizza.ViewModels.Views;
+using NELpizza.ViewModel;
 
-namespace NELpizza.ViewModels
+namespace NELpizza.ViewModel
 {
-    internal class MainViewModel : ObservableObject
+    internal class MainViewModel : INotifyPropertyChanged
     {
-        private object? _currentView;
+        private int _clickCount;
 
         public MainViewModel()
         {
-            CurrentView = new MainViewContentViewModel();
-            NavigateCommand = new RelayCommand(Navigate);
+            IncrementCommand = new RelayCommand(IncrementCounter);
+            ClickCount = 0;
         }
 
-        public object? CurrentView
+        public int ClickCount
         {
-            get => _currentView;
+            get => _clickCount;
             set
             {
-                _currentView = value;
+                _clickCount = value;
                 OnPropertyChanged();
             }
         }
 
-        public ICommand NavigateCommand { get; }
+        public ICommand IncrementCommand { get; }
 
-        private void Navigate(object? parameter)
+        private void IncrementCounter(object parameter)
         {
-            string? viewName = parameter as string;
+            ClickCount++;
+        }
 
-            CurrentView = viewName switch
-            {
-                "ParentItemViewModel" => new ParentItemViewModel(),
-                "UnusedViewModel" => new UnusedViewModel(),
-                "BlockTypeViewModel" => new BlockTypeViewModel(),
-                "ArmorInfoViewModel" => new ArmorInfoViewModel(),
-                "ExportViewModel" => new ExportViewModel(),
-                _ => new MainViewContentViewModel()
-            };
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public class RelayCommand : ICommand
+    {
+        private readonly Action<object> _execute;
+        private readonly Predicate<object> _canExecute;
+
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
+        {
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = canExecute;
+        }
+
+        public bool CanExecute(object parameter) => _canExecute?.Invoke(parameter) ?? true;
+
+        public void Execute(object parameter) => _execute(parameter);
+
+        public event EventHandler CanExecuteChanged
+        {
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
         }
     }
 }
