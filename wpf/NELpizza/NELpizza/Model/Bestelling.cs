@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NELpizza.Model
 {
@@ -13,17 +9,22 @@ namespace NELpizza.Model
     public class Bestelling
     {
         [Key]
-        public long id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id", TypeName = "BIGINT UNSIGNED")]
+        public long Id { get; set; }
 
-        public DateTime datum { get; set; }
+        [Column("datum", TypeName = "TIMESTAMP")]
+        public DateTime Datum { get; set; } = DateTime.UtcNow;
 
         [Required]
-        public BestelStatus status { get; set; }
+        [Column("status", TypeName = "ENUM('initieel','betaald','bereiden','inoven','onderweg','bezorgd')")]
+        public string Status { get; set; } = "initieel";
 
-        [ForeignKey("klant")]
-        public long klant_id { get; set; }
-        public virtual Klant? klant { get; set; }
+        [ForeignKey("Klant")]
+        [Column("klant_id", TypeName = "BIGINT UNSIGNED")]
+        public long KlantId { get; set; }
 
+        public virtual Klant? Klant { get; set; }
         public virtual ICollection<Bestelregel> Bestelregels { get; set; } = new HashSet<Bestelregel>();
     }
 }

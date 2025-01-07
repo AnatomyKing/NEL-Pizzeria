@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NELpizza.Model
 {
@@ -12,10 +8,13 @@ namespace NELpizza.Model
     public class Pizza
     {
         [Key]
-        public long id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id", TypeName = "BIGINT UNSIGNED")]
+        public long Id { get; set; }
 
-        public string naam { get; set; } = string.Empty;
+        [Column("naam", TypeName = "VARCHAR(255)")]
+        public string Naam { get; set; } = string.Empty;
 
-        public virtual ICollection<IngredientPizza> ingredienten { get; set; } = new HashSet<IngredientPizza>();
+        public virtual ICollection<IngredientPizza> Ingredienten { get; set; } = new HashSet<IngredientPizza>();
     }
 }

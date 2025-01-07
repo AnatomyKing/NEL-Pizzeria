@@ -24,37 +24,36 @@ namespace NELpizza.Databases
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
-            // Many-to-Many Relationship for Pizza & Ingredients
+            // IngredientPizza Pivot Table
             modelBuilder.Entity<IngredientPizza>()
-                .HasKey(ip => new { ip.pizza_id, ip.ingredient_id });
+                .HasKey(ip => new { ip.IngredientId, ip.PizzaId });
 
             modelBuilder.Entity<IngredientPizza>()
-                .HasOne(ip => ip.pizza)
-                .WithMany(p => p.ingredienten)
-                .HasForeignKey(ip => ip.pizza_id);
+                .HasOne(ip => ip.Ingredient)
+                .WithMany(i => i.Pizzas)
+                .HasForeignKey(ip => ip.IngredientId);
 
             modelBuilder.Entity<IngredientPizza>()
-                .HasOne(ip => ip.ingredient)
-                .WithMany(i => i.pizzas)
-                .HasForeignKey(ip => ip.ingredient_id);
+                .HasOne(ip => ip.Pizza)
+                .WithMany(p => p.Ingredienten)
+                .HasForeignKey(ip => ip.PizzaId);
 
-            // One-to-Many Relationships
+            // Bestelregel Relationships
             modelBuilder.Entity<Bestelregel>()
-                .HasOne(br => br.pizza)
+                .HasOne(br => br.Pizza)
                 .WithMany()
-                .HasForeignKey(br => br.pizza_id);
+                .HasForeignKey(br => br.PizzaId);
 
             modelBuilder.Entity<Bestelregel>()
-                .HasOne(br => br.bestelling)
+                .HasOne(br => br.Bestelling)
                 .WithMany(b => b.Bestelregels)
-                .HasForeignKey(br => br.bestelling_id);
+                .HasForeignKey(br => br.BestellingId);
 
+            // Bestelling and Klant Relationship
             modelBuilder.Entity<Bestelling>()
-                .HasOne(b => b.klant)
-                .WithMany(k => k.bestellingen)
-                .HasForeignKey(b => b.klant_id);
+                .HasOne(b => b.Klant)
+                .WithMany(k => k.Bestellingen)
+                .HasForeignKey(b => b.KlantId);
         }
 
         public static void InitializeDatabase()
@@ -64,10 +63,10 @@ namespace NELpizza.Databases
                 try
                 {
                     // drop database
-                    context.Database.EnsureDeleted();
+                    //context.Database.EnsureDeleted();
 
-                    // create database
-                    //context.Database.EnsureCreated();
+                    //create database
+                    context.Database.EnsureCreated();
                 }
                 catch (Exception ex)
                 {
