@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace NELpizza.Model
 {
-    [Table("Pizza")]
+    [Table("pizzas")]
     public class Pizza
     {
         [Key]
-        public int PizzaID { get; set; }
+        public long id { get; set; }
 
-        public string Naam { get; set; }
+        public string naam { get; set; } = string.Empty;
 
-        public virtual ICollection<Ingredient> Ingredienten { get; set; }
+        public virtual ICollection<IngredientPizza> ingredienten { get; set; } = new HashSet<IngredientPizza>();
     }
 }

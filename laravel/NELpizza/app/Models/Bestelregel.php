@@ -11,6 +11,13 @@ class Bestelregel extends Model
     use HasFactory;
 
     /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -46,6 +53,6 @@ class Bestelregel extends Model
 
     public function bestelling(): BelongsTo
     {
-        return $this->belongsTo(Bestelling::class);
+        return $this->belongsTo(Bestellingen::class);
     }
 }

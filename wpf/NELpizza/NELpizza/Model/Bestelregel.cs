@@ -8,23 +8,23 @@ using System.Threading.Tasks;
 
 namespace NELpizza.Model
 {
-    [Table("Bestelregel")]
+    [Table("bestelregels")]
     public class Bestelregel
     {
         [Key]
-        public int BestelregelID { get; set; }
+        public long id { get; set; }
 
-        public int Aantal { get; set; }
+        public int aantal { get; set; }
 
-        [EnumDataType(typeof(PizzaAfmeting))]
-        public PizzaAfmeting Afmeting { get; set; }
+        [Required]
+        public PizzaAfmeting afmeting { get; set; }
 
-        [ForeignKey("Pizza")]
-        public int PizzaID { get; set; }
-        public virtual Pizza Pizza { get; set; }
+        [ForeignKey("pizza")]
+        public long pizza_id { get; set; }
+        public virtual Pizza? pizza { get; set; }
 
-        [ForeignKey("Bestelling")]
-        public int BestellingID { get; set; }
-        public virtual Bestelling Bestelling { get; set; }
+        [ForeignKey("bestelling")]
+        public long bestelling_id { get; set; }
+        public virtual Bestelling? bestelling { get; set; }
     }
 }

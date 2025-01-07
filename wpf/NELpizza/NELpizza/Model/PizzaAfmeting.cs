@@ -8,8 +8,8 @@ namespace NELpizza.Model
 {
     public enum PizzaAfmeting
     {
-        Klein,
-        Normaal,
-        Groot
+        klein,
+        normaal,
+        groot
     }
 }

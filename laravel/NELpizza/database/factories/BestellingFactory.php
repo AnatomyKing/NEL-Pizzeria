@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\Bestelling;
-use App\Models\Klant;
+use App\Models\Klanten;
 
 class BestellingFactory extends Factory
 {
@@ -24,7 +24,7 @@ class BestellingFactory extends Factory
         return [
             'datum' => $this->faker->dateTime(),
             'status' => $this->faker->randomElement(["initieel","betaald","bereiden","inoven","onderweg","bezorgd"]),
-            'klant_id' => Klant::factory(),
+            'klant_id' => Klanten::factory(),
         ];
     }
 }

@@ -13,14 +13,9 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('bestelregels', function (Blueprint $table) {
+        Schema::create('pizzas', function (Blueprint $table) {
             $table->id();
-            $table->integer('aantal');
-            $table->enum('afmeting', ["klein","normaal","groot"]);
-            $table->foreignId('pizza_id')->constrained();
-            $table->foreignId('bestelling_id')->constrained();
-            $table->foreignId('bestelling_pizza_id');
-            $table->timestamps();
+            $table->string('naam');
         });
 
         Schema::enableForeignKeyConstraints();
@@ -31,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bestelregels');
+        Schema::dropIfExists('pizzas');
     }
 };

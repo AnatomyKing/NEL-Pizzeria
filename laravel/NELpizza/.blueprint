@@ -4,20 +4,20 @@ created:
     - database/factories/BestelregelFactory.php
     - database/factories/PizzaFactory.php
     - database/factories/IngredientFactory.php
-    - database/migrations/2024_12_19_092819_create_klants_table.php
-    - database/migrations/2024_12_19_092820_create_bestellings_table.php
-    - database/migrations/2024_12_19_092821_create_bestelregels_table.php
-    - database/migrations/2024_12_19_092822_create_pizzas_table.php
-    - database/migrations/2024_12_19_092823_create_ingredients_table.php
-    - database/migrations/2024_12_19_092824_create_ingredient_pizza_table.php
+    - database/migrations/2024_12_19_112730_create_klants_table.php
+    - database/migrations/2024_12_19_112731_create_bestellings_table.php
+    - database/migrations/2024_12_19_112732_create_bestelregels_table.php
+    - database/migrations/2024_12_19_112733_create_pizzas_table.php
+    - database/migrations/2024_12_19_112734_create_ingredients_table.php
+    - database/migrations/2024_12_19_112735_create_ingredient_pizza_table.php
     - app/Models/Klant.php
     - app/Models/Bestelling.php
     - app/Models/Bestelregel.php
     - app/Models/Pizza.php
     - app/Models/Ingredient.php
 models:
-    Klant: { id: bigIncrements, naam: string, adres: string, woonplaats: string, telefoonnummer: string, emailadres: string, timestamps: timestamps, relationships: { hasMany: Bestelling } }
-    Bestelling: { id: bigIncrements, datum: timestamp, status: 'enum:initieel,betaald,bereiden,inoven,onderweg,bezorgd', klant_id: 'foreign:klant', timestamps: timestamps, relationships: { belongsTo: Klant, hasMany: Bestelregel } }
-    Bestelregel: { id: bigIncrements, aantal: integer, afmeting: 'enum:klein,normaal,groot', pizza_id: 'foreign:pizza', bestelling_id: 'foreign:bestelling', timestamps: timestamps, relationships: { belongsTo: 'Bestelling Pizza' } }
-    Pizza: { id: bigIncrements, naam: string, timestamps: timestamps, relationships: { belongsToMany: Ingredient } }
-    Ingredient: { id: bigIncrements, naam: string, prijs: 'decimal:8,2', timestamps: timestamps, relationships: { belongsToMany: Pizza } }
+    Klant: { id: bigIncrements, naam: string, adres: string, woonplaats: string, telefoonnummer: string, emailadres: string, timestamps: false, relationships: { hasMany: Bestelling } }
+    Bestelling: { id: bigIncrements, datum: timestamp, status: 'enum:initieel,betaald,bereiden,inoven,onderweg,bezorgd', klant_id: 'foreign:klanten', timestamps: false, relationships: { belongsTo: Klant, hasMany: Bestelregel } }
+    Bestelregel: { id: bigIncrements, aantal: integer, afmeting: 'enum:klein,normaal,groot', pizza_id: 'foreign:pizzas', bestelling_id: 'foreign:bestellingen', timestamps: false, relationships: { belongsTo: 'Bestelling Pizza' } }
+    Pizza: { id: bigIncrements, naam: string, timestamps: false, relationships: { belongsToMany: Ingredient } }
+    Ingredient: { id: bigIncrements, naam: string, prijs: 'decimal:8,2', timestamps: false, relationships: { belongsToMany: Pizza } }

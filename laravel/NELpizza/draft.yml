@@ -6,7 +6,7 @@ models:
     woonplaats: string
     telefoonnummer: string
     emailadres: string
-    timestamps: true
+    timestamps: false
     relationships:
       hasMany: Bestelling
 
@@ -14,8 +14,8 @@ models:
     id: bigIncrements
     datum: timestamp
     status: enum:initieel,betaald,bereiden,inoven,onderweg,bezorgd
-    klant_id: foreign:klant
-    timestamps: true
+    klant_id: foreign:klanten
+    timestamps: false
     relationships:
       belongsTo: Klant
       hasMany: Bestelregel
@@ -24,9 +24,9 @@ models:
     id: bigIncrements
     aantal: integer
     afmeting: enum:klein,normaal,groot
-    pizza_id: foreign:pizza
-    bestelling_id: foreign:bestelling
-    timestamps: true
+    pizza_id: foreign:pizzas
+    bestelling_id: foreign:bestellingen
+    timestamps: false
     relationships:
       belongsTo:
         - Bestelling
@@ -35,7 +35,7 @@ models:
   Pizza:
     id: bigIncrements
     naam: string
-    timestamps: true
+    timestamps: false
     relationships:
       belongsToMany: Ingredient
 
@@ -43,6 +43,11 @@ models:
     id: bigIncrements
     naam: string
     prijs: decimal:8,2
-    timestamps: true
+    timestamps: false
     relationships:
       belongsToMany: Pizza
+
+ingredient_pizza:
+  pizza_id: foreign:pizzas
+  ingredient_id: foreign:ingredients
+  timestamps: false

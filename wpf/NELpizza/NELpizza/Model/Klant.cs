@@ -8,19 +8,30 @@ using System.Threading.Tasks;
 
 namespace NELpizza.Model
 {
-    [Table("Klant")]
+    [Table("klants")]
     public class Klant
     {
         [Key]
-        public int KlantID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id", TypeName = "BIGINT UNSIGNED")]
+        public long id { get; set; }
 
-        public string Naam { get; set; }
-        public string Adres { get; set; }
-        public string Woonplaats { get; set; }
-        public string Telefoonnummer { get; set; }
-        public string Emailadres { get; set; }
+        [Column("naam", TypeName = "VARCHAR(255)")]
+        public string naam { get; set; } = string.Empty;
 
-        // Navigation Property
-        public virtual ICollection<Bestelling> Bestellingen { get; set; }
+        [Column("adres", TypeName = "VARCHAR(255)")]
+        public string adres { get; set; } = string.Empty;
+
+        [Column("woonplaats", TypeName = "VARCHAR(255)")]
+        public string woonplaats { get; set; } = string.Empty;
+
+        [Column("telefoonnummer", TypeName = "VARCHAR(255)")]
+        public string telefoonnummer { get; set; } = string.Empty;
+
+        [Column("emailadres", TypeName = "VARCHAR(255)")]
+        public string emailadres { get; set; } = string.Empty;
+
+        public virtual ICollection<Bestelling> bestellingen { get; set; } = new HashSet<Bestelling>();
     }
 }
+

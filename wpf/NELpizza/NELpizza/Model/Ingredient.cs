@@ -8,13 +8,17 @@ using System.Threading.Tasks;
 
 namespace NELpizza.Model
 {
-    [Table("Ingredient")]
+    [Table("ingredients")]
     public class Ingredient
     {
         [Key]
-        public int IngredientID { get; set; }
+        public long id { get; set; }
 
-        public string Naam { get; set; }
-        public decimal Prijs { get; set; }
+        public string naam { get; set; } = string.Empty;
+
+        [Column(TypeName = "decimal(8,2)")]
+        public decimal prijs { get; set; }
+
+        public virtual ICollection<IngredientPizza> pizzas { get; set; } = new HashSet<IngredientPizza>();
     }
 }
