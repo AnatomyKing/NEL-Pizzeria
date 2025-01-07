@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NELpizza.Model
 {
@@ -14,24 +10,23 @@ namespace NELpizza.Model
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("id", TypeName = "BIGINT UNSIGNED")]
-        public long id { get; set; }
+        public long Id { get; set; }
 
         [Column("naam", TypeName = "VARCHAR(255)")]
-        public string naam { get; set; } = string.Empty;
+        public string Naam { get; set; } = string.Empty;
 
         [Column("adres", TypeName = "VARCHAR(255)")]
-        public string adres { get; set; } = string.Empty;
+        public string Adres { get; set; } = string.Empty;
 
         [Column("woonplaats", TypeName = "VARCHAR(255)")]
-        public string woonplaats { get; set; } = string.Empty;
+        public string Woonplaats { get; set; } = string.Empty;
 
         [Column("telefoonnummer", TypeName = "VARCHAR(255)")]
-        public string telefoonnummer { get; set; } = string.Empty;
+        public string Telefoonnummer { get; set; } = string.Empty;
 
         [Column("emailadres", TypeName = "VARCHAR(255)")]
-        public string emailadres { get; set; } = string.Empty;
+        public string Emailadres { get; set; } = string.Empty;
 
-        public virtual ICollection<Bestelling> bestellingen { get; set; } = new HashSet<Bestelling>();
+        public virtual ICollection<Bestelling> Bestellingen { get; set; } = new HashSet<Bestelling>();
     }
 }
-

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NELpizza.Model
 {
@@ -12,19 +7,30 @@ namespace NELpizza.Model
     public class Bestelregel
     {
         [Key]
-        public long id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id", TypeName = "BIGINT UNSIGNED")]
+        public long Id { get; set; }
 
-        public int aantal { get; set; }
+        [Column("aantal", TypeName = "INT")]
+        public int Aantal { get; set; }
 
         [Required]
-        public PizzaAfmeting afmeting { get; set; }
+        [Column("afmeting", TypeName = "ENUM('klein','normaal','groot')")]
+        public string Afmeting { get; set; } = "normaal";
 
-        [ForeignKey("pizza")]
-        public long pizza_id { get; set; }
-        public virtual Pizza? pizza { get; set; }
+        [ForeignKey("Pizza")]
+        [Column("pizza_id", TypeName = "BIGINT UNSIGNED")]
+        public long PizzaId { get; set; }
 
-        [ForeignKey("bestelling")]
-        public long bestelling_id { get; set; }
-        public virtual Bestelling? bestelling { get; set; }
+        public virtual Pizza? Pizza { get; set; }
+
+        [ForeignKey("Bestelling")]
+        [Column("bestelling_id", TypeName = "BIGINT UNSIGNED")]
+        public long BestellingId { get; set; }
+
+        public virtual Bestelling? Bestelling { get; set; }
+
+        [Column("bestelling_pizza_id", TypeName = "BIGINT UNSIGNED")]
+        public long BestellingPizzaId { get; set; }
     }
 }
