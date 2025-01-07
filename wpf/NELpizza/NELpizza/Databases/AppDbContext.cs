@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 using NELpizza.Model;
+using NELpizza.Seeders;
 
 namespace NELpizza.Databases
 {
@@ -67,6 +68,8 @@ namespace NELpizza.Databases
 
                     //create database
                     context.Database.EnsureCreated();
+
+                    DatabaseSeeder.Seed(context);
                 }
                 catch (Exception ex)
                 {

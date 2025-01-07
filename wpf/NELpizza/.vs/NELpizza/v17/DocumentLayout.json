@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{501890B8-2BC7-447A-8A5E-4FB0BE0ED257}|NELpizza\\NELpizza.csproj|c:\\users\\mrluu\\documents\\github\\nel-pizzeria\\wpf\\nelpizza\\nelpizza\\databases\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{501890B8-2BC7-447A-8A5E-4FB0BE0ED257}|NELpizza\\NELpizza.csproj|solutionrelative:nelpizza\\databases\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{501890B8-2BC7-447A-8A5E-4FB0BE0ED257}|NELpizza\\NELpizza.csproj|c:\\users\\mrluu\\documents\\github\\nel-pizzeria\\wpf\\nelpizza\\nelpizza\\seeders\\databaseseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{501890B8-2BC7-447A-8A5E-4FB0BE0ED257}|NELpizza\\NELpizza.csproj|solutionrelative:nelpizza\\seeders\\databaseseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{501890B8-2BC7-447A-8A5E-4FB0BE0ED257}|NELpizza\\NELpizza.csproj|c:\\users\\mrluu\\documents\\github\\nel-pizzeria\\wpf\\nelpizza\\nelpizza\\model\\ingredientpizza.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{501890B8-2BC7-447A-8A5E-4FB0BE0ED257}|NELpizza\\NELpizza.csproj|solutionrelative:nelpizza\\model\\ingredientpizza.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{501890B8-2BC7-447A-8A5E-4FB0BE0ED257}|NELpizza\\NELpizza.csproj|c:\\users\\mrluu\\documents\\github\\nel-pizzeria\\wpf\\nelpizza\\nelpizza\\databases\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{501890B8-2BC7-447A-8A5E-4FB0BE0ED257}|NELpizza\\NELpizza.csproj|solutionrelative:nelpizza\\databases\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{501890B8-2BC7-447A-8A5E-4FB0BE0ED257}|NELpizza\\NELpizza.csproj|c:\\users\\mrluu\\documents\\github\\nel-pizzeria\\wpf\\nelpizza\\nelpizza\\model\\klant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -74,8 +78,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DatabaseSeeder.cs",
+              "DocumentMoniker": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\Seeders\\DatabaseSeeder.cs",
+              "RelativeDocumentMoniker": "NELpizza\\Seeders\\DatabaseSeeder.cs",
+              "ToolTip": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\Seeders\\DatabaseSeeder.cs",
+              "RelativeToolTip": "NELpizza\\Seeders\\DatabaseSeeder.cs",
+              "ViewState": "AQIAAEYAAAAAAAAAAAAgwGAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-07T09:20:05.154Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -91,7 +108,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Bestelling.cs",
               "DocumentMoniker": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\Model\\Bestelling.cs",
               "RelativeDocumentMoniker": "NELpizza\\Model\\Bestelling.cs",
@@ -99,12 +116,11 @@
               "RelativeToolTip": "NELpizza\\Model\\Bestelling.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAB0AAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-18T13:02:30.816Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-18T13:02:30.816Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "Pizza.cs",
               "DocumentMoniker": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\Model\\Pizza.cs",
               "RelativeDocumentMoniker": "NELpizza\\Model\\Pizza.cs",
@@ -112,12 +128,11 @@
               "RelativeToolTip": "NELpizza\\Model\\Pizza.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-18T13:01:14.202Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-18T13:01:14.202Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Ingredient.cs",
               "DocumentMoniker": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\Model\\Ingredient.cs",
               "RelativeDocumentMoniker": "NELpizza\\Model\\Ingredient.cs",
@@ -125,12 +140,11 @@
               "RelativeToolTip": "NELpizza\\Model\\Ingredient.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-18T13:00:26.964Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-18T13:00:26.964Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "BestelStatus.cs",
               "DocumentMoniker": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\Model\\BestelStatus.cs",
               "RelativeDocumentMoniker": "NELpizza\\Model\\BestelStatus.cs",
@@ -138,25 +152,24 @@
               "RelativeToolTip": "NELpizza\\Model\\BestelStatus.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-18T13:00:03.411Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-18T13:00:03.411Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\Databases\\AppDbContext.cs",
               "RelativeDocumentMoniker": "NELpizza\\Databases\\AppDbContext.cs",
               "ToolTip": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\Databases\\AppDbContext.cs",
               "RelativeToolTip": "NELpizza\\Databases\\AppDbContext.cs",
-              "ViewState": "AQIAACwAAAAAAAAAAAAAwEQAAAAUAAAA",
+              "ViewState": "AQIAAAQAAAAAAAAAAAAAAFAAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-18T12:21:55.966Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Bestelregel.cs",
               "DocumentMoniker": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\Model\\Bestelregel.cs",
               "RelativeDocumentMoniker": "NELpizza\\Model\\Bestelregel.cs",
@@ -164,12 +177,11 @@
               "RelativeToolTip": "NELpizza\\Model\\Bestelregel.cs",
               "ViewState": "AQIAAAMAAAAAAAAAAAAAACQAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-18T13:02:02.195Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-18T13:02:02.195Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Klant.cs",
               "DocumentMoniker": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\Model\\Klant.cs",
               "RelativeDocumentMoniker": "NELpizza\\Model\\Klant.cs",
@@ -177,12 +189,11 @@
               "RelativeToolTip": "NELpizza\\Model\\Klant.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAA0AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-18T13:03:10.879Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-18T13:03:10.879Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "App.xaml",
               "DocumentMoniker": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\App.xaml",
               "RelativeDocumentMoniker": "NELpizza\\App.xaml",
@@ -193,7 +204,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "App.config",
               "DocumentMoniker": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\App.config",
               "RelativeDocumentMoniker": "NELpizza\\App.config",
@@ -205,7 +216,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "PizzaAfmeting.cs",
               "DocumentMoniker": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\Model\\PizzaAfmeting.cs",
               "RelativeDocumentMoniker": "NELpizza\\Model\\PizzaAfmeting.cs",
@@ -213,12 +224,11 @@
               "RelativeToolTip": "NELpizza\\Model\\PizzaAfmeting.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-18T12:58:51.859Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-18T12:58:51.859Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "App.xaml.cs",
               "DocumentMoniker": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\App.xaml.cs",
               "RelativeDocumentMoniker": "NELpizza\\App.xaml.cs",
@@ -230,7 +240,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "MainView.xaml",
               "DocumentMoniker": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\View\\MainView.xaml",
               "RelativeDocumentMoniker": "NELpizza\\View\\MainView.xaml",
@@ -241,7 +251,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "MainViewModel.cs",
               "DocumentMoniker": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\ViewModel\\MainViewModel.cs",
               "RelativeDocumentMoniker": "NELpizza\\ViewModel\\MainViewModel.cs",
@@ -253,7 +263,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "App.g.cs",
               "DocumentMoniker": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\obj\\Debug\\net8.0-windows\\App.g.cs",
               "RelativeDocumentMoniker": "NELpizza\\obj\\Debug\\net8.0-windows\\App.g.cs",
@@ -265,7 +275,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "ObservableObject.cs",
               "DocumentMoniker": "C:\\Users\\mrluu\\Documents\\GitHub\\NEL-Pizzeria\\wpf\\NELpizza\\NELpizza\\Helpers\\ObservableObject.cs",
               "RelativeDocumentMoniker": "NELpizza\\Helpers\\ObservableObject.cs",
