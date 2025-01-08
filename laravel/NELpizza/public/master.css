@@ -124,13 +124,13 @@ h1 {
 
   &:hover {
     cursor: pointer;
-    
+
     &:before {
     content: "";
     position: absolute;
     top: 50%;
     left: 0.55rem;
-    animation: 
+    animation:
       blink var(--blink-animation-time) infinite both;
     margin-top: 6px;
     font-weight: 900;
@@ -177,6 +177,11 @@ h1 {
     forwards;
 }
 
+#six {
+    animation: itemFive var(--item-animation-time) var(--item-animation-delay)
+      forwards;
+  }
+
 #menu:has(#one:hover) {
   --one-col: 22%;
   --two-col: 19.5%;
@@ -216,6 +221,9 @@ h1 {
   --four-col: 19.5%;
   --five-col: 22%;
 }
+
+
+
 
 @keyframes blink {
   from {
@@ -401,7 +409,7 @@ ul li {
         align-items: center;
     }
 
-    .openingstijden-left, 
+    .openingstijden-left,
     .openingstijden-right {
         max-width: 100%;
     }
