@@ -2,7 +2,7 @@
 
 @section('title', 'Example Page')
 
-@section('screen-title', 'Welcome to the Example Screen')
+@section('screen-title', )
 
 @section('menu-title', 'Example Menu')
 

@@ -22,4 +22,8 @@ Route::get('/openingstijden', function () {
     return view('openingstijden');
 })->name('openingstijden');
 
+Route::get('/home', function () {
+    return view('homepage');
+})->name('home');
+
 require __DIR__.'/auth.php';
