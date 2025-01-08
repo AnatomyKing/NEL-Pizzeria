@@ -22,7 +22,7 @@
             <span id="two" class="item" style="--item-text: 'Racebox'">Racebox</span>
             <span id="three" class="item" style="--item-text: 'Online'">Online</span>
             <span id="four" class="item" style="--item-text: 'Options'">Options</span>
-            <span id="five" class="item" style="--item-text: 'Records'">Records</span>
+            <a href="{{ route('openingstijden') }}" id="six" class="item" style="--item-text: 'Openingstijden'">Openingstijden</a>
         </nav>
         <main>
             @yield('content')
