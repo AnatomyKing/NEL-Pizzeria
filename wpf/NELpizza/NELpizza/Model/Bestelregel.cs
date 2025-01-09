@@ -30,7 +30,5 @@ namespace NELpizza.Model
 
         public virtual Bestelling? Bestelling { get; set; }
 
-        [Column("bestelling_pizza_id", TypeName = "BIGINT UNSIGNED")]
-        public long BestellingPizzaId { get; set; }
     }
 }

@@ -18,8 +18,7 @@ return new class extends Migration
             $table->integer('aantal');
             $table->enum('afmeting', ["klein","normaal","groot"]);
             $table->foreignId('pizza_id')->constrained();
-            $table->foreignId('bestelling_id')->constrained('bestellingens');
-            $table->foreignId('bestelling_pizza_id');
+            $table->foreignId('bestelling_id')->constrained();
         });
 
         Schema::enableForeignKeyConstraints();

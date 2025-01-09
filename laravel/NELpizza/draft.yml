@@ -14,7 +14,7 @@ models:
     id: bigIncrements
     datum: timestamp
     status: enum:initieel,betaald,bereiden,inoven,onderweg,bezorgd
-    klant_id: foreign:klanten
+    klant_id: foreign:klants
     timestamps: false
     relationships:
       belongsTo: Klant
@@ -25,11 +25,10 @@ models:
     aantal: integer
     afmeting: enum:klein,normaal,groot
     pizza_id: foreign:pizzas
-    bestelling_id: foreign:bestellingen
+    bestelling_id: foreign:bestellings
     timestamps: false
     relationships:
       belongsTo:
-        - Bestelling
         - Pizza
 
   Pizza:

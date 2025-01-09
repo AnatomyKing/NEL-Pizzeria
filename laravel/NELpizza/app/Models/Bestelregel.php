@@ -27,7 +27,6 @@ class Bestelregel extends Model
         'afmeting',
         'pizza_id',
         'bestelling_id',
-        'bestelling_pizza_id',
     ];
 
     /**
@@ -38,13 +37,7 @@ class Bestelregel extends Model
     protected $casts = [
         'pizza_id' => 'integer',
         'bestelling_id' => 'integer',
-        'bestelling_pizza_id' => 'integer',
     ];
-
-    public function bestellingPizza(): BelongsTo
-    {
-        return $this->belongsTo(BestellingPizza::class);
-    }
 
     public function pizza(): BelongsTo
     {
@@ -53,6 +46,6 @@ class Bestelregel extends Model
 
     public function bestelling(): BelongsTo
     {
-        return $this->belongsTo(Bestellingen::class);
+        return $this->belongsTo(Bestelling::class);
     }
 }
