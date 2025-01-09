@@ -11,7 +11,7 @@
     <div id="wrapper">
         <div id="screen-info">
             <span class="block"></span>
-            <p>@yield('screen-title', 'SCREEN TITLE')</p>
+            <p>@yield('stonks pizza', 'stonks pizza')</p>
         </div>
         <div id="menu-title">
             <span class="indicator-symbol"></span>
