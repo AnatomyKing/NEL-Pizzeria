@@ -4,12 +4,12 @@ created:
     - database/factories/BestelregelFactory.php
     - database/factories/PizzaFactory.php
     - database/factories/IngredientFactory.php
-    - database/migrations/2025_01_08_153816_create_klants_table.php
-    - database/migrations/2025_01_08_153817_create_bestellings_table.php
-    - database/migrations/2025_01_08_153818_create_bestelregels_table.php
-    - database/migrations/2025_01_08_153819_create_pizzas_table.php
-    - database/migrations/2025_01_08_153820_create_ingredients_table.php
-    - database/migrations/2025_01_08_153821_create_ingredient_pizza_table.php
+    - database/migrations/2025_01_09_085917_create_klants_table.php
+    - database/migrations/2025_01_09_085918_create_bestellings_table.php
+    - database/migrations/2025_01_09_085919_create_bestelregels_table.php
+    - database/migrations/2025_01_09_085920_create_pizzas_table.php
+    - database/migrations/2025_01_09_085921_create_ingredients_table.php
+    - database/migrations/2025_01_09_085922_create_ingredient_pizza_table.php
     - app/Models/Klant.php
     - app/Models/Bestelling.php
     - app/Models/Bestelregel.php
