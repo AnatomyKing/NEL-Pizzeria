@@ -42,5 +42,6 @@ Route::delete('/pizza/remove-from-cart/{id}', [PizzaController::class, 'removeFr
 // Bestel Routes
 Route::get('/bestel', [BestelController::class, 'create'])->name('bestel');
 Route::post('/bestel', [BestelController::class, 'store'])->name('bestel.store');
+Route::get('/bestel/create', [BestelController::class, 'create'])->name('bestel.create');
 
 require __DIR__.'/auth.php';

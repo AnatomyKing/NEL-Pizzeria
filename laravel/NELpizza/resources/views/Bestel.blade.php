@@ -1,21 +1,20 @@
 @extends('layouts.app')
-{{-- Ensure you have resources/views/layout.blade.php or change this to your layout --}}
 
 @section('content')
-<div class="best-sellers">
-    <h2>ONZE BEST VERKOCHTE PIZZA’S</h2>
+<div class="best-sellers" style="max-width: 800px; margin: auto; font-family: Arial, sans-serif;">
+    <h2 style="text-align: center; font-size: 24px; margin-bottom: 20px; color: #333;">Onze Best Verkochte Pizza’s</h2>
 
     {{-- Success message --}}
     @if (session('success'))
-        <div style="color: green;">
+        <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
             {{ session('success') }}
         </div>
     @endif
 
     {{-- Validation errors --}}
     @if ($errors->any())
-        <div style="color: red;">
-            <ul>
+        <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+            <ul style="list-style-type: none; padding-left: 0;">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -24,95 +23,80 @@
     @endif
 
     {{-- Order Form --}}
-    <form action="{{ route('bestel.store') }}" method="POST" oninput="calculateTotal()">
+    <form action="{{ route('bestel.store') }}" method="POST" oninput="calculateTotal()" style="background: #f9f9f9; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
         @csrf
 
-        <h3>JOUW GEGEVENS</h3>
-        <div>
+        <h3 style="font-size: 20px; margin-bottom: 15px; color: #555;">Jouw Gegevens</h3>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
             <label for="naam">Naam:</label>
-            <input type="text" name="naam" id="naam" required>
-        </div>
-        <div>
+            <input type="text" name="naam" id="naam" required style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+
             <label for="adres">Adres:</label>
-            <input type="text" name="adres" id="adres" required>
-        </div>
-        <div>
+            <input type="text" name="adres" id="adres" required style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+
             <label for="woonplaats">Woonplaats:</label>
-            <input type="text" name="woonplaats" id="woonplaats" required>
-        </div>
-        <div>
+            <input type="text" name="woonplaats" id="woonplaats" required style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+
             <label for="telefoon">Telefoon:</label>
-            <input type="text" name="telefoon" id="telefoon" required>
-        </div>
-        <div>
+            <input type="text" name="telefoon" id="telefoon" required style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+
             <label for="email">E-mail:</label>
-            <input type="email" name="email" id="email" required>
+            <input type="email" name="email" id="email" required style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
         </div>
 
-        <h3>KIES JE PIZZA'S</h3>
-
+        <h3 style="font-size: 20px; margin: 20px 0 15px; color: #555;">Kies Je Pizza's</h3>
         @if($pizzas->count() > 0)
             <div class="pizza-gallery" style="display: flex; flex-wrap: wrap; gap: 20px;">
                 @foreach ($pizzas as $pizza)
-                    <div class="pizza-item" style="width: 200px; border: 1px solid #ccc; padding: 10px;">
-                        {{-- If you have an image column or path in the DB, adjust accordingly --}}
-                        @if(isset($pizza->image))
-                            <img src="/images/{{ $pizza->image }}"
-                                 alt="{{ $pizza->naam }}"
-                                 style="width: 100%;">
-                        @else
-                            {{-- Fallback image or no image --}}
-                            <img src="/images/placeholder.png"
-                                 alt="{{ $pizza->naam }}"
-                                 style="width: 100%;">
-                        @endif
+                    <div class="pizza-item" style="width: 200px; border: 1px solid #ddd; padding: 10px; border-radius: 10px; text-align: center; background: #fff;">
+                        {{-- Placeholder or Pizza image --}}
+                        <img src="/images/{{ $pizza->image ?? 'placeholder.png' }}" alt="{{ $pizza->naam }}" style="width: 100%; border-radius: 10px; margin-bottom: 10px;">
 
-                        <h4>{{ $pizza->naam }}</h4>
-                        <p class="pizza-price" data-price="{{ $pizza->prijs }}">
+                        <h4 style="font-size: 18px; color: #333; margin-bottom: 10px;">{{ $pizza->naam }}</h4>
+                        <p class="pizza-price" data-price="{{ $pizza->prijs }}" style="font-size: 16px; color: #777;">
                             Prijs: €{{ number_format($pizza->prijs, 2, ',', '.') }}
                         </p>
 
-                        <label>Aantal:</label>
-                        <input type="number"
-                               name="pizzas[{{ $pizza->id }}]"
-                               class="pizza-quantity"
-                               min="0" value="0" style="width: 60px;">
+                        <label for="quantity_{{ $pizza->id }}" style="font-size: 14px; color: #555;">Aantal:</label>
+                        <input type="number" name="pizzas[{{ $pizza->id }}]" id="quantity_{{ $pizza->id }}" class="pizza-quantity" min="0" value="0" style="width: 60px; padding: 5px; text-align: center; margin-top: 5px; border: 1px solid #ddd; border-radius: 5px;">
                     </div>
                 @endforeach
             </div>
         @else
-            <p>Er zijn geen pizza's in de database.</p>
+            <p style="color: #888; font-size: 16px; text-align: center;">Er zijn geen pizza's in de database.</p>
         @endif
 
         {{-- Display total price --}}
-        <div style="margin-top: 20px;">
-            <strong>Totaal:</strong> €<span id="total-price">0.00</span>
+        <div style="margin-top: 20px; font-size: 18px; font-weight: bold; color: #333;">
+            Totaal: €<span id="total-price">0.00</span>
         </div>
 
-        <button type="submit" style="margin-top: 10px;">Bestel nu</button>
+        <button type="submit" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #007bff; border: none; border-radius: 5px; cursor: pointer;">
+            Bestel nu
+        </button>
     </form>
 </div>
 
 {{-- Optional JavaScript to update total price in real time --}}
 <script>
 function calculateTotal() {
-  let total = 0.0;
-  const pizzaItems = document.querySelectorAll('.pizza-item');
+    let total = 0.0;
+    const pizzaItems = document.querySelectorAll('.pizza-item');
 
-  pizzaItems.forEach(item => {
-    const priceElement = item.querySelector('.pizza-price');
-    const quantityElement = item.querySelector('.pizza-quantity');
+    pizzaItems.forEach(item => {
+        const priceElement = item.querySelector('.pizza-price');
+        const quantityElement = item.querySelector('.pizza-quantity');
 
-    if (!priceElement || !quantityElement) return;
+        if (!priceElement || !quantityElement) return;
 
-    // Retrieve numeric values
-    const price = parseFloat(priceElement.getAttribute('data-price')) || 0;
-    const quantity = parseInt(quantityElement.value) || 0;
+        // Retrieve numeric values
+        const price = parseFloat(priceElement.getAttribute('data-price')) || 0;
+        const quantity = parseInt(quantityElement.value) || 0;
 
-    total += price * quantity;
-  });
+        total += price * quantity;
+    });
 
-  document.getElementById('total-price').textContent = total.toFixed(2);
+    document.getElementById('total-price').textContent = total.toFixed(2).replace('.', ',');
 }
 </script>
 @endsection
