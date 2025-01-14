@@ -21,7 +21,9 @@
             <a href="/home" id="one" class="item selected" style="--item-text: 'HomeScreen'; text-decoration: none; background-color: #000000; color: white;">
                 Homescreen
             </a>
-            <span id="two" class="item" style="--item-text: 'Racebox'">Racebox</span>
+            <a href="{{ route('bestel') }}" id="two" class="item" style="--item-text: 'Bestel'; text-decoration: none; background-color: #000000; color: white;">
+                Bestel pagina
+            </a>
             <span id="three" class="item" style="--item-text: 'Online'">Online</span>
             <span id="four" class="item" style="--item-text: 'Options'">Options</span>
             <a href="{{ route('openingstijden') }}" id="six" class="item" style="--item-text: 'Openingstijden'; text-decoration: none; background-color: #000000; color: white;">Openingstijden</a>
