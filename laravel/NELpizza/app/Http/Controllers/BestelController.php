@@ -3,43 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Pizza;
-use App\Models\Klant;
+use App\Models\Pizza;        // or whichever models
+use App\Models\Klant;        // you'll need to adapt
 use App\Models\Bestelling;
 use App\Models\Bestelregel;
 
 class BestelController extends Controller
 {
     /**
-     * Display the pizza order form.
-     */
-    public function create()
-    {
-        // Fetch pizzas from the database (assuming you have a Pizza model/table).
-        $pizzas = Pizza::all();
-
-        // Return the bestel.blade.php view with the pizzas variable.
-        return view('bestel', compact('pizzas'));
-    }
-
-    /**
-     * Handle the form submission for placing an order.
+     * Store a new order (called from the form on the home page).
      */
     public function store(Request $request)
     {
-        // 1. Validate the incoming form data.
+        // 1. Validate
         $request->validate([
             'naam'       => 'required|string|max:255',
             'adres'      => 'required|string|max:255',
             'woonplaats' => 'required|string|max:255',
             'telefoon'   => 'required|string|max:255',
             'email'      => 'required|email|max:255',
-
-            // 'pizzas' is an array where the key is the pizza ID and value is the quantity.
             'pizzas'     => 'required|array',
         ]);
 
-        // 2. Create a new klant record (or find existing, up to you).
+        // 2. Create or find a "Klant"
         $klant = Klant::create([
             'naam'           => $request->naam,
             'adres'          => $request->adres,
@@ -48,33 +34,29 @@ class BestelController extends Controller
             'emailadres'     => $request->email,
         ]);
 
-        // 3. Create the bestelling (order) record.
+        // 3. Create a "Bestelling"
         $bestelling = Bestelling::create([
             'datum'    => now(),
-            'status'   => 'initieel', // or any default status you want
+            'status'   => 'initieel',
             'klant_id' => $klant->id,
         ]);
 
-        // 4. Loop over each pizza the user selected and create bestelregels (order lines).
-        //    $request->pizzas will be something like: [3 => '2', 5 => '1', ...]
-        //    where '3' is a pizza ID and '2' is the quantity.
+        // 4. Create "Bestelregels" for each pizza ID + quantity
         foreach ($request->pizzas as $pizzaId => $aantal) {
-            // If the user didn't select any quantity (0), skip it.
             if ((int) $aantal === 0) {
                 continue;
             }
-
             Bestelregel::create([
-                'aantal'         => $aantal,
-                'afmeting'       => 'normaal', // or implement a size selection in your form
-                'pizza_id'       => $pizzaId,
-                'bestelling_id'  => $bestelling->id,
-                'bestelling_pizza_id' => $pizzaId, // Adjust if needed per your schema
+                'aantal'             => $aantal,
+                'afmeting'           => 'normaal',
+                'pizza_id'           => $pizzaId,
+                'bestelling_id'      => $bestelling->id,
+                'bestelling_pizza_id'=> $pizzaId, // adapt if your DB differs
             ]);
         }
 
-        // 5. Redirect back to the form with a success message.
-        return redirect()->route('bestel.create')
+        // 5. Redirect with success
+        return redirect()->route('home')
                          ->with('success', 'Bedankt voor je bestelling!');
     }
 }

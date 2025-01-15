@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Pizza extends Model
+class Session extends Model
 {
     use HasFactory;
 
@@ -23,10 +23,11 @@ class Pizza extends Model
      * @var array
      */
     protected $fillable = [
-        'naam',
-        'prijs',
-        'beschrijving',
-        'image',
+        'user_id',
+        'ip_address',
+        'user_agent',
+        'payload',
+        'last_activity',
     ];
 
     /**
@@ -35,16 +36,11 @@ class Pizza extends Model
      * @var array
      */
     protected $casts = [
-        'prijs' => 'decimal:2',
+        'user_id' => 'integer',
     ];
 
-    public function ingredients(): BelongsToMany
+    public function user(): BelongsTo
     {
-        return $this->belongsToMany(Ingredient::class);
-    }
-
-    public function image()
-    {
-        return $this->hasOne(Image::class);
+        return $this->belongsTo(User::class);
     }
 }

@@ -16,6 +16,9 @@ return new class extends Migration
         Schema::create('pizzas', function (Blueprint $table) {
             $table->id();
             $table->string('naam');
+            $table->decimal('prijs', 8, 2);
+            $table->text('beschrijving')->nullable();
+            $table->string('image')->nullable();
         });
 
         Schema::enableForeignKeyConstraints();

@@ -3,56 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+// Use your actual Pizza model if you want to retrieve from DB
+use App\Models\Pizza;
 
 class PizzaController extends Controller
 {
     /**
      * Display the Pizza Page with a list of best-selling pizzas.
      */
-    public function index()
+    public function home()
     {
         // Static list of best-selling pizzas (no 'image' key)
-        $pizzas = [
-            [
-                'id'          => 1,
-                'name'        => 'Margherita',
-                'description' => 'Classic delight with 100% mozzarella cheese',
-                'price'       => 8.99
-            ],
-            [
-                'id'          => 2,
-                'name'        => 'Pepperoni',
-                'description' => 'Loaded with pepperoni & extra cheese',
-                'price'       => 10.99
-            ],
-            [
-                'id'          => 3,
-                'name'        => 'BBQ Chicken',
-                'description' => 'Smoky BBQ sauce topped with grilled chicken',
-                'price'       => 12.99
-            ],
-            [
-                'id'          => 4,
-                'name'        => 'Veggie Supreme',
-                'description' => 'Crunchy bell peppers, fresh tomatoes & olives',
-                'price'       => 9.99
-            ],
-            [
-                'id'          => 5,
-                'name'        => 'Hawaiian',
-                'description' => 'Juicy pineapple chunks and ham',
-                'price'       => 11.99
-            ],
-            [
-                'id'          => 6,
-                'name'        => 'Four Cheese',
-                'description' => 'A cheese lover’s dream: mozzarella, cheddar, feta & gouda',
-                'price'       => 13.99
-            ],
-        ];
+        $pizzas = Pizza::all();
 
         // Return the 'pizza.blade.php' view with $pizzas
-        return view('pizza', compact('pizzas'));
+        return view('home', compact('pizzas'));
     }
 
     /**

@@ -27,6 +27,7 @@ class Bestelling extends Model
         'datum',
         'status',
         'klant_id',
+        'pizza_id',
     ];
 
     /**
@@ -37,11 +38,17 @@ class Bestelling extends Model
     protected $casts = [
         'datum' => 'timestamp',
         'klant_id' => 'integer',
+        'pizza_id' => 'integer',
     ];
 
     public function klant(): BelongsTo
     {
         return $this->belongsTo(Klant::class);
+    }
+
+    public function pizza(): BelongsTo
+    {
+        return $this->belongsTo(Pizza::class);
     }
 
     public function bestelregels(): HasMany

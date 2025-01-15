@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Default Title')</title>
-    <link rel="stylesheet" href="{{ asset('css/master.css') }}">
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <title>@yield('title', 'Stonks Pizza')</title>
+    <link rel="stylesheet" href="{{ asset('css/navi.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/navi2.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/contact.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+    <script src="{{ asset('js/javascript.js') }}" defer></script>
 </head>
 <body>
     <div id="wrapper">
@@ -18,18 +21,10 @@
             <h1>@yield('menu-title', 'MAIN MENU')</h1>
         </div>
         <nav id="menu">
-            <a href="/home" id="one" class="item selected" style="--item-text: 'HomeScreen'; text-decoration: none; background-color: #000000; color: white;">
-                Homescreen
-            </a>
-            <a href="{{ route('bestel') }}" id="two" class="item" style="--item-text: 'Bestel'; text-decoration: none; background-color: #000000; color: white;">
-                Bestel pagina
-            </a>
-            <span id="three" class="item" style="--item-text: 'Online'">Online</span>
-            <span id="four" class="item" style="--item-text: 'Options'">Options</span>
-            <a href="{{ route('openingstijden') }}" id="six" class="item" style="--item-text: 'Openingstijden'; text-decoration: none; background-color: #000000; color: white;">Openingstijden</a>
+            <a href="{{ route('home') }}" id="one" class="item selected">Home</a>
+            <a href="{{ route('contact') }}" id="two" class="item" >Contact</a>
+            <a href="{{ route('dashboard') }}" id="three" class="item">Login</a>
         </nav>
-
-
         <main>
             @yield('content')
         </main>

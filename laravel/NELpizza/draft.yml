@@ -15,6 +15,7 @@ models:
     datum: timestamp
     status: enum:initieel,betaald,bereiden,inoven,onderweg,bezorgd
     klant_id: foreign:klants
+    pizza_id: foreign:pizzas
     timestamps: false
     relationships:
       belongsTo: Klant
@@ -34,6 +35,8 @@ models:
   Pizza:
     id: bigIncrements
     naam: string
+    prijs: decimal:8,2
+    beschrijving: text nullable
     timestamps: false
     relationships:
       belongsToMany: Ingredient
@@ -45,6 +48,16 @@ models:
     timestamps: false
     relationships:
       belongsToMany: Pizza
+
+  Session:
+    id: string
+    user_id: foreign:users nullable
+    ip_address: string nullable
+    user_agent: text nullable
+    payload: longtext
+    last_activity: integer
+    timestamps: false
+
 
 ingredient_pizza:
   pizza_id: foreign:pizzas
