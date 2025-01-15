@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PizzaController;
 use App\Http\Controllers\BestelController;
+use App\Http\Controllers\PizzaIngredientController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -48,5 +50,7 @@ Route::get('/options', function () {
     return view('options');
 })->name('options');
 
+Route::get('/pizza/{pizza}/edit', [PizzaIngredientController::class, 'edit'])->name('pizza.edit');
+Route::post('/pizza/{pizza}/update', [PizzaIngredientController::class, 'update'])->name('pizza.update');
 
 require __DIR__.'/auth.php';
