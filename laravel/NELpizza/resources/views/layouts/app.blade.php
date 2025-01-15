@@ -25,10 +25,13 @@
                 Bestel pagina
             </a>
             <span id="three" class="item" style="--item-text: 'Online'">Online</span>
-            <span id="four" class="item" style="--item-text: 'Options'">Options</span>
-            <a href="{{ route('openingstijden') }}" id="six" class="item" style="--item-text: 'Openingstijden'; text-decoration: none; background-color: #000000; color: white;">Openingstijden</a>
+            <a href="{{ route('options') }}" id="four" class="item" style="--item-text: 'Options'; text-decoration: none; background-color: #000000; color: white;">
+                Options
+            </a>
+            <a href="{{ route('openingstijden') }}" id="six" class="item" style="--item-text: 'Openingstijden'; text-decoration: none; background-color: #000000; color: white;">
+                Openingstijden
+            </a>
         </nav>
-
 
         <main>
             @yield('content')
