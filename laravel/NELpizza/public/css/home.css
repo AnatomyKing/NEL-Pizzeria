@@ -1,0 +1,91 @@
+.main-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+    gap: 20px;
+}
+
+.pizza-section {
+    flex: 3; /* Take most of the width */
+}
+
+.shopping-cart {
+    flex: 1; /* Take a smaller portion of the width */
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    max-height: 600px;
+    overflow-y: auto; /* Allow scrolling for long cart lists */
+}
+
+.pizza-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.pizza-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    transition: transform 0.3s;
+    cursor: pointer;
+}
+
+.pizza-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.pizza-item img {
+    max-width: 100px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.price {
+    font-weight: bold;
+    color: #444;
+}
+
+.shopping-cart h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+#cart-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#cart-list li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.order-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.order-button:hover {
+    background-color: #0056b3;
+}

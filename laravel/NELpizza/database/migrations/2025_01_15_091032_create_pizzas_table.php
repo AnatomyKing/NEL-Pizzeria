@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('naam');
             $table->decimal('prijs', 8, 2);
             $table->text('beschrijving')->nullable();
-            $table->string('image')->nullable();
         });
 
         Schema::enableForeignKeyConstraints();
