@@ -44,4 +44,9 @@ Route::get('/bestel', [BestelController::class, 'create'])->name('bestel');
 Route::post('/bestel', [BestelController::class, 'store'])->name('bestel.store');
 Route::get('/bestel/create', [BestelController::class, 'create'])->name('bestel.create');
 
+Route::get('/options', function () {
+    return view('options');
+})->name('options');
+
+
 require __DIR__.'/auth.php';

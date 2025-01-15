@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="best-sellers" style="max-width: 800px; margin: auto; font-family: Arial, sans-serif;">
-    <h2 style="text-align: center; font-size: 24px; margin-bottom: 20px; color: #333;">Onze Best Verkochte Pizza’s</h2>
+    <h2 style="text-align: center; font-size: 24px; margin-bottom: 20px; color: #333;">Bestelpagina</h2>
 
     {{-- Success message --}}
     @if (session('success'))
