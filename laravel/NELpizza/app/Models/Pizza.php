@@ -43,8 +43,9 @@ class Pizza extends Model
         return $this->belongsToMany(Ingredient::class);
     }
 
-    public function image()
+    public function getImageUrlAttribute()
     {
-        return $this->hasOne(Image::class);
+        return route('pizzas.image', $this->id);
     }
+    
 }

@@ -32,7 +32,7 @@ Route::get('/bestel', function () {
 //Route::post('/bestel', [BestelController::class, 'store'])->name('bestel.store');
 
 // (Optional) If you serve images from a controller
-Route::get('/pizzas/{pizzaId}/image', [ImageController::class, 'show']);
+Route::get('/pizzas/{id}/image', [ImageController::class, 'show'])->name('pizzas.image');
 
 // If you have Laravel Breeze or other Auth routes
 require __DIR__.'/auth.php';

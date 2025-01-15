@@ -24,7 +24,6 @@ class PizzaFactory extends Factory
             'naam' => $this->faker->word(),
             'prijs' => $this->faker->randomFloat(2, 0, 999999.99),
             'beschrijving' => $this->faker->text(),
-            'image' => $this->faker->word(),
         ];
     }
 }

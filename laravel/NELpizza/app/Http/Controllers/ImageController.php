@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Image;
+use App\Models\Pizza;
 use Illuminate\Http\Response;
 
 class ImageController extends Controller
 {
-    public function show($pizzaId)
+    public function show($id)
     {
-        $image = Image::where('pizza_id', $pizzaId)->first();
+        $pizza = Pizza::findOrFail($id);
 
-        if (!$image) {
-            abort(404, 'Image not found');
+        if (!$pizza->image) {
+            abort(404, 'Image not found.');
         }
 
-        return response($image->data, 200)
-            ->header('Content-Type', $image->mime_type);
+        return response($pizza->image, 200)
+            ->header('Content-Type', 'image/jpeg'); // Adjust if your image type differs
     }
 }
