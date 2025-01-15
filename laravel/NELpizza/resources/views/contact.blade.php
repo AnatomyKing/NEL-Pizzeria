@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Contact Us')
-@section('menu-title', 'Contact Us')
+@section('menu-title', 'Contact Information')
 
 @section('content')
 <div class="contact-container">

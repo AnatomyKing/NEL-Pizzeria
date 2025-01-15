@@ -4,6 +4,5 @@
 @section('menu-title', 'Welcome to Stonks Pizza')
 
 @section('content')
-<br>
-<br/>
+<p>This is where all the content will go.</p>
 @endsection

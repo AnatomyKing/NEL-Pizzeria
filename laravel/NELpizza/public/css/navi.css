@@ -37,7 +37,6 @@ body {
   font-family: "Open Sans", serif;
   overflow: hidden;
   text-transform: uppercase;
-  text-colo
 }
 
 p,
@@ -67,8 +66,8 @@ h1 {
 .contentview {
   background-color: var(--bg-color); /* Dynamic background */
   width: 100%; /* Full width */
-  height: 0; /* Start collapsed */
-  overflow: hidden; /* Prevent content from showing during animation */
+  height: 0; /* Start with at least full viewport height */
+  overflow-y: auto; /* Enable vertical scrolling */
   animation: fillContent 1s ease-in-out forwards;
   animation-delay: 1s; /* Sync with navigation animations */
   position: relative; /* Proper positioning in the layout */
@@ -90,7 +89,7 @@ h1 {
   content: "";
   display: block;
   height: auto; /* Allow content height */
-  min-height: 100vh; /* Ensure it fills the viewport */
+  min-height: 5vh; /* Ensure it fills the viewport */
   width: 100%; /* Maintain full width */
   background-color: var(--bg-color); /* Dynamic background */
 }

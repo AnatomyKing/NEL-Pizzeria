@@ -24,8 +24,12 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/bestel', function () {
+    return view('bestel'); 
+})->name('bestel');
+
 // POST form submission for orders
-Route::post('/bestel', [BestelController::class, 'store'])->name('bestel.store');
+//Route::post('/bestel', [BestelController::class, 'store'])->name('bestel.store');
 
 // (Optional) If you serve images from a controller
 Route::get('/pizzas/{pizzaId}/image', [ImageController::class, 'show']);
