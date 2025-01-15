@@ -19,6 +19,13 @@
 
   --item-animation-time: 0.25s;
   --item-animation-delay: 0.5s;
+  --bg-color: #000000;
+  --text-color: #ffffff;
+}
+
+.white-mode {
+  --bg-color: #ffffff;
+  --text-color: #000000;
 }
 
 * {
@@ -30,6 +37,7 @@ body {
   font-family: "Open Sans", serif;
   overflow: hidden;
   text-transform: uppercase;
+  text-colo
 }
 
 p,
@@ -43,7 +51,6 @@ h1 {
   height: 100vh;
   display: flex;
   flex-flow: column;
-  justify-content: center;
   margin-top: 1rem;
 }
 
@@ -56,6 +63,38 @@ h1 {
 
   animation: popIn 0s var(--screen-info-pop-animation-delay) forwards;
 }
+
+.contentview {
+  background-color: var(--bg-color); /* Dynamic background */
+  width: 100%; /* Full width */
+  height: 0; /* Start collapsed */
+  overflow: hidden; /* Prevent content from showing during animation */
+  animation: fillContent 1s ease-in-out forwards;
+  animation-delay: 1s; /* Sync with navigation animations */
+  position: relative; /* Proper positioning in the layout */
+  z-index: 0; /* Ensure proper stacking context */
+  color: var(--text-color); /* Dynamic text color */
+}
+
+@keyframes fillContent {
+  0% {
+    height: 0; /* Start with no height */
+  }
+  100% {
+    height: 100vh; /* Expand to full viewport height */
+  }
+}
+
+/* Pseudo-class for final state */
+.contentview::after {
+  content: "";
+  display: block;
+  height: auto; /* Allow content height */
+  min-height: 100vh; /* Ensure it fills the viewport */
+  width: 100%; /* Maintain full width */
+  background-color: var(--bg-color); /* Dynamic background */
+}
+
 
 .block {
   background: var(--clr-gray);
