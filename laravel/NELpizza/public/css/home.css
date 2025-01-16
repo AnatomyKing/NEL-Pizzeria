@@ -1,43 +1,60 @@
 /* Global Styles */
 
+/* Pizza Section */
+.pizza-section {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 20px;
+}
 
 /* Grid Layout for Pizza Ads */
 .pizza-ad-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, 1fr); /* Altijd 3 kolommen */
     gap: 20px;
     max-width: 1200px;
-    margin: 40px auto;
+    margin: 0 auto;
     padding: 0 20px;
-    justify-content: center; /* Center-align items in the grid */
+    justify-content: center;
 }
 
 /* Individual Pizza Ad Card */
 .pizza-ad-card {
     position: relative;
-    overflow: hidden;
+    overflow: visible; /* Sta toe dat de afbeelding buiten de kaart uitsteekt */
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
     background: #fff;
+    max-width: 250px; /* Maximale breedte van de kaart */
+    margin: 0 auto; /* Centraal uitlijnen van de kaarten */
 }
 
 .pizza-ad-card:hover {
-    transform: scale(1.05); /* Slight zoom for an eye-catching effect */
+    transform: scale(1.05); /* Kaart lichtjes vergroten */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* Pizza Ad Image */
 .pizza-ad-card img {
-    width: 100%;
-    height: auto;
-    border-radius: 12px 12px 0 0; /* Rounded top corners */
-    transition: transform 0.3s ease;
+    width: 100%; /* Houd afbeelding binnen de kaart bij normaal gebruik */
+    height: auto; /* Zorg ervoor dat de hoogte zich aanpast */
+    border-radius: 12px; /* Zorg voor afgeronde hoeken bij normaal gebruik */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-radius 0.3s ease;
 }
 
 .pizza-ad-card:hover img {
-    transform: scale(1.05); /* Slight zoom on hover */
+    transform: scale(1.5); /* Vergroot de afbeelding symmetrisch */
+    border-radius: 16px; /* Vergrote afbeelding krijgt extra afgeronde hoeken */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Schaduw voor diepte-effect */
+    z-index: 2; /* Zichtbaar boven andere elementen */
 }
 
 /* Pizza Ad Information */
