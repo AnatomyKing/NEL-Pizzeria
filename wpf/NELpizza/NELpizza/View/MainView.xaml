@@ -1,27 +1,65 @@
 ﻿<Window x:Class="NELpizza.View.MainView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:NELpizza.ViewModel"
-        Title="Click Counter" Height="200" Width="300">
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:NELpizza.View"
+        xmlns:viewmodels="clr-namespace:NELpizza.ViewModels.Views"
+        xmlns:mainvm="clr-namespace:NELpizza.ViewModels"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Style="{StaticResource MaterialDesignWindow}"
+        mc:Ignorable="d"
+        Title="Custom Model Manager" Height="700" Width="1000">
+
+    <Window.Resources>
+        <DataTemplate
+        DataType="{x:Type viewmodels:BakerOrdersViewModel}"
+        >
+            <local:BakerOrdersView/>
+        </DataTemplate>
+
+        <DataTemplate
+        DataType="{x:Type viewmodels:CustomerManagementViewModel}"
+        >
+            <local:CustomerManagementView/>
+        </DataTemplate>
+
+        <DataTemplate 
+        DataType="{x:Type viewmodels:DeliveryOrdersViewModel}"
+        >
+            <local:DeliveryOrdersView/>
+        </DataTemplate>
+
+        <DataTemplate 
+        DataType="{x:Type viewmodels:MenuManagementViewModel}"
+        >
+            <local:MenuManagementView/>
+        </DataTemplate>
+
+        <DataTemplate 
+        DataType="{x:Type viewmodels:TrackTraceViewModel}"
+        >
+            <local:TrackTraceView/>
+        </DataTemplate>
+
+
+    </Window.Resources>
 
     <Window.DataContext>
-        <local:MainViewModel/>
+        <mainvm:MainViewModel/>
     </Window.DataContext>
 
-    <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="Click Counter Example" 
-                       FontSize="16" FontWeight="Bold" 
-                       HorizontalAlignment="Center" Margin="0,0,0,10"/>
-
-            <TextBlock Text="{Binding ClickCount}" 
-                       FontSize="24" FontWeight="Bold" 
-                       HorizontalAlignment="Center" Margin="0,0,0,10"/>
-
-            <Button Content="Click Me!" 
-                    Command="{Binding IncrementCommand}" 
-                    Width="100" Height="30" 
-                    HorizontalAlignment="Center"/>
+    <DockPanel>
+        <!-- Navigation Menu -->
+        <StackPanel DockPanel.Dock="Left" Background="#2C3E50" Width="200">
+            <Button Content="Baker Orders" Command="{Binding NavigateCommand}" CommandParameter="BakerOrdersViewModel" Margin="10"/>
+            <Button Content="Delivery Orders" Command="{Binding NavigateCommand}" CommandParameter="DeliveryOrdersViewModel" Margin="10"/>
+            <Button Content="TrackTrace" Command="{Binding NavigateCommand}" CommandParameter="TrackTraceViewModel" Margin="10"/>
+            <Button Content="Menu Management" Command="{Binding NavigateCommand}" CommandParameter="MenuManagementViewModel" Margin="10"/>
+            <Button Content="Customer Management" Command="{Binding NavigateCommand}" CommandParameter="CustomerManagementViewModel" Margin="10"/>
         </StackPanel>
-    </Grid>
+
+        <!-- Dynamic Content -->
+        <ContentControl Content="{Binding CurrentView}" Margin="10"/>
+    </DockPanel>
 </Window>

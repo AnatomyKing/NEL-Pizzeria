@@ -15,6 +15,15 @@ namespace NELpizza.Model
         [Column("naam", TypeName = "VARCHAR(255)")]
         public string Naam { get; set; } = string.Empty;
 
+        [Column("prijs", TypeName = "DECIMAL(8,2)")]
+        public decimal Prijs { get; set; }
+
+        [Column("beschrijving", TypeName = "TEXT")]
+        public string? Beschrijving { get; set; }
+
+        [Column("image", TypeName = "MEDIUMBLOB")]
+        public byte[]? Image { get; set; }
+
         public virtual ICollection<IngredientPizza> Ingredienten { get; set; } = new HashSet<IngredientPizza>();
     }
 }

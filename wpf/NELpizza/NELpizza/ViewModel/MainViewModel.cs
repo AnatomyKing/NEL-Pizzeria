@@ -1,71 +1,45 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Input;
-using Microsoft.EntityFrameworkCore;
-using NELpizza.Databases;
+﻿using System.Windows.Input;
 using NELpizza.Helpers;
-using NELpizza.Model;
-using NELpizza.ViewModel;
+using NELpizza.ViewModels.Views;
+using NELpizza.ViewModels;
 
-namespace NELpizza.ViewModel
+
+namespace NELpizza.ViewModels
 {
-    internal class MainViewModel : INotifyPropertyChanged
+    internal class MainViewModel : ObservableObject
     {
-        private int _clickCount;
+        private object? _currentView;
 
         public MainViewModel()
         {
-            IncrementCommand = new RelayCommand(IncrementCounter);
-            ClickCount = 0;
+            CurrentView = new BakerOrdersViewModel();
+            NavigateCommand = new RelayCommand(Navigate);
         }
 
-        public int ClickCount
+        public object? CurrentView
         {
-            get => _clickCount;
+            get => _currentView;
             set
             {
-                _clickCount = value;
+                _currentView = value;
                 OnPropertyChanged();
             }
         }
 
-        public ICommand IncrementCommand { get; }
+        public ICommand NavigateCommand { get; }
 
-        private void IncrementCounter(object parameter)
+        private void Navigate(object? parameter)
         {
-            ClickCount++;
-        }
+            string? viewName = parameter as string;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
-
-    public class RelayCommand : ICommand
-    {
-        private readonly Action<object> _execute;
-        private readonly Predicate<object> _canExecute;
-
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
-        {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute;
-        }
-
-        public bool CanExecute(object parameter) => _canExecute?.Invoke(parameter) ?? true;
-
-        public void Execute(object parameter) => _execute(parameter);
-
-        public event EventHandler CanExecuteChanged
-        {
-            add => CommandManager.RequerySuggested += value;
-            remove => CommandManager.RequerySuggested -= value;
+            CurrentView = viewName switch
+            {
+                "DeliveryOrdersViewModel" => new DeliveryOrdersViewModel(),
+                "TrackTraceViewModel" => new TrackTraceViewModel(),
+                "MenuManagementViewModel" => new MenuManagementViewModel(),
+                "CustomerManagementViewModel" => new CustomerManagementViewModel(),
+                _ => new BakerOrdersViewModel()
+            };
         }
     }
 }

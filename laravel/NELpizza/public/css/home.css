@@ -16,6 +16,10 @@
     display: flex;
 }
 
+#ingredient-list label {
+    color: #666;
+}
+
 .modal-content {
     background-color: #fff;
     width: 90%;

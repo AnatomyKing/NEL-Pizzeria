@@ -16,7 +16,7 @@ namespace NELpizza.Model
 
         [Required]
         [Column("afmeting", TypeName = "ENUM('klein','normaal','groot')")]
-        public string Afmeting { get; set; } = "normaal";
+        public string Afmeting { get; set; } = PizzaAfmeting.normaal.ToString();
 
         [ForeignKey("Pizza")]
         [Column("pizza_id", TypeName = "BIGINT UNSIGNED")]
@@ -29,6 +29,5 @@ namespace NELpizza.Model
         public long BestellingId { get; set; }
 
         public virtual Bestelling? Bestelling { get; set; }
-
     }
 }

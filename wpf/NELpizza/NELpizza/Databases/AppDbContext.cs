@@ -32,29 +32,59 @@ namespace NELpizza.Databases
             modelBuilder.Entity<IngredientPizza>()
                 .HasOne(ip => ip.Ingredient)
                 .WithMany(i => i.Pizzas)
-                .HasForeignKey(ip => ip.IngredientId);
+                .HasForeignKey(ip => ip.IngredientId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<IngredientPizza>()
                 .HasOne(ip => ip.Pizza)
                 .WithMany(p => p.Ingredienten)
-                .HasForeignKey(ip => ip.PizzaId);
+                .HasForeignKey(ip => ip.PizzaId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Bestelregel Relationships
             modelBuilder.Entity<Bestelregel>()
                 .HasOne(br => br.Pizza)
                 .WithMany()
-                .HasForeignKey(br => br.PizzaId);
+                .HasForeignKey(br => br.PizzaId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Bestelregel>()
                 .HasOne(br => br.Bestelling)
                 .WithMany(b => b.Bestelregels)
-                .HasForeignKey(br => br.BestellingId);
+                .HasForeignKey(br => br.BestellingId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Bestelling and Klant Relationship
             modelBuilder.Entity<Bestelling>()
                 .HasOne(b => b.Klant)
                 .WithMany(k => k.Bestellingen)
-                .HasForeignKey(b => b.KlantId);
+                .HasForeignKey(b => b.KlantId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Bestelling and Pizza Relationship
+            modelBuilder.Entity<Bestelling>()
+                .HasOne(b => b.Pizza)
+                .WithMany()
+                .HasForeignKey(b => b.PizzaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Pizza Model Configuration
+            modelBuilder.Entity<Pizza>()
+                .Property(p => p.Prijs)
+                .HasColumnType("DECIMAL(8,2)");
+
+            // Ingredient Model Configuration
+            modelBuilder.Entity<Ingredient>()
+                .Property(i => i.Prijs)
+                .HasColumnType("DECIMAL(8,2)");
+
+            // Enum Configuration
+            modelBuilder.Entity<Bestelling>()
+                .Property(b => b.Status)
+                .HasConversion<string>();
+            modelBuilder.Entity<Bestelregel>()
+                .Property(br => br.Afmeting)
+                .HasConversion<string>();
         }
 
         public static void InitializeDatabase()
@@ -63,14 +93,15 @@ namespace NELpizza.Databases
             {
                 try
                 {
-                    //drop database
-                    //context.Database.EnsureDeleted();
+                    // Drop the database (if needed during development)
+                    // context.Database.EnsureDeleted();
 
-                    //create database
-                    //context.Database.EnsureCreated();
+                    // Create the database
+                    context.Database.EnsureCreated();
 
-                    //DatabaseSeeder.Seed(context);
-                    KlantsTableSeeder.Seed(context);
+                    // Seed the database
+                    // DatabaseSeeder.Seed(context);
+                    // KlantsTableSeeder.Seed(context);
                 }
                 catch (Exception ex)
                 {
