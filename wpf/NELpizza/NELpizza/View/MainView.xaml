@@ -4,51 +4,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:NELpizza.View"
-        xmlns:viewmodels="clr-namespace:NELpizza.ViewModels.Views"
+        xmlns:viewmodels="clr-namespace:NELpizza.ViewModels"
         xmlns:mainvm="clr-namespace:NELpizza.ViewModels"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Style="{StaticResource MaterialDesignWindow}"
         mc:Ignorable="d"
         Title="Custom Model Manager" Height="700" Width="1000">
 
-    <Window.Resources>
-        <DataTemplate
-        DataType="{x:Type viewmodels:BakerOrdersViewModel}"
-        >
-            <local:BakerOrdersView/>
-        </DataTemplate>
-
-        <DataTemplate
-        DataType="{x:Type viewmodels:CustomerManagementViewModel}"
-        >
-            <local:CustomerManagementView/>
-        </DataTemplate>
-
-        <DataTemplate 
-        DataType="{x:Type viewmodels:DeliveryOrdersViewModel}"
-        >
-            <local:DeliveryOrdersView/>
-        </DataTemplate>
-
-        <DataTemplate 
-        DataType="{x:Type viewmodels:MenuManagementViewModel}"
-        >
-            <local:MenuManagementView/>
-        </DataTemplate>
-
-        <DataTemplate 
-        DataType="{x:Type viewmodels:TrackTraceViewModel}"
-        >
-            <local:TrackTraceView/>
-        </DataTemplate>
-
-
-    </Window.Resources>
-
     <Window.DataContext>
-        <mainvm:MainViewModel/>
+        <mainViewModel:MainViewModel/>
     </Window.DataContext>
-
+    
     <DockPanel>
         <!-- Navigation Menu -->
         <StackPanel DockPanel.Dock="Left" Background="#2C3E50" Width="200">

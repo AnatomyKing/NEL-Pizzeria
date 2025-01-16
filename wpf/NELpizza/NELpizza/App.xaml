@@ -13,6 +13,22 @@
 
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type viewmodels:BakerOrdersViewModel}">
+                <views:BakerOrdersView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:CustomerManagementViewModel}">
+                <views:CustomerManagementView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:DeliveryOrdersViewModel}">
+                <views:DeliveryOrdersView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:MenuManagementViewModel}">
+                <views:MenuManagementView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:TrackTraceViewModel}">
+                <views:TrackTraceView/>
+            </DataTemplate>
         </ResourceDictionary>
+        
     </Application.Resources>
 </Application>
