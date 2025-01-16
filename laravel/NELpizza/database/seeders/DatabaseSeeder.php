@@ -17,7 +17,9 @@ class DatabaseSeeder extends Seeder
         // Add your seeders here
         $this->call([
             KlantsTableSeeder::class,
+            IngredientsSeeder::class,
             PizzaSeeder::class,
+            IngredientPizzaSeeder::class,
         ]);
     }
 }

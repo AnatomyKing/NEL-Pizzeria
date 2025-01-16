@@ -3,60 +3,60 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Pizza;        // or whichever models
-use App\Models\Klant;        // you'll need to adapt
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use App\Models\Bestelling;
-use App\Models\Bestelregel;
+use App\Models\Klant;
+use App\Models\Pizza;
 
 class BestelController extends Controller
 {
-    /**
-     * Store a new order (called from the form on the home page).
-     */
     public function store(Request $request)
     {
-        // 1. Validate
-        $request->validate([
-            'naam'       => 'required|string|max:255',
-            'adres'      => 'required|string|max:255',
-            'woonplaats' => 'required|string|max:255',
-            'telefoon'   => 'required|string|max:255',
-            'email'      => 'required|email|max:255',
-            'pizzas'     => 'required|array',
+        // Validate incoming data
+        $validatedData = $request->validate([
+            'cart' => 'required|array',
         ]);
 
-        // 2. Create or find a "Klant"
-        $klant = Klant::create([
-            'naam'           => $request->naam,
-            'adres'          => $request->adres,
-            'woonplaats'     => $request->woonplaats,
-            'telefoonnummer' => $request->telefoon,
-            'emailadres'     => $request->email,
-        ]);
+        $cartItems = $validatedData['cart'];
 
-        // 3. Create a "Bestelling"
+        // Make sure we have a fake klant (ID=999) in DB
+        // Or adjust to Klant::first()->id if you prefer
+        $fakeKlantId = 999;
+
+        // Ensure there's a valid fallback Pizza ID
+        $fallbackPizzaId = Pizza::first()->id ?? 1;
+
         $bestelling = Bestelling::create([
-            'datum'    => now(),
+            'datum'    => Carbon::now(),
             'status'   => 'initieel',
-            'klant_id' => $klant->id,
+            'klant_id' => $fakeKlantId,  
+            // If your 'bestellings' table must have a single pizza_id, pick any from the cart or fallback
+            'pizza_id' => (count($cartItems) > 0)
+                ? ($cartItems[0]['pizza_id'] ?? $fallbackPizzaId)
+                : $fallbackPizzaId,
         ]);
 
-        // 4. Create "Bestelregels" for each pizza ID + quantity
-        foreach ($request->pizzas as $pizzaId => $aantal) {
-            if ((int) $aantal === 0) {
-                continue;
-            }
-            Bestelregel::create([
-                'aantal'             => $aantal,
-                'afmeting'           => 'normaal',
-                'pizza_id'           => $pizzaId,
-                'bestelling_id'      => $bestelling->id,
-                'bestelling_pizza_id'=> $pizzaId, // adapt if your DB differs
+        foreach ($cartItems as $item) {
+            // Convert numeric multiplier to enum text
+            $afmeting = match ($item['sizeMultiplier']) {
+                0.8 => 'klein',
+                1   => 'normaal',
+                1.2 => 'groot',
+                default => 'normaal'
+            };
+
+            // Insert into bestelregels
+            $bestelling->bestelregels()->create([
+                'aantal'   => $item['quantity'],
+                'afmeting' => $afmeting,
+                'pizza_id' => $item['pizza_id'], 
             ]);
         }
 
-        // 5. Redirect with success
-        return redirect()->route('home')
-                         ->with('success', 'Bedankt voor je bestelling!');
+        return response()->json([
+            'message' => 'Order placed successfully!',
+            'order_id' => $bestelling->id
+        ]);
     }
 }

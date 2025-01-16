@@ -30,6 +30,7 @@ Route::get('/bestel', function () {
 
 // POST form submission for orders
 //Route::post('/bestel', [BestelController::class, 'store'])->name('bestel.store');
+Route::post('/order', [BestelController::class, 'store'])->name('order.store');
 
 // (Optional) If you serve images from a controller
 Route::get('/pizzas/{id}/image', [ImageController::class, 'show'])->name('pizzas.image');

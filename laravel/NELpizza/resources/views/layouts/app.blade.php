@@ -20,8 +20,8 @@
         </div>
         <nav id="menu">
             <a href="{{ route('home') }}" id="one" class="item selected">Home</a>
-            <a href="{{ route('contact') }}" id="two" class="item" >Contact</a>
-            <a href="{{ route('bestel') }}" id="three" class="item">Bestel</a>
+            <a href="{{ route('bestel') }}" id="two" class="item">Bestel</a>
+            <a href="{{ route('contact') }}" id="three" class="item" >Contact</a>
             <a href="{{ route('dashboard') }}" id="four" class="item">Login</a>
         </nav>
         <div class="contentview">
