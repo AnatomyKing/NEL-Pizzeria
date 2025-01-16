@@ -1,0 +1,232 @@
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+#ingredient-list label {
+    color: #666;
+}
+
+.modal-content {
+    background-color: #fff;
+    width: 90%;
+    max-width: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    animation: popup 0.3s ease-out; /* Add popup animation */
+    transform: scale(1); /* Initial scale for the animation */
+}
+
+@keyframes popup {
+    0% {
+        transform: scale(0.8); /* Start smaller */
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1); /* Grow to full size */
+        opacity: 1;
+    }
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #777;
+    transition: color 0.2s;
+}
+
+.close-button:hover {
+    color: #333;
+}
+
+.modal-image {
+    flex: 1 1 300px;
+    max-width: 300px;
+    text-align: center;
+}
+
+.modal-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+.modal-details {
+    flex: 1 1 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.modal-details h3 {
+    font-size: 1.7rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #222;
+}
+
+.modal-details p {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.add-to-cart-button {
+    padding: 10px 20px;
+    background-color: #ff5722;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.add-to-cart-button:hover {
+    background-color: #e64a19;
+}
+
+
+
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+    gap: 20px;
+}
+
+.pizza-section {
+    flex: 3;
+    overflow-y: auto;
+}
+
+.shopping-cart {
+    flex: 1;
+    background-color: #222222;
+    border: 1px solid #333333;
+    border-radius: 10px;
+    padding: 15px;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.pizza-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Ensure 3 items per row */
+    gap: 20px;
+    overflow: hidden; /* Prevent overflow issues */
+}
+
+.pizza-item {
+    background-color: #333333;
+    border: 1px solid #444444;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s;
+    cursor: pointer;
+}
+
+.pizza-item:hover {
+    transform: scale(0.94);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.pizza-item img {
+    max-width: 100%; /* Ensure the images are responsive */
+    max-height: 150px;
+    object-fit: cover; /* Prevent distortion of images */
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.pizza-item h3 {
+    margin: 10px 0;
+}
+
+.pizza-item .description {
+    font-size: 0.9rem;
+    color: #bbbbbb;
+    margin-bottom: 10px;
+}
+
+.price {
+    font-weight: bold;
+    color: #ffcc00;
+}
+
+.shopping-cart h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+#cart-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#cart-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #333333;
+    border-radius: 5px;
+}
+
+.order-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #ff5722;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.order-button:hover {
+    background-color: #e64a19;
+}
+
+@media (max-width: 768px) {
+    .pizza-gallery {
+        grid-template-columns: repeat(2, 1fr); /* 2 items per row on tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .pizza-gallery {
+        grid-template-columns: 1fr; /* 1 item per row on small screens */
+    }
+}

@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class PizzaController extends Controller
 {
-    public function home()
+    public function bestel()
     {
         $pizzas = Pizza::all();
-        return view('home', compact('pizzas'));
+        return view('bestel', compact('pizzas'));
     }
 }
