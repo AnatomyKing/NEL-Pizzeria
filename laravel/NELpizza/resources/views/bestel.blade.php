@@ -24,9 +24,9 @@
                              '{{ $pizza->image_url }}',
                              '{{ $pizza->naam }}',
                              '{{ $pizza->beschrijving }}',
-                             {{ $pizza->prijs }},
-                             {{ $pizza->id }},
-                             {{ json_encode($pizza->ingredients) }}
+                             '{{ $pizza->prijs }}',
+                             '{{ $pizza->id }}',
+                             '{{ json_encode($pizza->ingredients) }}'
                          )">
                         <img src="{{ $pizza->image_url }}" alt="{{ $pizza->naam }}">
                         <h3>{{ $pizza->naam }}</h3>
