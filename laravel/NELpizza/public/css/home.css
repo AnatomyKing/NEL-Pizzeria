@@ -9,14 +9,14 @@
 .section-title {
     font-size: 2rem;
     font-weight: bold;
-    color: white;
+    color: #333;
     margin-bottom: 20px;
 }
 
 /* Grid Layout for Pizza Ads */
 .pizza-ad-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Altijd 3 kolommen */
+    grid-template-columns: repeat(3, 1fr); /* Always 3 columns */
     gap: 20px;
     max-width: 1200px;
     margin: 0 auto;
@@ -27,41 +27,37 @@
 /* Individual Pizza Ad Card */
 .pizza-ad-card {
     position: relative;
-    overflow: visible; /* Sta toe dat de afbeelding buiten de kaart uitsteekt */
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: visible; /* Allow the image to expand outside the card */
+    border: none; /* Remove any border */
+    background: none; /* Remove background color */
+    box-shadow: none; /* Remove box shadow around the card */
     text-align: center;
-    background: #fff;
-    max-width: 250px; /* Maximale breedte van de kaart */
-    margin: 0 auto; /* Centraal uitlijnen van de kaarten */
-}
-
-.pizza-ad-card:hover {
-    transform: scale(1.05); /* Kaart lichtjes vergroten */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    max-width: 250px; /* Optional: Define the card width */
+    margin: 0 auto; /* Center-align the cards */
 }
 
 /* Pizza Ad Image */
+/* Pizza Ad Image */
 .pizza-ad-card img {
-    width: 100%; /* Houd afbeelding binnen de kaart bij normaal gebruik */
-    height: auto; /* Zorg ervoor dat de hoogte zich aanpast */
-    border-radius: 12px; /* Zorg voor afgeronde hoeken bij normaal gebruik */
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-radius 0.3s ease;
+    width: 100%;
+    height: auto;
+    clip-path: circle(45% at 50% 50%); /* Snijd de witte rand weg */
+    border-radius: 50%; /* Maak de afbeelding rond */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, clip-path 0.3s ease; /* Smooth transition for all changes */
 }
 
+/* Hover Effect */
 .pizza-ad-card:hover img {
-    transform: scale(1.5); /* Vergroot de afbeelding symmetrisch */
-    border-radius: 16px; /* Vergrote afbeelding krijgt extra afgeronde hoeken */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Schaduw voor diepte-effect */
-    z-index: 2; /* Zichtbaar boven andere elementen */
+    transform: scale(1.5); /* Vergroot de afbeelding */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Voeg schaduw toe */
+    clip-path: circle(45% at 50% 50%); /* Zorg dat de afbeelding rond blijft bij het inzoomen */
+    z-index: 2; /* Zorg dat het hover-element boven andere elementen staat */
 }
+
 
 /* Pizza Ad Information */
 .pizza-ad-info {
     padding: 15px;
-    background: #fff;
-    border-radius: 0 0 12px 12px; /* Rounded bottom corners */
     text-align: center;
 }
 
