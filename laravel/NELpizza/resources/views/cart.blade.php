@@ -7,6 +7,6 @@
     <link rel="stylesheet" href="{{ asset('css/cart.css') }}">
 </head>
 <body>
-    
+    <h1>oghubyuvtuhjosdhgvsygchjjwighiwcbhksjcbswbfhjsbfhjwngfgfhwjgfb</h1>
 </body>
 </html>

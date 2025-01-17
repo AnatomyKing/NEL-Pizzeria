@@ -34,6 +34,9 @@ Route::post('/order', [BestelController::class, 'store'])->name('order.store');
 
 // (Optional) If you serve images from a controller
 Route::get('/pizzas/{id}/image', [ImageController::class, 'show'])->name('pizzas.image');
-
+Route::get('/cart', function () {
+    return view('cart'); 
+})->name('cart');
 // If you have Laravel Breeze or other Auth routes
 require __DIR__.'/auth.php';
+

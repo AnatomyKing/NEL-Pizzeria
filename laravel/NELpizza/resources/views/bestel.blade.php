@@ -24,9 +24,9 @@
                              '{{ $pizza->image_url }}',
                              '{{ $pizza->naam }}',
                              '{{ $pizza->beschrijving }}',
-                             '{{ $pizza->prijs }}',
-                             '{{ $pizza->id }}',
-                             '{{ json_encode($pizza->ingredients) }}'
+                             {{ $pizza->prijs }},
+                             {{ $pizza->id }},
+                             {{ json_encode($pizza->ingredients) }}
                          )">
                         <img src="{{ $pizza->image_url }}" alt="{{ $pizza->naam }}">
                         <h3>{{ $pizza->naam }}</h3>
@@ -42,7 +42,7 @@
             <h2>Shopping Cart</h2>
             <ul id="cart-list"></ul>
             <p><strong>Total:</strong> €<span id="cart-total">0.00</span></p>
-            <button class="order-button" onclick="placeOrder()">Order Now</button>
+            <button href="{{ route('contact') }}" class="order-button" onclick="placeOrder()">Go to cart</button>
         </div>
     </div>
 
