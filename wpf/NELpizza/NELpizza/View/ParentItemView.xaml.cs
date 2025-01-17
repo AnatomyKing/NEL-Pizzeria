@@ -10,17 +10,13 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace NELpizza.View
 {
-    /// <summary>
-    /// Interaction logic for CustomerManagementView.xaml
-    /// </summary>
-    public partial class CustomerManagementView : UserControl
+    public partial class ParentItemView : UserControl
     {
-        public CustomerManagementView()
+        public ParentItemView()
         {
             InitializeComponent();
         }

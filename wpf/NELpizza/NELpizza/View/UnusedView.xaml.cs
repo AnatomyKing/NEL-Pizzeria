@@ -10,17 +10,13 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace NELpizza.View
 {
-    /// <summary>
-    /// Interaction logic for BakerOrdersView.xaml
-    /// </summary>
-    public partial class BakerOrdersView : UserControl
+    public partial class UnusedView : UserControl
     {
-        public BakerOrdersView()
+        public UnusedView()
         {
             InitializeComponent();
         }

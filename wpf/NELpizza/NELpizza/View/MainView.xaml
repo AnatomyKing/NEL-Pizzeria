@@ -4,25 +4,68 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:NELpizza.View"
-        xmlns:viewmodels="clr-namespace:NELpizza.ViewModels"
+        xmlns:viewmodels="clr-namespace:NELpizza.ViewModels.Views"
         xmlns:mainvm="clr-namespace:NELpizza.ViewModels"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Style="{StaticResource MaterialDesignWindow}"
         mc:Ignorable="d"
         Title="Custom Model Manager" Height="700" Width="1000">
 
+    <Window.Resources>
+        <DataTemplate
+        DataType="{x:Type viewmodels:MainViewContentViewModel}"
+        >
+            <local:MainViewContentView/>
+        </DataTemplate>
+
+
+        <DataTemplate 
+        DataType="{x:Type viewmodels:ParentItemViewModel}"
+        >
+            <local:ParentItemView/>
+        </DataTemplate>
+
+        <DataTemplate 
+        DataType="{x:Type viewmodels:BlockTypeViewModel}"
+        >
+            <local:BlockTypeView/>
+        </DataTemplate>
+
+        <DataTemplate 
+        DataType="{x:Type viewmodels:KlantViewModel}"
+        >
+            <local:KlantView/>
+        </DataTemplate>
+
+        <DataTemplate 
+        DataType="{x:Type viewmodels:UnusedViewModel}"
+        >
+            <local:UnusedView/>
+        </DataTemplate>
+
+        <DataTemplate 
+        DataType="{x:Type viewmodels:ExportViewModel}"
+        >
+            <local:ExportView/>
+        </DataTemplate>
+
+
+    </Window.Resources>
+
     <Window.DataContext>
-        <mainViewModel:MainViewModel/>
+        <mainvm:MainViewModel/>
     </Window.DataContext>
     
+
     <DockPanel>
         <!-- Navigation Menu -->
         <StackPanel DockPanel.Dock="Left" Background="#2C3E50" Width="200">
-            <Button Content="Baker Orders" Command="{Binding NavigateCommand}" CommandParameter="BakerOrdersViewModel" Margin="10"/>
-            <Button Content="Delivery Orders" Command="{Binding NavigateCommand}" CommandParameter="DeliveryOrdersViewModel" Margin="10"/>
-            <Button Content="TrackTrace" Command="{Binding NavigateCommand}" CommandParameter="TrackTraceViewModel" Margin="10"/>
-            <Button Content="Menu Management" Command="{Binding NavigateCommand}" CommandParameter="MenuManagementViewModel" Margin="10"/>
-            <Button Content="Customer Management" Command="{Binding NavigateCommand}" CommandParameter="CustomerManagementViewModel" Margin="10"/>
+            <Button Content="Dashboard" Command="{Binding NavigateCommand}" CommandParameter="MainViewContentViewModel" Margin="10"/>
+            <Button Content="Parent Items" Command="{Binding NavigateCommand}" CommandParameter="ParentItemViewModel" Margin="10"/>
+            <Button Content="Block Types" Command="{Binding NavigateCommand}" CommandParameter="BlockTypeViewModel" Margin="10"/>
+            <Button Content="Klants" Command="{Binding NavigateCommand}" CommandParameter="KlantViewModel" Margin="10"/>
+            <Button Content="Unused Items" Command="{Binding NavigateCommand}" CommandParameter="UnusedViewModel" Margin="10"/>
+            <Button Content="Export" Command="{Binding NavigateCommand}" CommandParameter="ExportViewModel" Margin="10"/>
         </StackPanel>
 
         <!-- Dynamic Content -->

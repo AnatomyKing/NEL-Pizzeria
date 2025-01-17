@@ -4,14 +4,16 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using NELpizza.Databases;
 using NELpizza.Helpers;
 using NELpizza.Model;
-using System.Windows.Input;
+
 
 namespace NELpizza.ViewModels.Views
 {
-    internal class MenuManagementViewModel : ObservableObject
+    internal class KlantViewModel : ObservableObject
     {
-        // Placeholder MenuManagementViewModel - logic will be added later
+
     }
 }

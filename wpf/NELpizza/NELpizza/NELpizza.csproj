@@ -18,7 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Databases\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Model\" />
   </ItemGroup>
 
 </Project>

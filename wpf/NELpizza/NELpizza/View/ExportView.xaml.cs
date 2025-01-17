@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace NELpizza.View
 {
     /// <summary>
-    /// Interaction logic for TrackTraceView.xaml
+    /// Interaction logic for ExportView.xaml
     /// </summary>
-    public partial class TrackTraceView : UserControl
+    public partial class ExportView : UserControl
     {
-        public TrackTraceView()
+        public ExportView()
         {
             InitializeComponent();
         }

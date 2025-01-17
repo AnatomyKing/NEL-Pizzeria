@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NELpizza", "NELpizza\NELpizza.csproj", "{501890B8-2BC7-447A-8A5E-4FB0BE0ED257}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NELpizza", "NELpizza\NELpizza.csproj", "{CA980E21-1F6F-4372-BC91-5662547861CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{501890B8-2BC7-447A-8A5E-4FB0BE0ED257}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{501890B8-2BC7-447A-8A5E-4FB0BE0ED257}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{501890B8-2BC7-447A-8A5E-4FB0BE0ED257}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{501890B8-2BC7-447A-8A5E-4FB0BE0ED257}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA980E21-1F6F-4372-BC91-5662547861CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA980E21-1F6F-4372-BC91-5662547861CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA980E21-1F6F-4372-BC91-5662547861CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA980E21-1F6F-4372-BC91-5662547861CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {E33E1A31-B509-4B09-94A8-E6EAA2D278D8}
+		SolutionGuid = {B93DC984-75E1-40B6-8B54-6FEE379BCCCD}
 	EndGlobalSection
 EndGlobal

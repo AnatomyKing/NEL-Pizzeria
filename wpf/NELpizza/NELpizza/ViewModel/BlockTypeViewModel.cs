@@ -4,13 +4,15 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Mysqlx.Crud;
+using System.Windows.Input;
+using NELpizza.Databases;
 using NELpizza.Helpers;
+using NELpizza.Model;
 
 namespace NELpizza.ViewModels.Views
 {
-    internal class TrackTraceViewModel : ObservableObject
+    internal class BlockTypeViewModel : ObservableObject
     {
-        // Placeholder ViewModel - logic will be added later
+
     }
 }

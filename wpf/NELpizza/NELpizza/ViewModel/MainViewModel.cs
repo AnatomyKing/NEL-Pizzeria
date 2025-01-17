@@ -1,8 +1,12 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+using Microsoft.EntityFrameworkCore;
+using NELpizza.Databases;
 using NELpizza.Helpers;
-using NELpizza.ViewModels.Views;
+using NELpizza.Model;
 using NELpizza.ViewModels;
-
+using NELpizza.ViewModels.Views;
 
 namespace NELpizza.ViewModels
 {
@@ -12,7 +16,7 @@ namespace NELpizza.ViewModels
 
         public MainViewModel()
         {
-            CurrentView = new BakerOrdersViewModel();
+            CurrentView = new MainViewContentViewModel();
             NavigateCommand = new RelayCommand(Navigate);
         }
 
@@ -34,11 +38,12 @@ namespace NELpizza.ViewModels
 
             CurrentView = viewName switch
             {
-                "DeliveryOrdersViewModel" => new DeliveryOrdersViewModel(),
-                "TrackTraceViewModel" => new TrackTraceViewModel(),
-                "MenuManagementViewModel" => new MenuManagementViewModel(),
-                "CustomerManagementViewModel" => new CustomerManagementViewModel(),
-                _ => new BakerOrdersViewModel()
+                "ParentItemViewModel" => new ParentItemViewModel(),
+                "UnusedViewModel" => new UnusedViewModel(),
+                "BlockTypeViewModel" => new BlockTypeViewModel(),
+                "KlantViewModel" => new KlantViewModel(),
+                "ExportViewModel" => new ExportViewModel(),
+                _ => new MainViewContentViewModel()
             };
         }
     }
