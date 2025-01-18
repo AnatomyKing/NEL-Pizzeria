@@ -4,39 +4,54 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PizzaController;
 use App\Http\Controllers\BestelController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/bestel', [PizzaController::class, 'bestel'])->name('bestel');
 
-// Home route -> calls PizzaController@home
+// Home Route - Displays the homepage
+Route::get('/', function () {
+    return view('home');
+})->name('home');
 
-// Contact route -> just shows a contact page
+// Contact Route - Displays the contact page
 Route::get('/contact', function () {
-    return view('contact'); 
+    return view('contact');
 })->name('contact');
 
-// Dashboard route -> requires auth/verified
+// Dashboard Route - Requires authentication and email verification
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/', function () {
-    return view('home'); 
-})->name('home');
+// Login Routes
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+    ->middleware('guest')
+    ->name('login');
 
-// POST form submission for orders
-//Route::post('/bestel', [BestelController::class, 'store'])->name('bestel.store');
-Route::post('/order', [BestelController::class, 'store'])->name('order.store');
+Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+    ->middleware('guest')
+    ->name('login.store');
 
-// (Optional) If you serve images from a controller
-Route::get('/pizzas/{id}/image', [ImageController::class, 'show'])->name('pizzas.image');
+// Logout Route
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('logout');
+
+// Order Routes
+Route::get('/bestel', [PizzaController::class, 'bestel'])->name('bestel'); // Order page
+Route::post('/order', [BestelController::class, 'store'])->name('order.store'); // Order submission
+
+// Cart Route - Displays the cart page
 Route::get('/cart', function () {
-    return view('cart'); 
+    return view('cart');
 })->name('cart');
-// If you have Laravel Breeze or other Auth routes
-require __DIR__.'/auth.php';
 
+// Image Route - Serves pizza images by ID
+Route::get('/pizzas/{id}/image', [ImageController::class, 'show'])->name('pizzas.image');
+
+// Include Authentication Routes (e.g., Register, Forgot Password, etc.)
+require __DIR__ . '/auth.php';
