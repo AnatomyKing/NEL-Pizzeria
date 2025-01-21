@@ -25,10 +25,19 @@ function openModal(imageSrc, pizzaName, pizzaDescription, pizzaPrice, pizzaId, p
     buildIngredientList(pizzaIngredients);
 
     // Reset size to "Medium" = 1
-    document.getElementById('pizza-size').value = "1";
+    document.getElementById('pizza-size').value = "1";  // Medium size is default
 
     // Update and display price
     updateModalPrice();
+
+    // Add an event listener to update price when the size changes
+    document.getElementById('pizza-size').addEventListener('change', updateModalPrice);
+
+    // Add event listeners for each ingredient checkbox to update price dynamically
+    const ingredientCheckboxes = document.querySelectorAll('#ingredient-list input[type="checkbox"]');
+    ingredientCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', updateModalPrice);  // Recalculate price on ingredient change
+    });
 
     // Show modal
     document.getElementById('pizzaModalOverlay').classList.add('active');
@@ -66,6 +75,8 @@ function buildIngredientList(pizzaIngredients) {
 
 function updateModalPrice() {
     let sumIngredients = 0;
+
+    // Calculate the price of selected ingredients
     const ingredientCheckboxes = document.querySelectorAll('#ingredient-list input[type="checkbox"]');
     ingredientCheckboxes.forEach((cb) => {
         if (cb.checked) {
@@ -73,10 +84,16 @@ function updateModalPrice() {
         }
     });
 
+    // Calculate the subtotal (base price + ingredient prices)
     let subtotal = basePrice + sumIngredients;
+
+    // Get the selected pizza size (Medium = 1, Small = 0.8, Large = 1.2)
     const sizeMultiplier = parseFloat(document.getElementById('pizza-size').value);
+
+    // Calculate the final price considering the size
     const finalPrice = subtotal * sizeMultiplier;
 
+    // Update the final price in the modal
     currentPizza.price = finalPrice;
     document.getElementById('pizzaModalPrice').textContent = `€${finalPrice.toFixed(2)}`;
 }
@@ -89,6 +106,7 @@ function addToCartFromModal() {
     const ingredientCheckboxes = document.querySelectorAll('#ingredient-list input[type="checkbox"]');
     let chosenIngredients = [];
 
+    // Get selected ingredients
     ingredientCheckboxes.forEach((cb) => {
         if (cb.checked) {
             chosenIngredients.push({
@@ -152,15 +170,15 @@ function updateCart() {
 
         const listItem = document.createElement('li');
         listItem.innerHTML = `
-            <img src="${item.imageUrl}" alt="${item.name}"
+            <img src="${item.imageUrl}" alt="${item.name}" 
                  style="width:50px; height:50px; border-radius:5px; margin-right:10px;">
             <span>
                 ${item.name} (x${item.quantity}) - €${itemTotal.toFixed(2)}
                 <br/>
                 Size: ${sizeText(item.sizeMultiplier)}
             </span>
-            <button onclick="removeFromCart(${index})"
-                    style="background:none;border:none;color:red;cursor:pointer;">
+            <button onclick="removeFromCart(${index})" 
+                    style="background:none; border:none; color:red; cursor:pointer;">
                 x
             </button>
         `;
@@ -180,6 +198,7 @@ function sizeText(multiplier) {
     if (multiplier === 0.8) return 'Small';
     if (multiplier === 1)   return 'Medium';
     if (multiplier === 1.2) return 'Large';
+    
     return 'Unknown';
 }
 
@@ -208,6 +227,7 @@ async function placeOrder() {
         const data = await response.json();
         alert(data.message);
 
+        // Empty the cart after placing order
         cart = [];
         total = 0;
         updateCart();
