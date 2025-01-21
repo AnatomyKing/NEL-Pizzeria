@@ -5,6 +5,7 @@ use App\Http\Controllers\PizzaController;
 use App\Http\Controllers\BestelController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Models\OrderBestelling;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +24,14 @@ Route::get('/contact', function () {
 })->name('contact');
 
 // Dashboard Route - Requires authentication and email verification
+
+
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    // Fetch all bestellings with their related bestelregels
+    $bestellings = OrderBestelling::with('bestelregels')->get();
+
+    // Pass data to the dashboard view
+    return view('dashboard', ['bestellings' => $bestellings]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Login Routes
