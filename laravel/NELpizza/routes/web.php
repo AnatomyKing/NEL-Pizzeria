@@ -5,6 +5,7 @@ use App\Http\Controllers\PizzaController;
 use App\Http\Controllers\BestelController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\CartController;
 use App\Models\OrderBestelling;
 use Illuminate\Http\Request;
 use App\Models\Klant;
@@ -104,6 +105,9 @@ Route::get('/cart', function () {
 
 // Image Route - Serves pizza images by ID
 Route::get('/pizzas/{id}/image', [ImageController::class, 'show'])->name('pizzas.image');
+
+Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
+Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 
 // Include Authentication Routes (e.g., Register, Forgot Password, etc.)
 require __DIR__ . '/auth.php';
