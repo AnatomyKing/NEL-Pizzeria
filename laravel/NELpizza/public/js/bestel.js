@@ -21,7 +21,7 @@ function openModal(imageSrc, pizzaName, pizzaDescription, pizzaPrice, pizzaId, p
     document.getElementById('pizzaModalImage').src = currentPizza.imageUrl;
     document.getElementById('pizzaModalName').textContent = currentPizza.name;
     document.getElementById('pizzaModalDescription').textContent = currentPizza.description;
-    
+
     buildIngredientList(pizzaIngredients);
 
     // Reset size to "Medium" = 1

@@ -9,9 +9,17 @@ class Order extends Model
 {
     use HasFactory;
 
-    // Add the table name if it doesn't match "orders"
-    protected $table = 'orders';
+    protected $table = 'orders'; // Correcte tabelnaam
 
-    // Specify any fillable fields if needed
-    protected $fillable = ['customer_name', 'pizza_type', 'quantity', 'total_price', 'status']; // Replace with actual column names
+    protected $fillable = [
+        'bestelling_datum',
+        'status',
+        'klant_id',
+    ];
+
+    public function klant()
+    {
+        return $this->belongsTo(Klant::class, 'klant_id');
+    }
 }
+
