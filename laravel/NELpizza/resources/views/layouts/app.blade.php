@@ -19,14 +19,17 @@
         <!-- Menu Title -->
         <div id="menu-title">
             <span class="indicator-symbol"></span>
-            <h1>@yield('menu-title', 'MAIN MENU')</h1>
+            <h1>@yield('menu-title', 'MAIN MENU')</h>
+            <h2><a href="{{ route('cart') }}">🛒</a></h2>
+            <h3><a href="{{ route(name: 'status') }}">💹</a></h3>
         </div>
+        
 
         <!-- Navigation Menu -->
         <nav id="menu">
             <a href="{{ route('home') }}" id="one" class="item {{ request()->routeIs('home') ? 'selected' : '' }}">Home</a>
             <a href="{{ route('bestel') }}" id="two" class="item {{ request()->routeIs('bestel') ? 'selected' : '' }}">Bestel</a>
-            <a href="{{ route('contact') }}" id="three" class="item {{ request()->routeIs('contact') ? 'selected' : '' }}">contact</a>
+            <a href="{{ route('contact') }}" id="three" class="item {{ request()->routeIs('contact') ? 'selected' : '' }}">c3ontact</a>
             
             @guest
                 <a href="{{ route('login') }}" id="four" class="item {{ request()->routeIs('login') ? 'selected' : '' }}">Login</a>

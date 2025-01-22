@@ -16,6 +16,9 @@ Route::get('/', function () {
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
+Route::get('/status', function () {
+    return view('status');
+})->name('status');
 
 
 // Show the pizza bestel page
