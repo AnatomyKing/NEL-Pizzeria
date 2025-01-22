@@ -1,69 +1,147 @@
-/* Global Styles */
-
-/* Pizza Section */
-.pizza-section {
-    text-align: center;
-    margin-top: 40px;
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4e3cc;
 }
 
-.section-title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
+/* Main page container */
+.page-container {
+    position: relative;
 }
 
-/* Grid Layout for Pizza Ads */
-.pizza-ad-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Always 3 columns */
-    gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+/* Header Section (Banner with Text) */
+.header-section {
+    height: 80px;
+    width: 80%;
+    margin: 50px auto;
+    background: #fff7f0;
+    box-shadow: 5px 5px 0px #f0d5b8;
+    display: flex;
+    align-items: center;
     justify-content: center;
 }
 
-/* Individual Pizza Ad Card */
-.pizza-ad-card {
-    position: relative;
-    overflow: visible; /* Allow the image to expand outside the card */
-    border: none; /* Remove any border */
-    background: none; /* Remove background color */
-    box-shadow: none; /* Remove box shadow around the card */
+.banner-text {
+    font-size: 32px;
+    font-weight: bold;
+    color: #E65100;
+    font-family: 'Comic Sans MS', cursive;
     text-align: center;
-    max-width: 250px; /* Optional: Define the card width */
-    margin: 0 auto; /* Center-align the cards */
 }
 
-/* Pizza Ad Image */
-/* Pizza Ad Image */
-.pizza-ad-card img {
+/* Pizza Offerings Section */
+.pizza-offerings {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Reduced gap for closer spacing */
+    margin: 50px auto;
+    max-width: 800px; /* Restrict the section width to bring pizzas closer */
+}
+/* Individual Pizza Card */
+.pizza-card {
+    position: relative;
+    overflow: visible;
+    border: none;
+    background: none;
+    text-align: center;
+    max-width: 250px;
+    margin: 0 auto;
+}
+
+/* Pizza Image Hover Effect */
+.pizza-card img {
     width: 100%;
     height: auto;
-    clip-path: circle(45% at 50% 50%); /* Snijd de witte rand weg */
-    border-radius: 50%; /* Maak de afbeelding rond */
-    transition: transform 0.3s ease, box-shadow 0.3s ease, clip-path 0.3s ease; /* Smooth transition for all changes */
+    clip-path: circle(45% at 50% 50%);
+    border-radius: 50%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, clip-path 0.3s ease;
 }
 
-/* Hover Effect */
-.pizza-ad-card:hover img {
-    transform: scale(1.5); /* Vergroot de afbeelding */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Voeg schaduw toe */
-    clip-path: circle(45% at 50% 50%); /* Zorg dat de afbeelding rond blijft bij het inzoomen */
-    z-index: 2; /* Zorg dat het hover-element boven andere elementen staat */
+.pizza-card:hover img {
+    transform: scale(1.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    clip-path: circle(45% at 50% 50%);
+    z-index: 2;
 }
 
-
-/* Pizza Ad Information */
-.pizza-ad-info {
+/* Pizza Information */
+.pizza-info {
     padding: 15px;
     text-align: center;
 }
 
-.pizza-ad-info h3 {
+.pizza-info h3 {
     margin: 0;
     font-size: 1.2rem;
     font-weight: bold;
     color: #333;
+}
+
+/* Patterns Section (Side by Side) */
+.patterns-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 40px auto;
+    width: 90%;
+    height: 400px;
+}
+
+/* Zigzag pattern styling */
+.zigzag-pattern {
+    flex: 1;
+    height: 100%;
+    background:
+        linear-gradient(135deg, #FFB502 25%, transparent 25%) -50px 0,
+        linear-gradient(225deg, #FFB502 25%, transparent 25%) -50px 0,
+        linear-gradient(315deg, #FFB502 25%, transparent 25%),
+        linear-gradient(45deg, #FFB502 25%, transparent 25%);
+    background-size: 100px 100px;
+    background-color: #E65100;
+}
+
+/* Wave pattern styling */
+.wave-pattern {
+    flex: 1;
+    height: 100%;
+    background:
+        radial-gradient(circle at 100% 50%, transparent 20%, #F7D9C0 21%, #F7D9C0 34%, transparent 35%, transparent),
+        radial-gradient(circle at 0% 50%, transparent 20%, #F7D9C0 21%, #F7D9C0 34%, transparent 35%, transparent) 0 -50px;
+    background-color: #F8F1EB;
+    background-size: 75px 100px;
+}
+
+/* Centered Pizza Image */
+.pizza-image {
+    text-align: center;
+    margin: 50px 0;
+}
+
+.pizza-image img {
+    width: 400px;
+    height: auto;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .patterns-section {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .pizza-offerings {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .pizza img {
+        width: 80%;
+        height: auto;
+    }
+
+    .pizza-image img {
+        width: 80%;
+    }
 }

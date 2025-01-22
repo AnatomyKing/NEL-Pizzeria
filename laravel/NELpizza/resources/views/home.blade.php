@@ -4,62 +4,49 @@
 
 @section('refrence')
 <link rel="stylesheet" href="{{ asset('css/home.css') }}">
-{{-- <script src="{{ asset('js/home.js') }}" defer></script> --}}
+<script src="{{ asset('js/home.js') }}" defer></script>
 @endsection
 
 @section('menu-title', 'Welcome to Stonks Pizza')
 
 @section('content')
-<div class="pizza-section">
-    <h2 class="section-title">Meest verkochte pizza</h2> <!-- Nieuwe tekst toegevoegd -->
-    <div class="pizza-ad-grid">
-        <!-- Pizza 1 -->
-        <div class="pizza-ad-card">
-            <img src="/images/m.png" alt="Pizza Margherita">
-            <div class="pizza-ad-info">
-                <h3>Pizza Margherita</h3>
-            </div>
-        </div>
+<div class="page-container">
+    <!-- Banner Section -->
+    <div class="header-section">
+        <h1 class="banner-text">ONZE MEEST VERKOCHTE PIZZAS</h1>
+    </div>
 
-        <!-- Pizza 2 -->
-        <div class="pizza-ad-card">
-            <img src="/images/p.png" alt="Pizza Pepperoni">
-            <div class="pizza-ad-info">
-                <h3>Pizza Pepperoni</h3>
-            </div>
-        </div>
-
-        <!-- Pizza 3 -->
-        <div class="pizza-ad-card">
-            <img src="/images/h.png" alt="Pizza Hawaï">
-            <div class="pizza-ad-info">
-                <h3>Pizza Hawaï</h3>
-            </div>
-        </div>
-
-        <!-- Pizza 4 -->
-        <div class="pizza-ad-card">
-            <img src="/images/f.png" alt="Pizza Funghi">
-            <div class="pizza-ad-info">
+    <!-- Pizza Offerings -->
+    <div class="pizza-offerings">
+        <div class="pizza-card">
+            <img src="{{ asset('images/f.png') }}" alt="Pizza F">
+            <div class="pizza-info">
                 <h3>Pizza Funghi</h3>
             </div>
         </div>
-
-        <!-- Pizza 5 -->
-        <div class="pizza-ad-card">
-            <img src="/images/q.png" alt="Pizza Quattro Formaggi">
-            <div class="pizza-ad-info">
-                <h3>Pizza Quattro Formaggi</h3>
+        <div class="pizza-card">
+            <img src="{{ asset('images/h.png') }}" alt="Pizza H">
+            <div class="pizza-info">
+                <h3>Pizza Hawaï</h3>
             </div>
         </div>
-
-        <!-- Pizza 6 -->
-        <div class="pizza-ad-card">
-            <img src="/images/s.png" alt="Pizza Salami">
-            <div class="pizza-ad-info">
-                <h3>Pizza Salami</h3>
+        <div class="pizza-card">
+            <img src="{{ asset('images/m.png') }}" alt="Pizza M">
+            <div class="pizza-info">
+                <h3>Pizza Margherita</h3>
             </div>
         </div>
+    </div>
+
+    <!-- Patterns Section -->
+    <div class="patterns-section">
+        <div class="zigzag-pattern"></div>
+        <div class="wave-pattern"></div>
+    </div>
+
+    <!-- Centered Pizza Image -->
+    <div class="pizza-image">
+        <img src="{{ asset('images/pizzalarge.png') }}" alt="Pizza">
     </div>
 </div>
 @endsection

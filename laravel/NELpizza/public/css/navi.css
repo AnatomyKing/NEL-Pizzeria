@@ -1,35 +1,48 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
+/* 
+  EXPLANATION:
+  1. Renamed --one-col, --two-col, etc. to --grid-col-1, --grid-col-2, etc.
+  2. Renamed color variables so they don’t conflict with typical
+     notions of “black”, “white”, “gray,” etc.
+  3. Grouped animation variables under more uniform naming.
+*/
+
 :root {
-  --one-col: 20%;
-  --two-col: 20%;
-  --three-col: 20%;
-  --four-col: 20%;
-  --five-col: 20%;
+  /* Grid column widths */
+  --grid-col-1: 20%;
+  --grid-col-2: 20%;
+  --grid-col-3: 20%;
+  --grid-col-4: 20%;
+  --grid-col-5: 20%;
 
-  --clr-white: #fefefe;
-  --clr-red: #ee0e0e;
-  --clr-black: #010101;
-  --clr-gray: #a1a1a1;
+  /* Primary color palette */
+  --color-background: #EFDDC7;     /* Previously --main-background-color */
+  --color-yellow: #FFB502;   /* Previously --clr-white */
+  --color-brand-accent: #E65100;   /* Previously --clr-red */
+  --color-white: #F8F1EB;     /* Previously --clr-black */
+  --color-brand-light: #d85d5d;    /* Previously --clr-gray */
 
-  --blink-animation-time: 0.4s;
-  --scale-in-animation-time: 1s;
-  --fade-in-animation-time: 4s;
-  --screen-info-pop-animation-delay: calc(var(--scale-in-animation-time) * 0.5);
+  /* Secondary usage */
+  --color-bg-secondary: #E65100;   /* Previously --bg-color */
+  --color-text-secondary: #19b3c79a; /* Previously --text-color */
 
-  --item-animation-time: 0.25s;
-  --item-animation-delay: 0.5s;
-  --bg-color: #dd8b53;
-  --text-color: #ffffff;
-}
+  /* Animation timings */
+  --animation-blink-time: 0.4s;
+  --animation-scale-in-time: 1s;
+  --animation-fade-in-time: 4s;
+  --animation-screen-info-pop-delay: calc(var(--animation-scale-in-time) * 0.5);
 
-.white-mode {
-  --bg-color: #ffffff;
-  --text-color: #000000;
+  --animation-item-time: 0.25s;
+  --animation-item-delay: 0.5s;
 }
 
 * {
   box-sizing: border-box;
+}
+
+.item.selected {
+  background-color: var(--color-brand-accent) !important;
 }
 
 body {
@@ -37,11 +50,13 @@ body {
   font-family: "Open Sans", serif;
   overflow: hidden;
   text-transform: uppercase;
+  background-color: var(--color-background);
 }
 
 p,
 h1 {
   margin: 0;
+  color: var(--color-yellow);
 }
 
 #wrapper {
@@ -55,32 +70,32 @@ h1 {
 
 #screen-info {
   font-size: 0.6rem;
-  color: var(--clr-gray);
+  color: var(--color-brand-light);
   display: flex;
   align-items: center;
   visibility: hidden;
 
-  animation: popIn 0s var(--screen-info-pop-animation-delay) forwards;
+  animation: popIn 0s var(--animation-screen-info-pop-delay) forwards;
 }
 
 .contentview {
-  background-color: var(--bg-color); /* Dynamic background */
-  width: 100%; /* Full width */
-  height: 0; /* Start with at least full viewport height */
-  overflow-y: auto; /* Enable vertical scrolling */
+  background-color: var(--color-bg-secondary); /* Dynamic background */
+  width: 100%; 
+  height: 0;
+  overflow-y: scroll; /* Always show vertical scrollbar */
   animation: fillContent 1s ease-in-out forwards;
   animation-delay: 1s; /* Sync with navigation animations */
-  position: relative; /* Proper positioning in the layout */
-  z-index: 0; /* Ensure proper stacking context */
-  color: var(--text-color); /* Dynamic text color */
+  position: relative;
+  z-index: 0;
+  color: var(--color-text-secondary); /* Dynamic text color */
 }
 
 @keyframes fillContent {
   0% {
-    height: 0; /* Start with no height */
+    height: 0;
   }
   100% {
-    height: 100vh; /* Expand to full viewport height */
+    height: 100vh; 
   }
 }
 
@@ -88,15 +103,14 @@ h1 {
 .contentview::after {
   content: "";
   display: block;
-  height: auto; /* Allow content height */
-  min-height: 5vh; /* Ensure it fills the viewport */
-  width: 100%; /* Maintain full width */
-  background-color: var(--bg-color); /* Dynamic background */
+  height: auto; 
+  min-height: 5vh; 
+  width: 100%; 
+  background-color: var(--color-bg-secondary);
 }
 
-
 .block {
-  background: var(--clr-gray);
+  background: var(--color-brand-light);
   height: 0.5rem;
   width: 0.5rem;
   margin-right: 4px;
@@ -111,7 +125,7 @@ h1 {
   h1 {
     font-weight: 800;
     opacity: 0;
-    animation: fadeIn var(--fade-in-animation-time) forwards;
+    animation: fadeIn var(--animation-fade-in-time) forwards;
   }
 
   &:after {
@@ -122,14 +136,14 @@ h1 {
     top: 100%;
     width: 100%;
     padding-right: 1rem;
-    background: var(--clr-black);
+    background: var(--color-yellow);
     transform-origin: left center;
-    animation: scaleIn var(--scale-in-animation-time) ease-in-out forwards;
+    animation: scaleIn var(--animation-scale-in-time) ease-in-out forwards;
   }
 }
 
 .indicator-symbol {
-  background: var(--clr-black);
+  background: var(--color-white);
   width: 1rem;
   height: 1.5rem;
   margin-right: 4px;
@@ -137,10 +151,9 @@ h1 {
 }
 
 #menu {
+
   display: grid;
-  grid-template-columns:
-    var(--one-col) var(--two-col) var(--three-col) var(--four-col)
-    var(--five-col);
+  grid-template-columns: var(--grid-col-1) var(--grid-col-2) var(--grid-col-3) var(--grid-col-4) var(--grid-col-5);
   gap: 4px;
   align-self: center;
   justify-self: center;
@@ -150,118 +163,113 @@ h1 {
 }
 
 .item {
-  color: var(--clr-white);
-  background: var(--clr-white);
+  color: var(--color-yellow);
+  background: var(--color-yellow);
   padding-left: 0.5rem;
   padding-bottom: 0.75rem;
   font-weight: 700;
   position: relative;
-  font-size: 1.1rem;
+  font-size: 1.9rem;
 
   clip-path: polygon(0% 0%, 92.5% 0%, 95% 15%, 100% 15%, 100% 100%, 0% 100%);
 
   &:hover {
     cursor: pointer;
-    
-    &:before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 0.55rem;
-    animation: 
-      blink var(--blink-animation-time) infinite both;
-    margin-top: 6px;
-    font-weight: 900;
-    z-index: 2;
-    width: 0.6ch;
-    border: solid var(--clr-white) 2px;
-  }
 
-  &:after {
-    left: 0;
-    padding-left: 0.5rem;
-    content: var(--item-text);
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    color: var(--clr-white);
-    background: var(--clr-red);
-  }
+    &:before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0.55rem;
+      animation: blink var(--animation-blink-time) infinite both;
+      margin-top: 13px;
+      font-weight: 900;
+      z-index: 2;
+      width: 0.6ch;
+      border: solid var(--color-yellow) 2px;
+    }
+
+    &:after {
+      left: 0;
+      padding-left: 0.5rem;
+      content: var(--item-text);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      color: var(--color-yellow);
+      background: var(--color-brand-accent);
+    }
   }
 }
 
 #one {
- animation: itemOne var(--item-animation-time) var(--item-animation-delay)
-    forwards;
+  animation: itemOne var(--animation-item-time) var(--animation-item-delay) forwards;
 }
 
 #two {
-  animation: itemTwo var(--item-animation-time) var(--item-animation-delay)
-    forwards;
+  animation: itemTwo var(--animation-item-time) var(--animation-item-delay) forwards;
 }
 
 #three {
-  animation: itemThree var(--item-animation-time) var(--item-animation-delay)
-    forwards;
+  animation: itemThree var(--animation-item-time) var(--animation-item-delay) forwards;
 }
 
 #four {
-  animation: itemFour var(--item-animation-time) var(--item-animation-delay)
-    forwards;
+  animation: itemFour var(--animation-item-time) var(--animation-item-delay) forwards;
 }
 
 #five {
-  animation: itemFive var(--item-animation-time) var(--item-animation-delay)
-    forwards;
+  animation: itemFive var(--animation-item-time) var(--animation-item-delay) forwards;
 }
 
+/* Hover-based column expansion */
 #menu:has(#one:hover) {
-  --one-col: 22%;
-  --two-col: 19.5%;
-  --three-col: 19.5%;
-  --four-col: 19.5%;
-  --five-col: 19.5%;
+  --grid-col-1: 22%;
+  --grid-col-2: 19.5%;
+  --grid-col-3: 19.5%;
+  --grid-col-4: 19.5%;
+  --grid-col-5: 19.5%;
 }
 
 #menu:has(#two:hover) {
-  --one-col: 19.5%;
-  --two-col: 22%;
-  --three-col: 19.5%;
-  --four-col: 19.5%;
-  --five-col: 19.5%;
+  --grid-col-1: 19.5%;
+  --grid-col-2: 22%;
+  --grid-col-3: 19.5%;
+  --grid-col-4: 19.5%;
+  --grid-col-5: 19.5%;
 }
 
 #menu:has(#three:hover) {
-  --one-col: 19.5%;
-  --two-col: 19.5%;
-  --three-col: 22%;
-  --four-col: 19.5%;
-  --five-col: 19.5%;
+  --grid-col-1: 19.5%;
+  --grid-col-2: 19.5%;
+  --grid-col-3: 22%;
+  --grid-col-4: 19.5%;
+  --grid-col-5: 19.5%;
 }
 
 #menu:has(#four:hover) {
-  --one-col: 19.5%;
-  --two-col: 19.5%;
-  --three-col: 19.5%;
-  --four-col: 22%;
-  --five-col: 19.5%;
+  --grid-col-1: 19.5%;
+  --grid-col-2: 19.5%;
+  --grid-col-3: 19.5%;
+  --grid-col-4: 22%;
+  --grid-col-5: 19.5%;
 }
 
 #menu:has(#five:hover) {
-  --one-col: 19.5%;
-  --two-col: 19.5%;
-  --three-col: 19.5%;
-  --four-col: 19.5%;
-  --five-col: 22%;
+  --grid-col-1: 19.5%;
+  --grid-col-2: 19.5%;
+  --grid-col-3: 19.5%;
+  --grid-col-4: 19.5%;
+  --grid-col-5: 22%;
 }
 
+/* Animations */
 @keyframes blink {
   from {
-    border-color: var(--clr-red);
+    border-color: var(--color-brand-accent);
   }
-
   to {
-    border-color: var(--clr-white);
+    border-color: var(--color-yellow);
   }
 }
 
@@ -269,7 +277,6 @@ h1 {
   from {
     transform: scaleX(0);
   }
-
   to {
     transform: scaleX(1);
   }
@@ -292,38 +299,34 @@ h1 {
   32%,
   70%,
   99% {
-    color: var(--clr-gray);
-    background: var(--clr-gray);
+    color: var(--color-brand-light);
+    background: var(--color-brand-light);
   }
-
   33%,
   69% {
-    color: var(--clr-white);
-    background: var(--clr-white);
+    color: var(--color-yellow);
+    background: var(--color-yellow);
   }
-
   100% {
-    color: var(--clr-white);
-    background: var(--clr-black);
+    color: var(--color-yellow);
+    background: var(--color-white);
   }
 }
 
 @keyframes itemTwo {
   0%,
   32% {
-    color: var(--clr-gray);
-    background: var(--clr-gray);
+    color: var(--color-brand-light);
+    background: var(--color-brand-light);
   }
-
   33%,
   99% {
-    color: var(--clr-white);
-    background: var(--clr-white);
+    color: var(--color-yellow);
+    background: var(--color-yellow);
   }
-
   100% {
-    color: var(--clr-white);
-    background: var(--clr-black);
+    color: var(--color-yellow);
+    background: var(--color-white);
   }
 }
 
@@ -332,60 +335,56 @@ h1 {
   32%,
   60%,
   79% {
-    color: var(--clr-white);
-    background: var(--clr-white);
+    color: var(--color-yellow);
+    background: var(--color-yellow);
   }
-
   33%,
   59%,
   80%,
   100% {
-    color: var(--clr-white);
-    background: var(--clr-black);
+    color: var(--color-yellow);
+    background: var(--color-white);
   }
 }
 
 @keyframes itemFour {
   0%,
   32% {
-    color: var(--clr-gray);
-    background: var(--clr-gray);
+    color: var(--color-brand-light);
+    background: var(--color-brand-light);
   }
-
   33%,
   69% {
-    color: var(--clr-white);
-    background: var(--clr-white);
+    color: var(--color-yellow);
+    background: var(--color-yellow);
   }
-
   70%,
   100% {
-    color: var(--clr-white);
-    background: var(--clr-black);
+    color: var(--color-yellow);
+    background: var(--color-white);
   }
 }
 
 @keyframes itemFive {
   0%,
   32% {
-    color: var(--clr-white);
-    background: var(--clr-white);
+    color: var(--color-yellow);
+    background: var(--color-yellow);
   }
-
   70%,
   99% {
-    color: var(--clr-gray);
-    background: var(--clr-gray);
+    color: var(--color-brand-light);
+    background: var(--color-brand-light);
   }
-
   33%,
   69%,
   100% {
-    color: var(--clr-white);
-    background: var(--clr-black);
+    color: var(--color-yellow);
+    background: var(--color-white);
   }
 }
 
+/* Responsive */
 @media (max-width: 675px) {
   #menu {
     grid-template-columns: 1fr;

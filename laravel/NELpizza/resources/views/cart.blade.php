@@ -1,4 +1,3 @@
-{{-- resources/views/cart.blade.php --}}
 @extends('layouts.app')
 
 @section('title', 'Cart')
@@ -8,17 +7,17 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <div class="cart-page-container">
-        <h1>Your Cart</h1>
+        <h1 class="cart-title">Your Cart</h1>
 
         <div class="cart-items" id="cartItemsContainer">
             <!-- Cart items rendered by cart.js -->
         </div>
 
-        <p>
-            <strong>Total:</strong> €<span id="cartTotal">0.00</span>
-        </p>
+        <div class="cart-summary">
+            <p><strong>Total:</strong> €<span id="cartTotal">0.00</span></p>
+        </div>
 
-        <h2>Fill in your information</h2>
+        <h2 class="info-title">Fill in your information</h2>
         <div class="user-info-form">
             <label for="naam">Naam:</label>
             <input type="text" id="naam" value="{{ $klantData['naam'] ?? '' }}" required>
@@ -37,8 +36,8 @@
         </div>
 
         <div class="cart-buttons">
-            <button onclick="window.location.href='{{ route('bestel') }}'">Back to Bestel</button>
-            <button id="placeOrderBtn">Place Order</button>
+            <button class="btn-back" onclick="window.location.href='{{ route('bestel') }}'">Back to Bestel</button>
+            <button id="placeOrderBtn" class="btn-order">Place Order</button>
         </div>
     </div>
 @endsection
