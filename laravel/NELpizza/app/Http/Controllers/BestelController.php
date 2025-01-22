@@ -13,7 +13,8 @@ use Carbon\Carbon;
 class BestelController extends Controller
 {
     /**
-     * Handle POST /bestel to create an order (Bestelling + Bestelregels).
+     * Handle POST /bestel to create an order (Bestelling + Bestelregels),
+     * supporting multiple pizzas in one order.
      */
     public function store(Request $request)
     {
@@ -29,16 +30,17 @@ class BestelController extends Controller
 
         $cartItems = $validated['cart'];
 
-        // Check if user is logged in -> reuse or create a Klant
+        // 1) Determine the Klant
         if (Auth::check()) {
+            // Reuse existing Klant or create a new one
             $user  = Auth::user();
             $klant = $user->klants()->first() ?? new Klant();
         } else {
-            // Guest user -> brand new Klant
+            // Guest user => new Klant
             $klant = new Klant();
         }
 
-        // Fill the Klant record
+        // Fill/update the Klant data
         $klant->naam           = $request->naam;
         $klant->adres          = $request->adres;
         $klant->woonplaats     = $request->woonplaats;
@@ -46,28 +48,23 @@ class BestelController extends Controller
         $klant->emailadres     = $request->emailadres;
         $klant->save();
 
-        // If logged in, attach user->klant pivot if not already attached
+        // If user is logged in, attach pivot if not already attached
         if (Auth::check()) {
             if (!$user->klants->contains($klant->id)) {
                 $user->klants()->attach($klant->id);
             }
         }
 
-        // Create the main Bestelling
-        $firstItemPizzaId = $cartItems[0]['pizza_id'] ?? null;
-        $fallbackPizza    = Pizza::first();
-        $fallbackPizzaId  = $fallbackPizza ? $fallbackPizza->id : null;
-
+        // 2) Create the Bestelling (no pizza_id)
         $bestelling = Bestelling::create([
-            'datum'    => Carbon::now(),     // or now()
+            'datum'    => Carbon::now(),
             'status'   => 'initieel',
             'klant_id' => $klant->id,
-            'pizza_id' => $firstItemPizzaId ?: $fallbackPizzaId,
         ]);
 
-        // Create Bestelregels for each cart item
+        // 3) Create one Bestelregel for each item in the cart
         foreach ($cartItems as $item) {
-            // Convert numeric multiplier to text
+            // Convert numeric multiplier to text (afmeting)
             $afmeting = match ($item['sizeMultiplier'] ?? 1) {
                 0.8 => 'klein',
                 1.2 => 'groot',
@@ -75,14 +72,13 @@ class BestelController extends Controller
             };
 
             $bestelling->bestelregels()->create([
-                'pizza_id' => $item['pizza_id'],
-                'aantal'   => $item['quantity'],
-                'afmeting' => $afmeting,
-                // Add more columns if needed, e.g. "ingredients" if you store them
+                'pizza_id'    => $item['pizza_id'],        // references the pizzas table
+                'aantal'      => $item['quantity'],
+                'afmeting'    => $afmeting,
             ]);
         }
 
-        // Return success
+        // Return success JSON
         return response()->json([
             'message'  => 'Order placed successfully!',
             'order_id' => $bestelling->id,

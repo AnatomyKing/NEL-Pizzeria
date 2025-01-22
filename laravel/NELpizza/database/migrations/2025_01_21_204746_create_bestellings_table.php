@@ -18,7 +18,6 @@ return new class extends Migration
             $table->timestamp('datum');
             $table->enum('status', ["initieel","betaald","bereiden","inoven","onderweg","bezorgd"]);
             $table->foreignId('klant_id')->constrained();
-            $table->foreignId('pizza_id')->constrained();
         });
 
         Schema::enableForeignKeyConstraints();
