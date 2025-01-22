@@ -40,4 +40,11 @@ class Ingredient extends Model
     {
         return $this->belongsToMany(Pizza::class);
     }
+
+    public function bestelregels()
+    {
+    return $this->belongsToMany(Bestelregel::class, 'bestelregel_ingredient')
+                ->withPivot('quantity')
+                ->withTimestamps();
+    }
 }

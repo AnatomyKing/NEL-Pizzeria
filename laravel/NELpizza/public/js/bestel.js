@@ -50,24 +50,27 @@ function buildIngredientList(pizzaIngredients) {
     ingredientListDiv.innerHTML = '';
 
     pizzaIngredients.forEach((ingredient) => {
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('ingredient-item');
+
         const label = document.createElement('label');
-        label.style.display = 'block';
+        label.textContent = `${ingredient.naam} (+€${parseFloat(ingredient.prijs).toFixed(2)})`;
 
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.checked = true;
-        checkbox.value = ingredient.id;
-        checkbox.dataset.price = ingredient.prijs;
-        checkbox.dataset.name = ingredient.naam;
+        const quantityInput = document.createElement('input');
+        quantityInput.type = 'number';
+        quantityInput.min = 0;  // Setting minimum to 0 (for removal)
+        quantityInput.max = 5;  // Maximum limit to 5
+        quantityInput.value = 1; // Default value
+        quantityInput.dataset.id = ingredient.id;
+        quantityInput.dataset.name = ingredient.naam;
+        quantityInput.dataset.price = ingredient.prijs;
 
-        label.appendChild(checkbox);
-        label.appendChild(
-            document.createTextNode(
-                `${ingredient.naam} (+€${parseFloat(ingredient.prijs).toFixed(2)})`
-            )
-        );
+        quantityInput.addEventListener('change', updateModalPrice);
 
-        ingredientListDiv.appendChild(label);
+        wrapper.appendChild(label);
+        wrapper.appendChild(quantityInput);
+
+        ingredientListDiv.appendChild(wrapper);
     });
 }
 
@@ -75,11 +78,11 @@ function buildIngredientList(pizzaIngredients) {
 function updateModalPrice() {
     let sumIngredients = 0;
 
-    // Sum up checked ingredients
-    const ingredientCheckboxes = document.querySelectorAll('#ingredient-list input[type="checkbox"]');
-    ingredientCheckboxes.forEach((cb) => {
-        if (cb.checked) {
-            sumIngredients += parseFloat(cb.dataset.price);
+    document.querySelectorAll('#ingredient-list input[type="number"]').forEach((input) => {
+        const ingredientPrice = parseFloat(input.dataset.price);
+        const quantity = parseInt(input.value);
+        if (quantity > 0) {
+            sumIngredients += ingredientPrice * quantity;
         }
     });
 
@@ -97,17 +100,18 @@ function closeModal() {
 }
 
 // Add the configured pizza to cart
+
 function addToCartFromModal() {
-    const ingredientCheckboxes = document.querySelectorAll('#ingredient-list input[type="checkbox"]');
     let chosenIngredients = [];
 
-    // Gather selected ingredients
-    ingredientCheckboxes.forEach((cb) => {
-        if (cb.checked) {
+    document.querySelectorAll('#ingredient-list input[type="number"]').forEach((input) => {
+        const quantity = parseInt(input.value);
+        if (quantity >= 0) {  // Keep ingredient only if quantity is 0 or greater
             chosenIngredients.push({
-                id: cb.value,
-                name: cb.dataset.name,
-                price: parseFloat(cb.dataset.price)
+                id: input.dataset.id,
+                name: input.dataset.name,
+                price: parseFloat(input.dataset.price),
+                quantity: quantity,
             });
         }
     });

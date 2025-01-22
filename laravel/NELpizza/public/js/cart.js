@@ -19,6 +19,11 @@ function renderCart() {
         const itemTotal = item.price * item.quantity;
         total += itemTotal;
 
+        let ingredientList = item.chosenIngredients
+            .filter(ing => ing.quantity > 0)  // Show only selected ingredients
+            .map(ing => `${ing.name} (x${ing.quantity})`)
+            .join(', ');
+
         const div = document.createElement('div');
         div.classList.add('cart-item');
         div.innerHTML = `
@@ -26,7 +31,7 @@ function renderCart() {
             <div class="cart-item-info">
                 <h4>${item.name}</h4>
                 <p>Quantity: ${item.quantity}</p>
-                <p>Size: ${sizeText(item.sizeMultiplier)}</p>
+                <p>Ingredients: ${ingredientList}</p>
                 <p>Item total: €${itemTotal.toFixed(2)}</p>
                 <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
             </div>

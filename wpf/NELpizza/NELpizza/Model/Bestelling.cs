@@ -24,12 +24,7 @@ namespace NELpizza.Model
         [Column("klant_id", TypeName = "BIGINT UNSIGNED")]
         public long KlantId { get; set; }
 
-        [ForeignKey("Pizza")]
-        [Column("pizza_id", TypeName = "BIGINT UNSIGNED")]
-        public long PizzaId { get; set; }
-
         public virtual Klant? Klant { get; set; }
-        public virtual Pizza? Pizza { get; set; }
         public virtual ICollection<Bestelregel> Bestelregels { get; set; } = new HashSet<Bestelregel>();
     }
 }

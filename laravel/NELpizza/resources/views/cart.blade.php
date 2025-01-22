@@ -13,6 +13,8 @@
             <!-- Cart items rendered by cart.js -->
         </div>
 
+        <div id="ingredient-list"></div>
+
         <div class="cart-summary">
             <p><strong>Total:</strong> €<span id="cartTotal">0.00</span></p>
         </div>

@@ -60,13 +60,6 @@ namespace NELpizza.Databases
                 .HasForeignKey(b => b.KlantId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Bestelling and Pizza Relationship
-            modelBuilder.Entity<Bestelling>()
-                .HasOne(b => b.Pizza)
-                .WithMany()
-                .HasForeignKey(b => b.PizzaId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             // Pizza Model Configuration
             modelBuilder.Entity<Pizza>()
                 .Property(p => p.Prijs)
