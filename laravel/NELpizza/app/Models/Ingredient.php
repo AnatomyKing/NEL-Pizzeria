@@ -44,7 +44,6 @@ class Ingredient extends Model
     public function bestelregels()
     {
     return $this->belongsToMany(Bestelregel::class, 'bestelregel_ingredient')
-                ->withPivot('quantity')
-                ->withTimestamps();
+                ->withPivot('quantity');
     }
 }
