@@ -1,110 +1,37 @@
-@extends('layouts.app')
+@extends('layouts.app')  {{-- or <x-app-layout> if using Laravel's default layout --}}
 
 @section('title', 'Dashboard')
+@section('menu-title', 'User Dashboard')
 
 @section('content')
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Dashboard</h1>
+    <h2>Your Klant Info</h2>
 
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+    @if(session('status'))
+        <div style="color: green;">{{ session('status') }}</div>
     @endif
 
-    <!-- Customer Information Form -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Klantinformatie</h4>
+    <form method="POST" action="{{ route('dashboard.update') }}">
+        @csrf
+        <div>
+            <label for="naam">Naam:</label>
+            <input type="text" name="naam" id="naam" value="{{ old('naam', $klant->naam) }}" required>
         </div>
-        <div class="card-body">
-            <form action="{{ route('klant.save') }}" method="POST">
-                @csrf
-
-                <!-- Naam -->
-                <div class="mb-3">
-                    <label for="naam" class="form-label">Naam</label>
-                    <input type="text" class="form-control" id="naam" name="naam"
-                        value="{{ old('naam', $klant->naam ?? '') }}"
-                        placeholder="Voer uw naam in" required>
-                </div>
-
-                <!-- Adres -->
-                <div class="mb-3">
-                    <label for="adres" class="form-label">Adres</label>
-                    <input type="text" class="form-control" id="adres" name="adres"
-                        value="{{ old('adres', $klant->adres ?? '') }}"
-                        placeholder="Voer uw adres in" required>
-                </div>
-
-                <!-- Woonplaats -->
-                <div class="mb-3">
-                    <label for="woonplaats" class="form-label">Woonplaats</label>
-                    <input type="text" class="form-control" id="woonplaats" name="woonplaats"
-                        value="{{ old('woonplaats', $klant->woonplaats ?? '') }}"
-                        placeholder="Voer uw woonplaats in" required>
-                </div>
-
-                <!-- Telefoonnummer -->
-                <div class="mb-3">
-                    <label for="telefoonnummer" class="form-label">Telefoonnummer</label>
-                    <input type="text" class="form-control" id="telefoonnummer" name="telefoonnummer"
-                        value="{{ old('telefoonnummer', $klant->telefoonnummer ?? '') }}"
-                        placeholder="Voer uw telefoonnummer in" required>
-                </div>
-
-                <!-- E-mail -->
-                <div class="mb-3">
-                    <label for="emailadres" class="form-label">E-mailadres</label>
-                    <input type="email" class="form-control" id="emailadres" name="emailadres"
-                        value="{{ old('emailadres', $klant->emailadres ?? '') }}"
-                        placeholder="Voer uw e-mailadres in" required>
-                </div>
-
-                <!-- Submit -->
-                <div class="text-center">
-                    <button type="submit" class="btn btn-success">Opslaan</button>
-                </div>
-            </form>
+        <div>
+            <label for="adres">Adres:</label>
+            <input type="text" name="adres" id="adres" value="{{ old('adres', $klant->adres) }}" required>
         </div>
-    </div>
-
-    <!-- Order Form -->
-    <div class="card shadow-sm">
-        <div class="card-header bg-secondary text-white">
-            <h4 class="mb-0">Plaats een Bestelling</h4>
+        <div>
+            <label for="woonplaats">Woonplaats:</label>
+            <input type="text" name="woonplaats" id="woonplaats" value="{{ old('woonplaats', $klant->woonplaats) }}" required>
         </div>
-        <div class="card-body">
-            <form action="{{ route('order.store') }}" method="POST">
-                @csrf
-
-                <!-- Adres -->
-                <div class="mb-3">
-                    <label for="adres" class="form-label">Adres</label>
-                    <input type="text" class="form-control" id="adres" name="adres"
-                        placeholder="Voer uw afleveradres in" required>
-                </div>
-
-                <!-- Woonplaats -->
-                <div class="mb-3">
-                    <label for="woonplaats" class="form-label">Woonplaats</label>
-                    <input type="text" class="form-control" id="woonplaats" name="woonplaats"
-                        placeholder="Voer uw woonplaats in" required>
-                </div>
-
-                <!-- Telefoonnummer -->
-                <div class="mb-3">
-                    <label for="telefoonnummer" class="form-label">Telefoonnummer</label>
-                    <input type="text" class="form-control" id="telefoonnummer" name="telefoonnummer"
-                        placeholder="Voer uw telefoonnummer in" required>
-                </div>
-
-                <!-- Submit -->
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Plaats Bestelling</button>
-                </div>
-            </form>
+        <div>
+            <label for="telefoonnummer">Telefoonnummer:</label>
+            <input type="text" name="telefoonnummer" id="telefoonnummer" value="{{ old('telefoonnummer', $klant->telefoonnummer) }}" required>
         </div>
-    </div>
-</div>
+        <div>
+            <label for="emailadres">Emailadres:</label>
+            <input type="email" name="emailadres" id="emailadres" value="{{ old('emailadres', $klant->emailadres) }}" required>
+        </div>
+        <button type="submit">Save</button>
+    </form>
 @endsection

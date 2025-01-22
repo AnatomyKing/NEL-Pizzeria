@@ -1,32 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart</title>
+{{-- resources/views/cart.blade.php --}}
+@extends('layouts.app')
+
+@section('title', 'Cart')
+@section('menu-title', 'Your Cart')
+
+@section('content')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <div class="cart-page-container">
+        <h1>Your Cart</h1>
+
+        <div class="cart-items" id="cartItemsContainer">
+            <!-- Cart items rendered by cart.js -->
+        </div>
+
+        <p>
+            <strong>Total:</strong> €<span id="cartTotal">0.00</span>
+        </p>
+
+        <h2>Fill in your information</h2>
+        <div class="user-info-form">
+            <label for="naam">Naam:</label>
+            <input type="text" id="naam" value="{{ $klantData['naam'] ?? '' }}" required>
+
+            <label for="adres">Adres:</label>
+            <input type="text" id="adres" value="{{ $klantData['adres'] ?? '' }}" required>
+
+            <label for="woonplaats">Woonplaats:</label>
+            <input type="text" id="woonplaats" value="{{ $klantData['woonplaats'] ?? '' }}" required>
+
+            <label for="telefoonnummer">Telefoonnummer:</label>
+            <input type="text" id="telefoonnummer" value="{{ $klantData['telefoonnummer'] ?? '' }}" required>
+
+            <label for="emailadres">Emailadres:</label>
+            <input type="email" id="emailadres" value="{{ $klantData['emailadres'] ?? '' }}" required>
+        </div>
+
+        <div class="cart-buttons">
+            <button onclick="window.location.href='{{ route('bestel') }}'">Back to Bestel</button>
+            <button id="placeOrderBtn">Place Order</button>
+        </div>
+    </div>
+@endsection
+
+@section('refrence')
     <link rel="stylesheet" href="{{ asset('css/cart.css') }}">
-</head>
-<body>
-    <h1>Fill in Your Details</h1>
-    <form action="" method="POST">
-        @csrf <!-- Blade directive for CSRF protection -->
-        <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" placeholder="Enter your name" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
-        </div>
-        <div class="form-group">
-            <label for="address">Address:</label>
-            <input type="text" id="address" name="address" placeholder="Enter your address" required>
-        </div>
-        <div class="form-group">
-            <label for="phone">Phone Number:</label>
-            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
-        </div>
-        <button type="submit">Submit</button>
-    </form>
-</body>
-</html>
+    <script src="{{ asset('js/cart.js') }}" defer></script>
+@endsection

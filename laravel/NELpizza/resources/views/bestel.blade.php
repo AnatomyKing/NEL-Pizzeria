@@ -1,6 +1,7 @@
+{{-- resources/views/bestel.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'Home')
+@section('title', 'Bestel')
 
 @section('refrence')
     <link rel="stylesheet" href="{{ asset('css/bestel.css') }}">
@@ -10,7 +11,6 @@
 @section('menu-title', 'Welcome to Stonks Pizza')
 
 @section('content')
-    <!-- CSRF Token (important for POST requests in Laravel) -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <div class="main-container">
@@ -21,14 +21,14 @@
                 @foreach($pizzas as $pizza)
                     <div class="pizza-item"
                          onclick="openModal(
-                             '{{ $pizza->image_url }}',
+                             '{{ route('pizza.image', $pizza->id) }}',
                              '{{ $pizza->naam }}',
                              '{{ $pizza->beschrijving }}',
                              {{ $pizza->prijs }},
                              {{ $pizza->id }},
                              {{ json_encode($pizza->ingredients) }}
                          )">
-                        <img src="{{ $pizza->image_url }}" alt="{{ $pizza->naam }}">
+                        <img src="{{ route('pizza.image', $pizza->id) }}" alt="{{ $pizza->naam }}">
                         <h3>{{ $pizza->naam }}</h3>
                         <p class="description">{{ $pizza->beschrijving }}</p>
                         <p class="price">€{{ number_format($pizza->prijs, 2) }}</p>
@@ -37,12 +37,14 @@
             </div>
         </div>
 
-        <!-- Shopping Cart -->
+        <!-- Shopping Cart (Summary) -->
         <div class="shopping-cart">
             <h2>Shopping Cart</h2>
             <ul id="cart-list"></ul>
             <p><strong>Total:</strong> €<span id="cart-total">0.00</span></p>
-            <button href="{{ route('contact') }}" class="order-button" onclick="placeOrder()">Go to cart</button>
+            <button class="order-button" onclick="window.location.href='{{ route('cart') }}'">
+                Go to cart
+            </button>
         </div>
     </div>
 
@@ -56,12 +58,10 @@
             <div class="modal-details">
                 <h3 id="pizzaModalName"></h3>
                 <p id="pizzaModalDescription"></p>
-                
+
                 <!-- Ingredient List -->
-                <div id="ingredient-list">
-                    <!-- Dynamically generated checkboxes for each ingredient -->
-                </div>
-                
+                <div id="ingredient-list"></div>
+
                 <!-- Pizza Size Selection -->
                 <label for="pizza-size">Select Size:</label>
                 <select id="pizza-size">
@@ -72,7 +72,9 @@
 
                 <p id="pizzaModalPrice"></p>
 
-                <button class="add-to-cart-button" onclick="addToCartFromModal()">Add to Cart</button>
+                <button class="add-to-cart-button" onclick="addToCartFromModal()">
+                    Add to Cart
+                </button>
             </div>
         </div>
     </div>

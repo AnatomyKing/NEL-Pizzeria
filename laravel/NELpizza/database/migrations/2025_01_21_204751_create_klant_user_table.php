@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bestellings', function (Blueprint $table) {
-            //
+        Schema::create('klant_user', function (Blueprint $table) {
+            $table->foreignId('klant_id');
+            $table->foreignId('user_id');
         });
     }
 
@@ -21,8 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('bestellings', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('klant_user');
     }
 };

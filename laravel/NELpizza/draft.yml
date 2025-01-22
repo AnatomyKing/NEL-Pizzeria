@@ -1,4 +1,5 @@
 models:
+
   Klant:
     id: bigIncrements
     naam: string
@@ -9,6 +10,7 @@ models:
     timestamps: false
     relationships:
       hasMany: Bestelling
+      belongsToMany: User
 
   Bestelling:
     id: bigIncrements
@@ -31,6 +33,7 @@ models:
     relationships:
       belongsTo:
         - Pizza
+        - Bestelling
 
   Pizza:
     id: bigIncrements
@@ -49,17 +52,13 @@ models:
     relationships:
       belongsToMany: Pizza
 
-  Session:
-    id: string
-    user_id: foreign:users nullable
-    ip_address: string nullable
-    user_agent: text nullable
-    payload: longtext
-    last_activity: integer
-    timestamps: false
-
 
 ingredient_pizza:
   pizza_id: foreign:pizzas
   ingredient_id: foreign:ingredients
+  timestamps: false
+
+user_klants:
+  user_id: foreign:users
+  klant_id: foreign:klants
   timestamps: false

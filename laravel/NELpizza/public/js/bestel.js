@@ -1,17 +1,20 @@
-let cart = [];
+// public/js/bestel.js
+
+// Load existing cart from localStorage
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let total = 0;
 let currentPizza = {};
 let basePrice = 0;
 let selectedIngredients = [];
 
-// Open modal
+// Open the modal to configure a pizza
 function openModal(imageSrc, pizzaName, pizzaDescription, pizzaPrice, pizzaId, pizzaIngredients) {
     currentPizza = {
         pizza_id: pizzaId,
         name: pizzaName || 'Unknown Pizza',
         description: pizzaDescription || 'No description available.',
         price: parseFloat(pizzaPrice) || 0,
-        imageUrl: imageSrc || ''
+        imageUrl: imageSrc ? imageSrc : '/images/default.png'
     };
 
     basePrice = currentPizza.price;
@@ -24,25 +27,24 @@ function openModal(imageSrc, pizzaName, pizzaDescription, pizzaPrice, pizzaId, p
 
     buildIngredientList(pizzaIngredients);
 
-    // Reset size to "Medium" = 1
-    document.getElementById('pizza-size').value = "1";  // Medium size is default
+    // Reset size to "Medium" (multiplier = 1)
+    document.getElementById('pizza-size').value = "1";
 
-    // Update and display price
+    // Update the modal price
     updateModalPrice();
 
-    // Add an event listener to update price when the size changes
+    // Re-attach event listeners
     document.getElementById('pizza-size').addEventListener('change', updateModalPrice);
-
-    // Add event listeners for each ingredient checkbox to update price dynamically
     const ingredientCheckboxes = document.querySelectorAll('#ingredient-list input[type="checkbox"]');
     ingredientCheckboxes.forEach((checkbox) => {
-        checkbox.addEventListener('change', updateModalPrice);  // Recalculate price on ingredient change
+        checkbox.addEventListener('change', updateModalPrice);
     });
 
-    // Show modal
+    // Show the modal
     document.getElementById('pizzaModalOverlay').classList.add('active');
 }
 
+// Build the checkboxes for the pizza’s ingredients
 function buildIngredientList(pizzaIngredients) {
     const ingredientListDiv = document.getElementById('ingredient-list');
     ingredientListDiv.innerHTML = '';
@@ -58,14 +60,10 @@ function buildIngredientList(pizzaIngredients) {
         checkbox.dataset.price = ingredient.prijs;
         checkbox.dataset.name = ingredient.naam;
 
-        checkbox.addEventListener('change', () => {
-            updateModalPrice();
-        });
-
         label.appendChild(checkbox);
         label.appendChild(
             document.createTextNode(
-                ` ${ingredient.naam} (+€${parseFloat(ingredient.prijs).toFixed(2)})`
+                `${ingredient.naam} (+€${parseFloat(ingredient.prijs).toFixed(2)})`
             )
         );
 
@@ -73,10 +71,11 @@ function buildIngredientList(pizzaIngredients) {
     });
 }
 
+// Update the modal price based on base price, ingredients, and size
 function updateModalPrice() {
     let sumIngredients = 0;
 
-    // Calculate the price of selected ingredients
+    // Sum up checked ingredients
     const ingredientCheckboxes = document.querySelectorAll('#ingredient-list input[type="checkbox"]');
     ingredientCheckboxes.forEach((cb) => {
         if (cb.checked) {
@@ -84,29 +83,25 @@ function updateModalPrice() {
         }
     });
 
-    // Calculate the subtotal (base price + ingredient prices)
     let subtotal = basePrice + sumIngredients;
-
-    // Get the selected pizza size (Medium = 1, Small = 0.8, Large = 1.2)
     const sizeMultiplier = parseFloat(document.getElementById('pizza-size').value);
-
-    // Calculate the final price considering the size
     const finalPrice = subtotal * sizeMultiplier;
 
-    // Update the final price in the modal
     currentPizza.price = finalPrice;
     document.getElementById('pizzaModalPrice').textContent = `€${finalPrice.toFixed(2)}`;
 }
 
+// Close the pizza config modal
 function closeModal() {
     document.getElementById('pizzaModalOverlay').classList.remove('active');
 }
 
+// Add the configured pizza to cart
 function addToCartFromModal() {
     const ingredientCheckboxes = document.querySelectorAll('#ingredient-list input[type="checkbox"]');
     let chosenIngredients = [];
 
-    // Get selected ingredients
+    // Gather selected ingredients
     ingredientCheckboxes.forEach((cb) => {
         if (cb.checked) {
             chosenIngredients.push({
@@ -132,16 +127,20 @@ function addToCartFromModal() {
     closeModal();
 }
 
+// Actually push the item into the cart array
 function addToCart(pizza_id, name, description, price, imageUrl, sizeMultiplier, chosenIngredients) {
-    const existingItemIndex = cart.findIndex(item =>
+    // Check if exact same pizza (same size & same ingredients) is in cart
+    const existingIndex = cart.findIndex(item =>
         item.pizza_id === pizza_id &&
         item.sizeMultiplier === sizeMultiplier &&
         JSON.stringify(item.chosenIngredients) === JSON.stringify(chosenIngredients)
     );
 
-    if (existingItemIndex >= 0) {
-        cart[existingItemIndex].quantity += 1;
+    if (existingIndex >= 0) {
+        // Increase quantity
+        cart[existingIndex].quantity += 1;
     } else {
+        // Add as new
         cart.push({
             pizza_id,
             name,
@@ -154,22 +153,22 @@ function addToCart(pizza_id, name, description, price, imageUrl, sizeMultiplier,
         });
     }
 
-    total += parseFloat(price);
-    updateCart();
+    updateCartTotal();
+    saveCart();
+    renderCart();
 }
 
-function updateCart() {
+// Update the small cart summary on /bestel
+function renderCart() {
     const cartList = document.getElementById('cart-list');
-    const cartTotal = document.getElementById('cart-total');
+    if (!cartList) return; // If the element doesn't exist, skip
+
     cartList.innerHTML = '';
-    total = 0;
 
     cart.forEach((item, index) => {
         const itemTotal = item.price * item.quantity;
-        total += itemTotal;
-
-        const listItem = document.createElement('li');
-        listItem.innerHTML = `
+        const li = document.createElement('li');
+        li.innerHTML = `
             <img src="${item.imageUrl}" alt="${item.name}" 
                  style="width:50px; height:50px; border-radius:5px; margin-right:10px;">
             <span>
@@ -177,62 +176,51 @@ function updateCart() {
                 <br/>
                 Size: ${sizeText(item.sizeMultiplier)}
             </span>
-            <button onclick="removeFromCart(${index})" 
+            <button onclick="removeFromCart(${index})"
                     style="background:none; border:none; color:red; cursor:pointer;">
                 x
             </button>
         `;
-        cartList.appendChild(listItem);
+        cartList.appendChild(li);
     });
-
-    cartTotal.textContent = total.toFixed(2);
 }
 
+// Remove a single item from cart
 function removeFromCart(index) {
-    total -= cart[index].price * cart[index].quantity;
     cart.splice(index, 1);
-    updateCart();
+    updateCartTotal();
+    saveCart();
+    renderCart();
 }
 
+// Helper function to convert numeric multiplier to text
 function sizeText(multiplier) {
     if (multiplier === 0.8) return 'Small';
     if (multiplier === 1)   return 'Medium';
     if (multiplier === 1.2) return 'Large';
-    
     return 'Unknown';
 }
 
-async function placeOrder() {
-    if (cart.length === 0) {
-        alert("Your cart is empty!");
-        return;
+// Recalculate total for the summary
+function updateCartTotal() {
+    total = 0;
+    for (let item of cart) {
+        total += item.price * item.quantity;
     }
-
-    try {
-        const response = await fetch('/order', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute('content')
-            },
-            body: JSON.stringify({ cart })
-        });
-
-        if (!response.ok) {
-            throw new Error("Error placing order.");
-        }
-
-        const data = await response.json();
-        alert(data.message);
-
-        // Empty the cart after placing order
-        cart = [];
-        total = 0;
-        updateCart();
-    } catch (error) {
-        console.error(error);
-        alert("Something went wrong while placing the order.");
+    const cartTotalEl = document.getElementById('cart-total');
+    if (cartTotalEl) {
+        cartTotalEl.textContent = total.toFixed(2);
     }
 }
+
+// Save cart to localStorage
+function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+// On page load, restore the cart and render summary
+document.addEventListener('DOMContentLoaded', () => {
+    cart = JSON.parse(localStorage.getItem('cart')) || [];
+    renderCart();
+    updateCartTotal();
+});

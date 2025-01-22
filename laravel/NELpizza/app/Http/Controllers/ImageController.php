@@ -11,11 +11,15 @@ class ImageController extends Controller
     {
         $pizza = Pizza::findOrFail($id);
 
-        if (!$pizza->image) {
-            abort(404, 'Image not found.');
-        }
+        abort_if(!$pizza->image, 404, 'Image not found.');
 
-        return response($pizza->image, 200)
-            ->header('Content-Type', 'image/jpeg'); // Adjust if your image type differs
+        return response($pizza->image)
+            ->header('Content-Type', $this->getMimeType($pizza->image))
+            ->header('Content-Disposition', 'inline');
+    }
+
+    private function getMimeType($imageData): string
+    {
+        return finfo_buffer(finfo_open(FILEINFO_MIME_TYPE), $imageData) ?: 'image/jpeg';
     }
 }

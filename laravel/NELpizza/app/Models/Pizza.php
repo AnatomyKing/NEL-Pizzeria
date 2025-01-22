@@ -26,7 +26,6 @@ class Pizza extends Model
         'naam',
         'prijs',
         'beschrijving',
-        'image',
     ];
 
     /**
@@ -42,10 +41,4 @@ class Pizza extends Model
     {
         return $this->belongsToMany(Ingredient::class);
     }
-
-    public function getImageUrlAttribute()
-    {
-        return route('pizzas.image', $this->id);
-    }
-    
 }

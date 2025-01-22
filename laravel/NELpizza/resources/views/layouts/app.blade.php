@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Stonks Pizza')</title>
-    <link rel="stylesheet" href="{{ asset('css/navi.css') }}">
     @yield('refrence')
     <script src="{{ asset('js/javascript.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ asset('css/navi.css') }}">
 </head>
 <body>
     <div id="wrapper">
@@ -26,16 +26,16 @@
         <nav id="menu">
             <a href="{{ route('home') }}" id="one" class="item {{ request()->routeIs('home') ? 'selected' : '' }}">Home</a>
             <a href="{{ route('bestel') }}" id="two" class="item {{ request()->routeIs('bestel') ? 'selected' : '' }}">Bestel</a>
-            <a href="{{ route('contact') }}" id="three" class="item {{ request()->routeIs('contact') ? 'selected' : '' }}">Contact</a>
+            <a href="{{ route('cart') }}" id="three" class="item {{ request()->routeIs('cart') ? 'selected' : '' }}">Cart</a>
+            
             @guest
                 <a href="{{ route('login') }}" id="four" class="item {{ request()->routeIs('login') ? 'selected' : '' }}">Login</a>
+                <a href="{{ route('register') }}" id="five" class="item {{ request()->routeIs('register') ? 'selected' : '' }}">Register</a>
             @else
-            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                @csrf
-                <button type="submit" id="four" class="item" style="all: unset; cursor: pointer;">
-                    Logout
-                </button>
-            </form>
+                <a href="{{ route('dashboard') }}" id="six" class="item {{ request()->routeIs('dashboard') ? 'selected' : '' }}">Dashboard</a>
+                <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+                    @csrf
+                    <button type="submit" id="seven" class="item" style="all: unset; cursor: pointer;">Logout</button>
                 </form>
             @endguest
         </nav>
@@ -47,3 +47,4 @@
     </div>
 </body>
 </html>
+

@@ -26,7 +26,7 @@ class Bestelregel extends Model
         'aantal',
         'afmeting',
         'pizza_id',
-        'bestelling_id',
+        'bestelling_id'
     ];
 
     /**
