@@ -14,9 +14,9 @@ using System.Windows.Shapes;
 
 namespace NELpizza.View
 {
-    public partial class UnusedView : UserControl
+    public partial class LoginView : UserControl
     {
-        public UnusedView()
+        public LoginView()
         {
             InitializeComponent();
         }

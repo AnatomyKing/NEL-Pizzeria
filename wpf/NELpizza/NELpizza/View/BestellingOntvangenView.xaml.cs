@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace NELpizza.View
 {
     /// <summary>
-    /// Interaction logic for ExportView.xaml
+    /// Interaction logic for BestellingOntvangenView.xaml
     /// </summary>
-    public partial class ExportView : UserControl
+    public partial class BestellingOntvangenView : UserControl
     {
-        public ExportView()
+        public BestellingOntvangenView()
         {
             InitializeComponent();
         }

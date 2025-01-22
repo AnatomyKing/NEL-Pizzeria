@@ -13,9 +13,9 @@
 
     <Window.Resources>
         <DataTemplate
-        DataType="{x:Type viewmodels:MainViewContentViewModel}"
+        DataType="{x:Type viewmodels:LoginViewModel}"
         >
-            <local:MainViewContentView/>
+            <local:LoginView/>
         </DataTemplate>
 
 
@@ -26,27 +26,27 @@
         </DataTemplate>
 
         <DataTemplate 
-        DataType="{x:Type viewmodels:BlockTypeViewModel}"
+        DataType="{x:Type viewmodels:BestellingOntvangenViewModel}"
         >
-            <local:BlockTypeView/>
+            <local:BestellingOntvangenView/>
         </DataTemplate>
 
         <DataTemplate 
-        DataType="{x:Type viewmodels:KlantViewModel}"
+        DataType="{x:Type viewmodels:GebruikersBeheerViewModel}"
         >
-            <local:KlantView/>
+            <local:GebruikersBeheerView/>
         </DataTemplate>
 
         <DataTemplate 
-        DataType="{x:Type viewmodels:UnusedViewModel}"
+        DataType="{x:Type viewmodels:PizzaBeheerViewModel}"
         >
-            <local:UnusedView/>
+            <local:PizzaBeheerView/>
         </DataTemplate>
 
         <DataTemplate 
-        DataType="{x:Type viewmodels:ExportViewModel}"
+        DataType="{x:Type viewmodels:BezorgingViewModel}"
         >
-            <local:ExportView/>
+            <local:BezorgingView/>
         </DataTemplate>
 
 
@@ -60,12 +60,12 @@
     <DockPanel>
         <!-- Navigation Menu -->
         <StackPanel DockPanel.Dock="Left" Background="#2C3E50" Width="200">
-            <Button Content="Dashboard" Command="{Binding NavigateCommand}" CommandParameter="MainViewContentViewModel" Margin="10"/>
+            <Button Content="Login" Command="{Binding NavigateCommand}" CommandParameter="LoginViewModel" Margin="10"/>
             <Button Content="Parent Items" Command="{Binding NavigateCommand}" CommandParameter="ParentItemViewModel" Margin="10"/>
-            <Button Content="Block Types" Command="{Binding NavigateCommand}" CommandParameter="BlockTypeViewModel" Margin="10"/>
-            <Button Content="Klants" Command="{Binding NavigateCommand}" CommandParameter="KlantViewModel" Margin="10"/>
-            <Button Content="Unused Items" Command="{Binding NavigateCommand}" CommandParameter="UnusedViewModel" Margin="10"/>
-            <Button Content="Export" Command="{Binding NavigateCommand}" CommandParameter="ExportViewModel" Margin="10"/>
+            <Button Content="Block Types" Command="{Binding NavigateCommand}" CommandParameter="BestellingOntvangenViewModel" Margin="10"/>
+            <Button Content="Klants" Command="{Binding NavigateCommand}" CommandParameter="GebruikersBeheerViewModel" Margin="10"/>
+            <Button Content="PizzaBeheer Items" Command="{Binding NavigateCommand}" CommandParameter="PizzaBeheerViewModel" Margin="10"/>
+            <Button Content="Bezorging" Command="{Binding NavigateCommand}" CommandParameter="BezorgingViewModel" Margin="10"/>
         </StackPanel>
 
         <!-- Dynamic Content -->

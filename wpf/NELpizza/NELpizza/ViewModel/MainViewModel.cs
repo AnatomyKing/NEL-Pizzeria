@@ -16,7 +16,7 @@ namespace NELpizza.ViewModels
 
         public MainViewModel()
         {
-            CurrentView = new MainViewContentViewModel();
+            CurrentView = new LoginViewModel();
             NavigateCommand = new RelayCommand(Navigate);
         }
 
@@ -39,11 +39,11 @@ namespace NELpizza.ViewModels
             CurrentView = viewName switch
             {
                 "ParentItemViewModel" => new ParentItemViewModel(),
-                "UnusedViewModel" => new UnusedViewModel(),
-                "BlockTypeViewModel" => new BlockTypeViewModel(),
-                "KlantViewModel" => new KlantViewModel(),
-                "ExportViewModel" => new ExportViewModel(),
-                _ => new MainViewContentViewModel()
+                "PizzaBeheerViewModel" => new PizzaBeheerViewModel(),
+                "BestellingOntvangenViewModel" => new BestellingOntvangenViewModel(),
+                "GebruikersBeheerViewModel" => new GebruikersBeheerViewModel(),
+                "BezorgingViewModel" => new BezorgingViewModel(),
+                _ => new LoginViewModel()
             };
         }
     }

@@ -9,9 +9,10 @@ using NELpizza.Databases;
 using NELpizza.Helpers;
 using NELpizza.Model;
 
+
 namespace NELpizza.ViewModels.Views
 {
-    internal class BlockTypeViewModel : ObservableObject
+    internal class GebruikersBeheerViewModel : ObservableObject
     {
 
     }
