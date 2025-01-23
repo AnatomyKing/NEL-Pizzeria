@@ -21,8 +21,10 @@ namespace NELpizza.Model
         [Column("beschrijving", TypeName = "TEXT")]
         public string? Beschrijving { get; set; }
 
-        public virtual ICollection<IngredientPizza> Ingredienten { get; set; } = new HashSet<IngredientPizza>();
+        [Column("image", TypeName = "MEDIUMBLOB")]
+        public byte[]? Image { get; set; }
 
-        public byte[]? Image { get; set; } // Add image property
+        // Add this property to fix the error
+        public virtual ICollection<IngredientPizza> Ingredienten { get; set; } = new HashSet<IngredientPizza>();
     }
 }

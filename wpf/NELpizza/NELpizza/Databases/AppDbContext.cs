@@ -5,9 +5,11 @@ using NELpizza.Model;
 
 namespace NELpizza.Databases
 {
-    internal class AppDbContext : DbContext
+    public class AppDbContext : DbContext
     {
+        // DbSets for database tables
         public DbSet<Klant> Klants { get; set; }
+        public DbSet<Employee> Employees { get; set; }
         public DbSet<Bestelling> Bestellings { get; set; }
         public DbSet<Bestelregel> Bestelregels { get; set; }
         public DbSet<Pizza> Pizzas { get; set; }
@@ -17,18 +19,21 @@ namespace NELpizza.Databases
         public DbSet<KlantUser> KlantUsers { get; set; }
         public DbSet<BestelregelIngredient> BestelregelIngredienten { get; set; }
 
+        // Configuring the database connection
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                // Use the connection string from app.config or web.config
+                // Retrieve connection string from app.config or web.config
                 string connStr = ConfigurationManager.ConnectionStrings["MyConnStr"].ConnectionString;
-                optionsBuilder.UseMySQL(connStr); // Use MySQL
+                optionsBuilder.UseMySQL(connStr); // Use MySQL as the database provider
             }
         }
 
+        // Configuring entity relationships and other configurations
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Configure entities with methods
             ConfigureIngredientPizzaEntity(modelBuilder);
             ConfigureBestelregelIngredientEntity(modelBuilder);
             ConfigureKlantUserEntity(modelBuilder);
@@ -36,8 +41,11 @@ namespace NELpizza.Databases
             ConfigurePizzaEntity(modelBuilder);
             ConfigureIngredientEntity(modelBuilder);
             ConfigureEnums(modelBuilder);
+
+            base.OnModelCreating(modelBuilder);
         }
 
+        // Entity configuration for IngredientPizza
         private static void ConfigureIngredientPizzaEntity(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IngredientPizza>()
@@ -56,6 +64,7 @@ namespace NELpizza.Databases
                 .OnDelete(DeleteBehavior.Cascade);
         }
 
+        // Entity configuration for BestelregelIngredient
         private static void ConfigureBestelregelIngredientEntity(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BestelregelIngredient>()
@@ -71,6 +80,7 @@ namespace NELpizza.Databases
                 .OnDelete(DeleteBehavior.Cascade);
         }
 
+        // Entity configuration for KlantUser
         private static void ConfigureKlantUserEntity(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<KlantUser>()
@@ -89,6 +99,7 @@ namespace NELpizza.Databases
                 .OnDelete(DeleteBehavior.Cascade);
         }
 
+        // Configuring general relationships
         private static void ConfigureRelationships(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Bestelling>()
@@ -110,6 +121,7 @@ namespace NELpizza.Databases
                 .OnDelete(DeleteBehavior.Cascade);
         }
 
+        // Configure the Pizza entity
         private static void ConfigurePizzaEntity(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Pizza>()
@@ -117,6 +129,7 @@ namespace NELpizza.Databases
                 .HasColumnType("DECIMAL(8,2)");
         }
 
+        // Configure the Ingredient entity
         private static void ConfigureIngredientEntity(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Ingredient>()
@@ -124,6 +137,7 @@ namespace NELpizza.Databases
                 .HasColumnType("DECIMAL(8,2)");
         }
 
+        // Configure enums (e.g., order status, pizza sizes)
         private static void ConfigureEnums(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Bestelling>()
@@ -135,18 +149,19 @@ namespace NELpizza.Databases
                 .HasConversion<string>();
         }
 
+        // Method to initialize and optionally seed the database
         public static void InitializeDatabase()
         {
             using (var context = new AppDbContext())
             {
                 try
                 {
-                    // Drop and recreate the database if needed (development only)
+                    // Development-only database initialization
+                    // Uncomment these lines during development
                     // context.Database.EnsureDeleted();
                     // context.Database.EnsureCreated();
 
-                    // Optional: Seed the database with initial data
-                    // DatabaseSeeder.Seed(context);
+                    // Optional: Add seeding logic here (e.g., initial data for employees, pizzas)
                 }
                 catch (Exception ex)
                 {

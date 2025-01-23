@@ -1,128 +1,119 @@
-﻿using Microsoft.Win32; // For OpenFileDialog
-using NELpizza.Databases;
-using NELpizza.Model;
-using System.IO;
-using NELpizza.Helpers;
+﻿using Microsoft.Win32;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 using System.Windows.Input;
+using NELpizza.Databases;
+using NELpizza.Helpers;
+using NELpizza.Model;
 
 namespace NELpizza.ViewModels.Views
 {
     public class ManagerViewModel : ObservableObject
     {
-        private string _naam = string.Empty;
-        private decimal _prijs;
-        private string? _beschrijving;
-        private byte[]? _image;
-        private Pizza? _selectedPizza;
-
         private readonly AppDbContext _dbContext;
 
-        public ManagerViewModel()
-        {
-            AddPizzaCommand = new RelayCommand(_ => AddPizza());
-            UpdatePizzaCommand = new RelayCommand(_ => UpdatePizza(), _ => CanModifyOrDelete);
-            DeletePizzaCommand = new RelayCommand(_ => DeletePizza(), _ => CanModifyOrDelete);
-            UploadImageCommand = new RelayCommand(_ => UploadImage());
+        // Observable collections for pizzas and employees
+        public ObservableCollection<Pizza> Pizzas { get; } = new();
+        public ObservableCollection<Employee> Employees { get; } = new();
 
-            _dbContext = new AppDbContext();
-            LoadPizzas();
-        }
+        // Properties for Pizza form
+        public string PizzaNaam { get; set; }
+        public decimal PizzaPrijs { get; set; }
+        public string PizzaBeschrijving { get; set; }
+        public byte[]? PizzaImage { get; set; }
+        public Pizza? SelectedPizza { get; set; }
 
-        // Properties
-        public string Naam
-        {
-            get => _naam;
-            set { _naam = value; OnPropertyChanged(); }
-        }
+        // Properties for Employee form
+        public string EmployeeNaam { get; set; }
+        public string Functie { get; set; }
+        public string Email { get; set; }
+        public string Telefoon { get; set; }
+        public Employee? SelectedEmployee { get; set; }
 
-        public decimal Prijs
-        {
-            get => _prijs;
-            set { _prijs = value; OnPropertyChanged(); }
-        }
-
-        public string? Beschrijving
-        {
-            get => _beschrijving;
-            set { _beschrijving = value; OnPropertyChanged(); }
-        }
-
-        public byte[]? Image
-        {
-            get => _image;
-            set { _image = value; OnPropertyChanged(); }
-        }
-
-        public Pizza? SelectedPizza
-        {
-            get => _selectedPizza;
-            set
-            {
-                _selectedPizza = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(CanModifyOrDelete));
-
-                if (_selectedPizza != null)
-                {
-                    Naam = _selectedPizza.Naam;
-                    Prijs = _selectedPizza.Prijs;
-                    Beschrijving = _selectedPizza.Beschrijving;
-                    Image = _selectedPizza.Image;
-                }
-            }
-        }
-
-        public bool CanModifyOrDelete => SelectedPizza != null;
-
-        public ObservableCollection<Pizza> Pizzas { get; set; } = new ObservableCollection<Pizza>();
-
+        // Commands
         public ICommand AddPizzaCommand { get; }
         public ICommand UpdatePizzaCommand { get; }
         public ICommand DeletePizzaCommand { get; }
         public ICommand UploadImageCommand { get; }
+        public ICommand AddEmployeeCommand { get; }
+        public ICommand UpdateEmployeeCommand { get; }
+        public ICommand DeleteEmployeeCommand { get; }
 
-        private void LoadPizzas()
+        public ManagerViewModel()
         {
+            _dbContext = new AppDbContext();
+            LoadData();
+
+            // Initialize commands
+            AddPizzaCommand = new RelayCommand(_ => AddPizza());
+            UpdatePizzaCommand = new RelayCommand(_ => UpdatePizza(), _ => SelectedPizza != null);
+            DeletePizzaCommand = new RelayCommand(_ => DeletePizza(), _ => SelectedPizza != null);
+            UploadImageCommand = new RelayCommand(_ => UploadImage());
+
+            AddEmployeeCommand = new RelayCommand(_ => AddEmployee());
+            UpdateEmployeeCommand = new RelayCommand(_ => UpdateEmployee(), _ => SelectedEmployee != null);
+            DeleteEmployeeCommand = new RelayCommand(_ => DeleteEmployee(), _ => SelectedEmployee != null);
+        }
+
+        private void LoadData()
+        {
+            // Load pizzas
             Pizzas.Clear();
-            var pizzasFromDb = _dbContext.Pizzas.ToList();
-            foreach (var pizza in pizzasFromDb)
+            foreach (var pizza in _dbContext.Pizzas.ToList())
             {
                 Pizzas.Add(pizza);
             }
+
+            // Load employees
+            Employees.Clear();
+            foreach (var employee in _dbContext.Employees.ToList())
+            {
+                Employees.Add(employee);
+            }
         }
 
+        // Pizza CRUD Methods
         private void AddPizza()
         {
             var newPizza = new Pizza
             {
-                Naam = Naam,
-                Prijs = Prijs,
-                Beschrijving = Beschrijving,
-                Image = Image // Save image to DB
+                Naam = PizzaNaam,
+                Prijs = PizzaPrijs,
+                Beschrijving = PizzaBeschrijving,
+                Image = PizzaImage
             };
 
             _dbContext.Pizzas.Add(newPizza);
             _dbContext.SaveChanges();
-
             Pizzas.Add(newPizza);
-            ClearInputs();
+
+            // Clear form fields
+            PizzaNaam = string.Empty;
+            PizzaPrijs = 0;
+            PizzaBeschrijving = string.Empty;
+            PizzaImage = null;
+
+            OnPropertyChanged(nameof(PizzaNaam));
+            OnPropertyChanged(nameof(PizzaPrijs));
+            OnPropertyChanged(nameof(PizzaBeschrijving));
+            OnPropertyChanged(nameof(PizzaImage));
         }
 
         private void UpdatePizza()
         {
             if (SelectedPizza == null) return;
 
-            SelectedPizza.Naam = Naam;
-            SelectedPizza.Prijs = Prijs;
-            SelectedPizza.Beschrijving = Beschrijving;
-            SelectedPizza.Image = Image;
+            SelectedPizza.Naam = PizzaNaam;
+            SelectedPizza.Prijs = PizzaPrijs;
+            SelectedPizza.Beschrijving = PizzaBeschrijving;
+            SelectedPizza.Image = PizzaImage;
 
             _dbContext.Pizzas.Update(SelectedPizza);
             _dbContext.SaveChanges();
 
-            OnPropertyChanged(nameof(Pizzas)); // Refresh UI
-            ClearInputs();
+            // Refresh the list
+            LoadData();
         }
 
         private void DeletePizza()
@@ -131,31 +122,74 @@ namespace NELpizza.ViewModels.Views
 
             _dbContext.Pizzas.Remove(SelectedPizza);
             _dbContext.SaveChanges();
-
             Pizzas.Remove(SelectedPizza);
-            ClearInputs();
         }
 
         private void UploadImage()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            var openFileDialog = new OpenFileDialog
             {
+                Title = "Select an Image",
                 Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp"
             };
 
             if (openFileDialog.ShowDialog() == true)
             {
-                Image = File.ReadAllBytes(openFileDialog.FileName);
+                PizzaImage = File.ReadAllBytes(openFileDialog.FileName);
+                OnPropertyChanged(nameof(PizzaImage));
             }
         }
 
-        private void ClearInputs()
+        // Employee CRUD Methods
+        private void AddEmployee()
         {
-            Naam = string.Empty;
-            Prijs = 0;
-            Beschrijving = null;
-            Image = null;
-            SelectedPizza = null;
+            var newEmployee = new Employee
+            {
+                Naam = EmployeeNaam,
+                Functie = Functie,
+                Email = Email,
+                Telefoon = Telefoon
+            };
+
+            _dbContext.Employees.Add(newEmployee);
+            _dbContext.SaveChanges();
+            Employees.Add(newEmployee);
+
+            // Clear form fields
+            EmployeeNaam = string.Empty;
+            Functie = string.Empty;
+            Email = string.Empty;
+            Telefoon = string.Empty;
+
+            OnPropertyChanged(nameof(EmployeeNaam));
+            OnPropertyChanged(nameof(Functie));
+            OnPropertyChanged(nameof(Email));
+            OnPropertyChanged(nameof(Telefoon));
+        }
+
+        private void UpdateEmployee()
+        {
+            if (SelectedEmployee == null) return;
+
+            SelectedEmployee.Naam = EmployeeNaam;
+            SelectedEmployee.Functie = Functie;
+            SelectedEmployee.Email = Email;
+            SelectedEmployee.Telefoon = Telefoon;
+
+            _dbContext.Employees.Update(SelectedEmployee);
+            _dbContext.SaveChanges();
+
+            // Refresh the list
+            LoadData();
+        }
+
+        private void DeleteEmployee()
+        {
+            if (SelectedEmployee == null) return;
+
+            _dbContext.Employees.Remove(SelectedEmployee);
+            _dbContext.SaveChanges();
+            Employees.Remove(SelectedEmployee);
         }
     }
 }

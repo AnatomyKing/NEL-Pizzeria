@@ -8,59 +8,91 @@
              xmlns:local="clr-namespace:NELpizza.Helpers"
              mc:Ignorable="d">
 
+	<!-- Bind to ManagerViewModel -->
 	<UserControl.DataContext>
 		<viewmodels:ManagerViewModel />
 	</UserControl.DataContext>
 
+	<!-- Converter for Image Binding -->
 	<UserControl.Resources>
 		<local:ByteArrayToImageConverter x:Key="ByteArrayToImageConverter" />
 	</UserControl.Resources>
 
 	<Grid Margin="20">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
-		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
 
-		<!-- Input Section -->
-		<StackPanel Orientation="Vertical" Margin="0,0,0,10" Grid.Row="0">
-			<TextBox Text="{Binding Naam, UpdateSourceTrigger=PropertyChanged}"
-                     materialDesign:HintAssist.Hint="Pizza Naam" Margin="0,0,0,10" />
-			<TextBox Text="{Binding Prijs, UpdateSourceTrigger=PropertyChanged}"
-                     materialDesign:HintAssist.Hint="Prijs (€)" Margin="0,0,0,10" />
-			<TextBox Text="{Binding Beschrijving, UpdateSourceTrigger=PropertyChanged}"
-                     materialDesign:HintAssist.Hint="Beschrijving" Margin="0,0,0,10" />
+		<!-- Pizza Management Section -->
+		<StackPanel Margin="10" Grid.Column="0">
+			<TextBlock Text="Pizza's" FontSize="20" FontWeight="Bold" Margin="0,0,0,10" />
 
-			<!-- Image Section -->
-			<StackPanel Orientation="Vertical" Margin="0,10,0,10">
-				<Button Content="Upload Image" Command="{Binding UploadImageCommand}" />
-				<Image Source="{Binding Image, Converter={StaticResource ByteArrayToImageConverter}}"
-                       Height="150" Margin="0,10,0,0" Stretch="Uniform" />
-			</StackPanel>
+			<!-- Pizza List with Scroll Support -->
+			<ScrollViewer VerticalScrollBarVisibility="Auto" Height="300">
+				<ItemsControl ItemsSource="{Binding Pizzas}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<materialDesign:Card Margin="5" Padding="10" materialDesign:ElevationAssist.Elevation="Dp2">
+								<StackPanel Orientation="Vertical">
+									<TextBlock FontWeight="Bold" Text="{Binding Naam}" />
+									<TextBlock Text="{Binding Prijs, StringFormat=Prijs: €{0:F2}}" />
+									<TextBlock Foreground="Gray" Text="{Binding Beschrijving}" />
+									<Image Source="{Binding Image, Converter={StaticResource ByteArrayToImageConverter}}"
+                                           Height="75" Stretch="Uniform" Margin="0,5,0,0" />
+								</StackPanel>
+							</materialDesign:Card>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</ScrollViewer>
 
-			<!-- Action Buttons -->
+			<!-- Pizza Form -->
+			<TextBox Text="{Binding PizzaNaam, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Pizza Naam" Margin="0,10,0,0" />
+			<TextBox Text="{Binding PizzaPrijs, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Prijs (€)" Margin="0,10,0,0" />
+			<TextBox Text="{Binding PizzaBeschrijving, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Beschrijving" Margin="0,10,0,0" />
+			<Button Content="Upload Image" Command="{Binding UploadImageCommand}" Margin="0,10,0,0" />
+
+			<!-- Pizza Action Buttons -->
 			<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
 				<Button Content="Toevoegen" Command="{Binding AddPizzaCommand}" Margin="0,0,10,0" />
-				<Button Content="Bijwerken" Command="{Binding UpdatePizzaCommand}" IsEnabled="{Binding CanModifyOrDelete}" Margin="0,0,10,0" />
-				<Button Content="Verwijderen" Command="{Binding DeletePizzaCommand}" IsEnabled="{Binding CanModifyOrDelete}" />
+				<Button Content="Bijwerken" Command="{Binding UpdatePizzaCommand}"
+                        IsEnabled="{Binding SelectedPizza}" Margin="0,0,10,0" />
+				<Button Content="Verwijderen" Command="{Binding DeletePizzaCommand}"
+                        IsEnabled="{Binding SelectedPizza}" />
 			</StackPanel>
 		</StackPanel>
 
-		<!-- Pizza List -->
-		<ListBox ItemsSource="{Binding Pizzas}" SelectedItem="{Binding SelectedPizza}" Grid.Row="1">
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-					<materialDesign:Card Margin="5" Padding="10" materialDesign:ElevationAssist.Elevation="Dp2">
-						<StackPanel>
-							<TextBlock FontWeight="Bold" Text="{Binding Naam}" />
-							<TextBlock Text="{Binding Prijs, StringFormat=Prijs: €{0:F2}}" />
-							<TextBlock Foreground="Gray" Text="{Binding Beschrijving}" />
-							<Image Source="{Binding Image, Converter={StaticResource ByteArrayToImageConverter}}"
-                                   Height="75" Stretch="Uniform" />
-						</StackPanel>
-					</materialDesign:Card>
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox>
+		<!-- Employee Management Section -->
+		<StackPanel Margin="10" Grid.Column="1">
+			<TextBlock Text="Werknemers" FontSize="20" FontWeight="Bold" Margin="0,0,0,10" />
+
+			<!-- Employee List -->
+			<ListBox ItemsSource="{Binding Employees}"
+                     SelectedItem="{Binding SelectedEmployee}"
+                     DisplayMemberPath="Naam" />
+
+			<!-- Employee Form -->
+			<TextBox Text="{Binding EmployeeNaam, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Naam" Margin="0,10,0,0" />
+			<TextBox Text="{Binding Functie, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Functie" Margin="0,10,0,0" />
+			<TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Email" Margin="0,10,0,0" />
+			<TextBox Text="{Binding Telefoon, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Telefoon" Margin="0,10,0,0" />
+
+			<!-- Employee Action Buttons -->
+			<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+				<Button Content="Toevoegen" Command="{Binding AddEmployeeCommand}" Margin="0,0,10,0" />
+				<Button Content="Bijwerken" Command="{Binding UpdateEmployeeCommand}"
+                        IsEnabled="{Binding SelectedEmployee}" Margin="0,0,10,0" />
+				<Button Content="Verwijderen" Command="{Binding DeleteEmployeeCommand}"
+                        IsEnabled="{Binding SelectedEmployee}" />
+			</StackPanel>
+		</StackPanel>
 	</Grid>
 </UserControl>
