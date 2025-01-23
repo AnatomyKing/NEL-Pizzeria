@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('bestellings', function (Blueprint $table) {
             $table->id();
             $table->timestamp('datum');
-            $table->enum('status', ["initieel","betaald","bereiden","inoven","onderweg","bezorgd"]);
+            $table->enum('status', ["besteld","bereiden","inoven","uitoven","onderweg","bezorgd"]);
             $table->foreignId('klant_id')->constrained();
         });
 

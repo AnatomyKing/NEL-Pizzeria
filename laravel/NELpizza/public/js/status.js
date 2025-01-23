@@ -1,9 +1,30 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const steps = ["initieel", "betaald", "bereiden", "inoven", "onderweg", "bezorgd"];
+  const steps = ["besteld", "bereiden", "inoven", "uitoven", "onderweg", "bezorgd"];
   const ordersContainer = document.getElementById('ordersContainer');
   const noOrdersMessage = document.getElementById('noOrdersMessage');
 
   let orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+  async function checkOrderExistence(orderId) {
+      try {
+          const response = await fetch(`/order/status/${orderId}`);
+          if (!response.ok) throw new Error("Order not found");
+          return true;
+      } catch {
+          return false;
+      }
+  }
+
+  async function validateOrders() {
+      for (let i = orders.length - 1; i >= 0; i--) {
+          const exists = await checkOrderExistence(orders[i].id);
+          if (!exists) {
+              orders.splice(i, 1);
+          }
+      }
+      saveOrders();
+      renderOrders();
+  }
 
   function renderOrders() {
       ordersContainer.innerHTML = '';
@@ -57,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  function updateOrderStatus(orderId, direction) {
+  async function updateOrderStatus(orderId, direction) {
       const orderIndex = orders.findIndex(order => order.id == orderId);
       if (orderIndex !== -1) {
           let newIndex = orders[orderIndex].statusIndex;
@@ -90,5 +111,24 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   }
 
+  async function fetchOrderStatuses() {
+      for (let order of orders) {
+          try {
+              const response = await fetch(`/order/status/${order.id}`);
+              if (response.ok) {
+                  const data = await response.json();
+                  order.statusIndex = steps.indexOf(data.status);
+                  saveOrders();
+                  renderOrders();
+              }
+          } catch (error) {
+              console.error(`Error fetching status for order ${order.id}:`, error);
+          }
+      }
+  }
+
+  validateOrders();
   renderOrders();
+
+  setInterval(fetchOrderStatuses, 10000); // Live update every 10 seconds
 });

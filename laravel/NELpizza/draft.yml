@@ -15,7 +15,7 @@ models:
   Bestelling:
     id: bigIncrements
     datum: timestamp
-    status: enum:initieel,betaald,bereiden,inoven,onderweg,bezorgd
+    status: enum:besteld,bereiden,inoven,uitoven,onderweg,bezorgd
     klant_id: foreign:klants
     pizza_id: foreign:pizzas
     timestamps: false

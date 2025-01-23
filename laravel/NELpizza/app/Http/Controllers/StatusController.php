@@ -23,7 +23,7 @@ class StatusController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:initieel,betaald,bereiden,inoven,onderweg,bezorgd'
+            'status' => 'required|in:besteld,bereiden,inoven,uitoven,onderweg,bezorgd'
         ]);
 
         $bestelling = Bestelling::find($id);

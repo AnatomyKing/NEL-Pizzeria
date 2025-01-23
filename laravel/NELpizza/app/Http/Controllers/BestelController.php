@@ -40,7 +40,7 @@ class BestelController extends Controller
     
         $bestelling = Bestelling::create([
             'datum'    => now(),
-            'status'   => 'initieel',
+            'status'   => 'besteld',
             'klant_id' => $klant->id,
         ]);
     

@@ -13,7 +13,7 @@
 @section('content')
 <main class="main-wrapper">
   <div id="ordersContainer">
-    <!-- Orders will be dynamically loaded here -->
+    
   </div>
   <div id="noOrdersMessage" class="no-orders-message">
     Nog geen bestelling om te volgen!

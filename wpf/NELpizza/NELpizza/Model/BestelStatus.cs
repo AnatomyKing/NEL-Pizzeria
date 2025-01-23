@@ -8,10 +8,10 @@ namespace NELpizza.Model
 {
     public enum BestelStatus
     {
-        initieel,
-        betaald,
+        besteld,
         bereiden,
         inoven,
+        uitoven,
         onderweg,
         bezorgd
     }

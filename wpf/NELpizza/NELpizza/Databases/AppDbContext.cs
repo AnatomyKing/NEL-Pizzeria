@@ -12,6 +12,9 @@ namespace NELpizza.Databases
         public DbSet<Pizza> Pizzas { get; set; }
         public DbSet<Ingredient> Ingredienten { get; set; }
         public DbSet<IngredientPizza> IngredientPizzas { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<KlantUser> KlantUsers { get; set; }
+        public DbSet<BestelregelIngredient> BestelregelIngredienten { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -40,11 +43,40 @@ namespace NELpizza.Databases
                 .HasForeignKey(ip => ip.PizzaId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Bestelregel Relationships
-            modelBuilder.Entity<Bestelregel>()
-                .HasOne(br => br.Pizza)
+            // BestelregelIngredient Pivot Table
+            modelBuilder.Entity<BestelregelIngredient>()
+                .HasOne(bi => bi.Bestelregel)
+                .WithMany(br => br.BestelregelIngredients)
+                .HasForeignKey(bi => bi.BestelregelId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<BestelregelIngredient>()
+                .HasOne(bi => bi.Ingredient)
                 .WithMany()
-                .HasForeignKey(br => br.PizzaId)
+                .HasForeignKey(bi => bi.IngredientId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Klant-User Pivot Table
+            modelBuilder.Entity<KlantUser>()
+                .HasKey(ku => new { ku.KlantId, ku.UserId });
+
+            modelBuilder.Entity<KlantUser>()
+                .HasOne(ku => ku.Klant)
+                .WithMany()
+                .HasForeignKey(ku => ku.KlantId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<KlantUser>()
+                .HasOne(ku => ku.User)
+                .WithMany()
+                .HasForeignKey(ku => ku.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Relationships
+            modelBuilder.Entity<Bestelling>()
+                .HasOne(b => b.Klant)
+                .WithMany(k => k.Bestellingen)
+                .HasForeignKey(b => b.KlantId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Bestelregel>()
@@ -53,11 +85,10 @@ namespace NELpizza.Databases
                 .HasForeignKey(br => br.BestellingId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Bestelling and Klant Relationship
-            modelBuilder.Entity<Bestelling>()
-                .HasOne(b => b.Klant)
-                .WithMany(k => k.Bestellingen)
-                .HasForeignKey(b => b.KlantId)
+            modelBuilder.Entity<Bestelregel>()
+                .HasOne(br => br.Pizza)
+                .WithMany()
+                .HasForeignKey(br => br.PizzaId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Pizza Model Configuration
@@ -70,10 +101,12 @@ namespace NELpizza.Databases
                 .Property(i => i.Prijs)
                 .HasColumnType("DECIMAL(8,2)");
 
-            // Enum Configuration
+            // Enum Configuration for Order Statuses
             modelBuilder.Entity<Bestelling>()
                 .Property(b => b.Status)
                 .HasConversion<string>();
+
+            // Enum Configuration for Pizza Sizes
             modelBuilder.Entity<Bestelregel>()
                 .Property(br => br.Afmeting)
                 .HasConversion<string>();
@@ -89,7 +122,7 @@ namespace NELpizza.Databases
                     //context.Database.EnsureDeleted();
 
                     // Create the database
-                    context.Database.EnsureCreated();
+                    //context.Database.EnsureCreated();
 
                     // Seed the database
                     // DatabaseSeeder.Seed(context);
