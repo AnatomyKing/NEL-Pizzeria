@@ -14,7 +14,7 @@ using NELpizza.Model;
 
 namespace NELpizza.ViewModels.Views
 {
-    internal class BezorgingViewModel : ObservableObject
+    internal class BezorgerViewModel : ObservableObject
     {
 
     }

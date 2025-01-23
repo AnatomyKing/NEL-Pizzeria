@@ -13,40 +13,24 @@
 
     <Window.Resources>
         <DataTemplate
-        DataType="{x:Type viewmodels:LoginViewModel}"
+        DataType="{x:Type viewmodels:BakkerViewModel}"
         >
-            <local:LoginView/>
+            <local:BakkerView/>
         </DataTemplate>
 
 
         <DataTemplate 
-        DataType="{x:Type viewmodels:ParentItemViewModel}"
+        DataType="{x:Type viewmodels:BezorgerViewModel}"
         >
-            <local:ParentItemView/>
+            <local:BezorgerView/>
         </DataTemplate>
 
+        
+        
         <DataTemplate 
-        DataType="{x:Type viewmodels:BestellingOntvangenViewModel}"
+        DataType="{x:Type viewmodels:ManagerViewModel}"
         >
-            <local:BestellingOntvangenView/>
-        </DataTemplate>
-
-        <DataTemplate 
-        DataType="{x:Type viewmodels:GebruikersBeheerViewModel}"
-        >
-            <local:GebruikersBeheerView/>
-        </DataTemplate>
-
-        <DataTemplate 
-        DataType="{x:Type viewmodels:PizzaBeheerViewModel}"
-        >
-            <local:PizzaBeheerView/>
-        </DataTemplate>
-
-        <DataTemplate 
-        DataType="{x:Type viewmodels:BezorgingViewModel}"
-        >
-            <local:BezorgingView/>
+            <local:ManagerView/>
         </DataTemplate>
 
 
@@ -60,12 +44,9 @@
     <DockPanel>
         <!-- Navigation Menu -->
         <StackPanel DockPanel.Dock="Left" Background="#2C3E50" Width="200">
-            <Button Content="Login" Command="{Binding NavigateCommand}" CommandParameter="LoginViewModel" Margin="10"/>
-            <Button Content="Parent Items" Command="{Binding NavigateCommand}" CommandParameter="ParentItemViewModel" Margin="10"/>
-            <Button Content="Block Types" Command="{Binding NavigateCommand}" CommandParameter="BestellingOntvangenViewModel" Margin="10"/>
-            <Button Content="Klants" Command="{Binding NavigateCommand}" CommandParameter="GebruikersBeheerViewModel" Margin="10"/>
-            <Button Content="PizzaBeheer Items" Command="{Binding NavigateCommand}" CommandParameter="PizzaBeheerViewModel" Margin="10"/>
-            <Button Content="Bezorging" Command="{Binding NavigateCommand}" CommandParameter="BezorgingViewModel" Margin="10"/>
+            <Button Content="Bakker" Command="{Binding NavigateCommand}" CommandParameter="BakkerViewModel" Margin="10"/>
+            <Button Content="Bezorger" Command="{Binding NavigateCommand}" CommandParameter="BezorgerViewModel" Margin="10"/>
+            <Button Content="Manager" Command="{Binding NavigateCommand}" CommandParameter="ManagerViewModel" Margin="10"/>
         </StackPanel>
 
         <!-- Dynamic Content -->

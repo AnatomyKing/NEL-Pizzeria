@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 using NELpizza.Databases;
 using NELpizza.Helpers;
 using NELpizza.Model;
 
-
 namespace NELpizza.ViewModels.Views
 {
-    internal class GebruikersBeheerViewModel : ObservableObject
+    internal class ManagerViewModel : ObservableObject
     {
 
     }

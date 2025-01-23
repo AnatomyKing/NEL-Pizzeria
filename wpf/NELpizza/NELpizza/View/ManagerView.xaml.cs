@@ -14,9 +14,9 @@ using System.Windows.Shapes;
 
 namespace NELpizza.View
 {
-    public partial class ParentItemView : UserControl
+    public partial class ManagerView : UserControl
     {
-        public ParentItemView()
+        public ManagerView()
         {
             InitializeComponent();
         }
