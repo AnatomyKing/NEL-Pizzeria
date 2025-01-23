@@ -73,14 +73,12 @@ async function placeOrder() {
         return;
     }
 
-    // Collect user info from the form
-    const naam           = document.getElementById('naam').value.trim();
-    const adres          = document.getElementById('adres').value.trim();
-    const woonplaats     = document.getElementById('woonplaats').value.trim();
+    const naam = document.getElementById('naam').value.trim();
+    const adres = document.getElementById('adres').value.trim();
+    const woonplaats = document.getElementById('woonplaats').value.trim();
     const telefoonnummer = document.getElementById('telefoonnummer').value.trim();
-    const emailadres     = document.getElementById('emailadres').value.trim();
+    const emailadres = document.getElementById('emailadres').value.trim();
 
-    // Basic validation
     if (!naam || !adres || !woonplaats || !telefoonnummer || !emailadres) {
         alert("Please fill in all fields!");
         return;
@@ -91,9 +89,7 @@ async function placeOrder() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute('content')
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
             body: JSON.stringify({
                 cart,
@@ -110,15 +106,20 @@ async function placeOrder() {
         }
 
         const data = await response.json();
-        alert(data.message);
+        alert(`Order placed successfully! Order ID: ${data.order_id}`);
 
-        // Clear cart
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        orders.push({
+            id: data.order_id,
+            naam: naam,
+            statusIndex: 0
+        });
+        localStorage.setItem('orders', JSON.stringify(orders));
+
         localStorage.removeItem('cart');
-
-        // Redirect to /bestel or success page
-        window.location.href = '/bestel';
+        window.location.href = '/status';
     } catch (error) {
-        console.error(error);
+        console.error("Error:", error);
         alert("Something went wrong while placing the order.");
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PizzaController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\StatusController;
 
 // Public home page
 Route::get('/', function () {
@@ -40,6 +41,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'edit'])->name('dashboard');
     Route::post('/dashboard', [DashboardController::class, 'update'])->name('dashboard.update');
 });
+
+Route::get('/order/status/{id}', [StatusController::class, 'getStatus'])->name('order.status');
+Route::post('/order/status/{id}', [StatusController::class, 'updateStatus'])->name('order.updateStatus');
 
 
 // ----------------------------------------------------------------

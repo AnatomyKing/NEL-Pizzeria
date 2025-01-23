@@ -1,122 +1,114 @@
 :root {
-    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-      "Segoe UI Emoji", "Segoe UI Symbol";
-    line-height: 1.5;
-    font-weight: 400;
-  
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  
-    --primary: hsl(270, 100%, 50%);
-    --white: #fff;
-    --black: #000;
-    --darker: color-mix(in oklab, var(--primary), var(--black, #000) 15%);
-    --lighter: color-mix(in oklab, var(--primary), var(--white, #fff) 20%);
-  }
-  
-  :is(*, *::before, *::after) {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  .main-wrapper {
-    height: 100dvh;
-    display: grid;
-    place-items: center;
-  }
-  
-  .steps-wrapper {
-    max-width: 400px;
-    width: 100%;
-    // background: lightgray;
-  
-    .steps {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: relative;
-  
-      .step {
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 4px solid rgb(222, 222, 222);
-        border-radius: 50%;
-  
-        color: rgb(135, 135, 135);
-        background: rgb(255, 255, 255);
-        font-size: 24px;
-        font-weight: 600;
-  
-        transition: 200ms ease;
-        transition-delay: 0ms;
-  
-        &.active {
-          color: var(--primary);
-          border-color: var(--primary);
-          transition-delay: 100ms;
-        }
-      }
-  
-      .progress-bar {
-        position: absolute;
-        width: 100%;
-        height: 4px;
-        background: rgb(222, 222, 222);
-        z-index: -1;
-  
-        .progress {
-          position: absolute;
-          // width: 20%;
-          height: 100%;
-          background: var(--primary);
-          transition: 300ms ease;
-        }
-      }
-    }
-  
-    .buttons {
-      margin-block-start: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
-  
-      .btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 10px 15px;
-        font-family: inherit;
-        font-size: 1rem;
-        font-weight: 600;
-        border-radius: 6px;
-        border: none;
-        background: var(--primary);
-        color: var(--white);
-        cursor: pointer;
-        transition: 200ms linear;
-  
-        &:active {
-          scale: 0.9;
-        }
-  
-        &:hover:not(&:disabled) {
-          background: var(--darker);
-        }
-  
-        &:disabled {
-          cursor: not-allowed;
-          background: var(--lighter);
-          pointer-events: none;
-        }
-      }
-    }
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  --primary: hsl(270, 100%, 50%);
+  --white: #fff;
+  --black: #000;
+  --darker: color-mix(in oklab, var(--primary), var(--black, #000) 15%);
+  --lighter: color-mix(in oklab, var(--primary), var(--white, #fff) 20%);
 }
-  
+
+.main-wrapper {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+}
+
+.steps-wrapper {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.steps {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 80px 0;
+  gap: 50px; /* Adds spacing between the steps */
+}
+
+.step {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 8px solid rgb(222, 222, 222);
+  border-radius: 50%;
+  background: var(--white);
+  font-size: 24px;
+  font-weight: 700;
+  color: rgb(135, 135, 135);
+  text-align: center;
+  padding: 25px;
+  transition: 200ms ease;
+  line-height: 1.4;
+  flex-shrink: 0; /* Prevents steps from resizing */
+}
+
+.step.active {
+  color: var(--white);
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.progress-bar {
+  position: absolute;
+  width: calc(100% - 200px); /* Extend the progress bar considering step spacing */
+  height: 10px;
+  background: rgb(222, 222, 222);
+  top: 50%;
+  left: 80px; /* Align properly with the steps */
+  z-index: -1;
+  transform: translateY(-50%);
+}
+
+.progress {
+  position: absolute;
+  height: 100%;
+  background: var(--primary);
+  transition: 300ms ease;
+  width: 0;
+}
+
+.buttons {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn {
+  padding: 15px 30px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  border-radius: 10px;
+  border: none;
+  background: var(--primary);
+  color: var(--white);
+  cursor: pointer;
+  transition: 200ms linear;
+}
+
+.btn:disabled {
+  background: var(--lighter);
+  cursor: not-allowed;
+}
+
+
+.no-orders-message {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #555;
+  display: none;
+}
+
+.order-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--darker);
+  margin-top: -30px;
+  text-align: left;
+}

@@ -29,7 +29,7 @@
         <nav id="menu">
             <a href="{{ route('home') }}" id="one" class="item {{ request()->routeIs('home') ? 'selected' : '' }}">Home</a>
             <a href="{{ route('bestel') }}" id="two" class="item {{ request()->routeIs('bestel') ? 'selected' : '' }}">Bestel</a>
-            <a href="{{ route('contact') }}" id="three" class="item {{ request()->routeIs('contact') ? 'selected' : '' }}">c3ontact</a>
+            <a href="{{ route('contact') }}" id="three" class="item {{ request()->routeIs('contact') ? 'selected' : '' }}">Contact</a>
             
             @guest
                 <a href="{{ route('login') }}" id="four" class="item {{ request()->routeIs('login') ? 'selected' : '' }}">Login</a>

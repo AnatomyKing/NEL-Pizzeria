@@ -1,34 +1,94 @@
-// DOM elements
-const steps = document.querySelectorAll(".step"),
-  progress = document.querySelector(".progress-bar .progress"),
-  buttons = document.querySelectorAll(".buttons .btn");
+document.addEventListener("DOMContentLoaded", () => {
+  const steps = ["initieel", "betaald", "bereiden", "inoven", "onderweg", "bezorgd"];
+  const ordersContainer = document.getElementById('ordersContainer');
+  const noOrdersMessage = document.getElementById('noOrdersMessage');
 
-let currentStep = 1;
+  let orders = JSON.parse(localStorage.getItem('orders')) || [];
 
-// Update the current step and DOM
-const updateSteps = (e) => {
-  // Update the current step based on the btn clicked
+  function renderOrders() {
+      ordersContainer.innerHTML = '';
 
-  currentStep = e.target.id === "btn-next" ? ++currentStep : --currentStep;
-  // loop through steps and toggle 'active' class based on index and current-step
-  steps.forEach((step, index) => {
-    step.classList[`${index < currentStep ? "add" : "remove"}`]("active");
-  });
+      if (orders.length === 0) {
+          noOrdersMessage.style.display = "block";
+          return;
+      } else {
+          noOrdersMessage.style.display = "none";
+      }
 
-  // Update progress width based on current step
-  progress.style.width = `${((currentStep - 1) / (steps.length - 1)) * 100}%`;
+      orders.forEach(order => {
+          const orderDiv = document.createElement('div');
+          orderDiv.classList.add('order-item');
+          orderDiv.innerHTML = `
+              <div class="order-title">Order #${order.id} - ${order.naam}</div>
+              <div class="steps-wrapper">
+                  <div class="steps" data-id="${order.id}">
+                      ${steps.map((step, index) => `
+                          <span class="step ${index <= order.statusIndex ? 'active' : ''}">${step}</span>
+                      `).join('')}
+                      <div class="progress-bar">
+                          <span class="progress" style="width: ${(order.statusIndex / (steps.length - 1)) * 100}%;"></span>
+                      </div>
+                  </div>
+                  <div class="buttons">
+                      <button class="btn btn-prev" data-id="${order.id}" ${order.statusIndex === 0 ? 'disabled' : ''}>Previous</button>
+                      <button class="btn btn-next" data-id="${order.id}" ${order.statusIndex === steps.length - 1 ? 'disabled' : ''}>Next</button>
+                  </div>
+              </div>
+          `;
+          ordersContainer.appendChild(orderDiv);
+      });
 
-  // Check last/first step and add 'disabled' attribute
-  if (currentStep === steps.length) {
-    buttons[1].disabled = true;
-  } else if (currentStep === 1) {
-    buttons[0].disabled = true;
-  } else {
-    buttons.forEach((btn) => (btn.disabled = false));
+      attachButtonListeners();
   }
-};
 
-// Add click listeners to all buttons
-buttons.forEach((button) => {
-  button.addEventListener("click", updateSteps);
+  function attachButtonListeners() {
+      document.querySelectorAll('.btn-prev').forEach(button => {
+          button.addEventListener('click', (e) => {
+              const orderId = e.target.getAttribute('data-id');
+              updateOrderStatus(orderId, 'prev');
+          });
+      });
+
+      document.querySelectorAll('.btn-next').forEach(button => {
+          button.addEventListener('click', (e) => {
+              const orderId = e.target.getAttribute('data-id');
+              updateOrderStatus(orderId, 'next');
+          });
+      });
+  }
+
+  function updateOrderStatus(orderId, direction) {
+      const orderIndex = orders.findIndex(order => order.id == orderId);
+      if (orderIndex !== -1) {
+          let newIndex = orders[orderIndex].statusIndex;
+          newIndex = direction === "next" ? newIndex + 1 : newIndex - 1;
+          if (newIndex >= 0 && newIndex < steps.length) {
+              orders[orderIndex].statusIndex = newIndex;
+              saveOrders();
+              renderOrders();
+              sendStatusToServer(orderId, steps[newIndex]);
+          }
+      }
+  }
+
+  function saveOrders() {
+      localStorage.setItem('orders', JSON.stringify(orders));
+  }
+
+  async function sendStatusToServer(orderId, status) {
+      try {
+          await fetch(`/order/status/${orderId}`, {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+                  "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+              },
+              body: JSON.stringify({ status }),
+          });
+      } catch (error) {
+          console.error("Error:", error);
+      }
+  }
+
+  renderOrders();
 });
