@@ -1,114 +1,192 @@
 :root {
-  font-family: ui-sans-serif, system-ui, sans-serif;
-  --primary: hsl(270, 100%, 50%);
+  --primary: #6200ea; /* Paarse kleur */
+  --secondary: #ffab00; /* Geel voor actieve status */
   --white: #fff;
   --black: #000;
-  --darker: color-mix(in oklab, var(--primary), var(--black, #000) 15%);
-  --lighter: color-mix(in oklab, var(--primary), var(--white, #fff) 20%);
+  --background: #f4f4f4; /* Lichtgrijs achtergrond */
+  --border-color: #ddd; /* Grijze rand */
+  --text-color: #333; /* Donkergrijze tekst */
+  --button-color: #6200ea;
+  --button-hover: #4b00b3;
+  --completed: #76ff03; /* Groen voor voltooide stappen */
+  --in-progress: #ff6f00; /* Oranje voor actieve stap */
+  --pending: #bdbdbd; /* Grijs voor nog niet actieve stappen */
 }
 
-.main-wrapper {
-  height: 100vh;
+/* Algemeen ontwerp */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 60px;
+  justify-content: center; /* Horizontaal centreren */
+  align-items: center; /* Verticaal centreren */
+  height: 100vh;
+  flex-direction: column;
+  font-size: 0.75rem; /* Kleinere tekstgrootte */
 }
 
-.steps-wrapper {
-  max-width: 1200px;
+/* Container voor de inhoud */
+.container {
+  display: flex;
+  justify-content: center; /* Horizontaal centreren */
+  align-items: center; /* Verticaal centreren */
   width: 100%;
+  height: 100%; /* Zorg ervoor dat de container de volledige hoogte van het scherm gebruikt */
+  flex-direction: column;
 }
 
+/* Wrapper voor de stappen */
+.steps-wrapper {
+  max-width: 900px;
+  width: 100%;
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 40px 30px;
+  text-align: center; /* Tekst centreren */
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Alles in de wrapper centreren */
+}
+
+/* Titel van de order */
+.order-title {
+  font-size: 1.4rem; /* Iets kleinere tekst */
+  font-weight: bold;
+  color: var(--text-color);
+  margin-bottom: 20px;
+  text-align: center; /* Titel naar het midden uitlijnen */
+}
+
+/* Stappen layout */
 .steps {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  padding: 80px 0;
-  gap: 50px; /* Adds spacing between the steps */
+  justify-content: center; /* Stappen horizontaal centreren */
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
+/* Individuele stap */
 .step {
-  width: 160px;
-  height: 160px;
+  width: 100px;
+  height: 100px;
+  background-color: var(--pending);
+  color: var(--white);
   display: flex;
-  align-items: center;
   justify-content: center;
-  border: 8px solid rgb(222, 222, 222);
+  align-items: center;
   border-radius: 50%;
-  background: var(--white);
-  font-size: 24px;
-  font-weight: 700;
-  color: rgb(135, 135, 135);
-  text-align: center;
-  padding: 25px;
-  transition: 200ms ease;
-  line-height: 1.4;
-  flex-shrink: 0; /* Prevents steps from resizing */
+  font-size: 16px; /* Nog kleinere staptekst */
+  font-weight: bold;
+  transition: all 0.3s ease;
 }
 
 .step.active {
-  color: var(--white);
-  background: var(--primary);
-  border-color: var(--primary);
+  background-color: var(--in-progress);
 }
 
+.step.completed {
+  background-color: var(--completed);
+}
+
+/* Progressbar */
 .progress-bar {
-  position: absolute;
-  width: calc(100% - 200px); /* Extend the progress bar considering step spacing */
-  height: 10px;
-  background: rgb(222, 222, 222);
-  top: 50%;
-  left: 80px; /* Align properly with the steps */
-  z-index: -1;
-  transform: translateY(-50%);
+  position: relative;
+  height: 8px;
+  background-color: var(--border-color);
+  border-radius: 4px;
+  width: 80%; /* De width van de progress bar blijft 80% van de container */
+  margin: 10px auto; /* Gecentreerd plaatsen */
 }
 
 .progress {
   position: absolute;
   height: 100%;
-  background: var(--primary);
-  transition: 300ms ease;
-  width: 0;
+  background-color: var(--primary);
+  border-radius: 4px;
+  width: 0%; /* De breedte wordt dynamisch aangepast via JavaScript */
+  transition: width 0.4s ease;
 }
 
+/* Knoppen */
 .buttons {
-  margin-top: 40px;
   display: flex;
   justify-content: center;
   gap: 20px;
 }
 
 .btn {
-  padding: 15px 30px;
-  font-size: 1.5rem;
-  font-weight: 700;
-  border-radius: 10px;
-  border: none;
-  background: var(--primary);
+  padding: 12px 25px;
+  font-size: 0.85rem; /* Nog kleinere knoppen tekst */
+  font-weight: bold;
   color: var(--white);
+  background-color: var(--button-color);
+  border-radius: 25px;
+  border: none;
   cursor: pointer;
-  transition: 200ms linear;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: var(--button-hover);
 }
 
 .btn:disabled {
-  background: var(--lighter);
+  background-color: var(--pending);
   cursor: not-allowed;
 }
 
-
+/* Geen orders beschikbaar */
 .no-orders-message {
-  text-align: center;
-  font-size: 1.8rem;
-  color: #555;
+  font-size: 1.1rem; /* Nog kleinere tekst voor de boodschap */
+  color: var(--text-color);
   display: none;
+  margin-top: 20px;
+  font-weight: bold;
 }
 
-.order-title {
-  font-size: 2rem;
-  font-weight: bold;
-  color: var(--darker);
-  margin-top: -30px;
-  text-align: left;
+/* Responsief ontwerp */
+@media (max-width: 768px) {
+  .steps-wrapper {
+    padding: 25px;
+  }
+
+  .steps {
+    gap: 15px;
+  }
+
+  .step {
+    width: 80px;
+    height: 80px;
+    font-size: 14px; /* Nog kleinere tekst voor de stappen */
+  }
+
+  .order-title {
+    font-size: 1.2rem; /* Kleinere tekst op kleine schermen */
+  }
+}
+
+@media (max-width: 480px) {
+  .steps-wrapper {
+    padding: 20px;
+  }
+
+  .steps {
+    gap: 10px;
+  }
+
+  .step {
+    width: 70px;
+    height: 70px;
+    font-size: 12px; /* Nog kleinere tekst voor heel kleine schermen */
+  }
+
+  .order-title {
+    font-size: 1rem; /* Nog kleinere tekst voor heel kleine schermen */
+  }
 }

@@ -1,5 +1,3 @@
-// public/js/bestel.js
-
 // Load existing cart from localStorage
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let total = 0;
@@ -58,12 +56,23 @@ function buildIngredientList(pizzaIngredients) {
 
         const quantityInput = document.createElement('input');
         quantityInput.type = 'number';
-        quantityInput.min = 0;  // Setting minimum to 0 (for removal)
+        quantityInput.min = 0;  // Setting minimum to 0
         quantityInput.max = 5;  // Maximum limit to 5
         quantityInput.value = 1; // Default value
+        quantityInput.step = 1;  // Prevent typing decimals
+
         quantityInput.dataset.id = ingredient.id;
         quantityInput.dataset.name = ingredient.naam;
         quantityInput.dataset.price = ingredient.prijs;
+
+        // Prevent manual input beyond limits
+        quantityInput.addEventListener('input', () => {
+            if (quantityInput.value > 5) {
+                quantityInput.value = 5; // Reset to max if above
+            } else if (quantityInput.value < 0) {
+                quantityInput.value = 0; // Reset to min if below
+            }
+        });
 
         quantityInput.addEventListener('change', updateModalPrice);
 
@@ -100,7 +109,6 @@ function closeModal() {
 }
 
 // Add the configured pizza to cart
-
 function addToCartFromModal() {
     let chosenIngredients = [];
 

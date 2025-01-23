@@ -12,11 +12,14 @@
 
 @section('content')
 <main class="main-wrapper">
-  <div id="ordersContainer">
-    
-  </div>
-  <div id="noOrdersMessage" class="no-orders-message">
-    Nog geen bestelling om te volgen!
+  <!-- Voeg hier de container toe -->
+  <div class="container">
+    <div id="ordersContainer">
+      <!-- Orders zullen hier verschijnen -->
+    </div>
+    <div id="noOrdersMessage" class="no-orders-message">
+      Nog geen bestelling om te volgen!
+    </div>
   </div>
 </main>
 @endsection
