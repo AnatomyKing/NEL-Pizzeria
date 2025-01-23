@@ -1,9 +1,12 @@
 {
   "ExpandedNodes": [
     "",
+    "\\Databases",
+    "\\Helpers",
+    "\\Model",
     "\\View",
     "\\ViewModel"
   ],
-  "SelectedNode": "\\View\\MainView.xaml",
+  "SelectedNode": "\\ViewModel\\ManagerViewModel.cs",
   "PreviewInSolutionExplorer": false
 }

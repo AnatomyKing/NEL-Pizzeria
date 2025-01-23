@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 using NELpizza.Model;
 
@@ -20,14 +21,25 @@ namespace NELpizza.Databases
         {
             if (!optionsBuilder.IsConfigured)
             {
+                // Use the connection string from app.config or web.config
                 string connStr = ConfigurationManager.ConnectionStrings["MyConnStr"].ConnectionString;
-                optionsBuilder.UseMySQL(connStr);
+                optionsBuilder.UseMySQL(connStr); // Use MySQL
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // IngredientPizza Pivot Table
+            ConfigureIngredientPizzaEntity(modelBuilder);
+            ConfigureBestelregelIngredientEntity(modelBuilder);
+            ConfigureKlantUserEntity(modelBuilder);
+            ConfigureRelationships(modelBuilder);
+            ConfigurePizzaEntity(modelBuilder);
+            ConfigureIngredientEntity(modelBuilder);
+            ConfigureEnums(modelBuilder);
+        }
+
+        private static void ConfigureIngredientPizzaEntity(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<IngredientPizza>()
                 .HasKey(ip => new { ip.IngredientId, ip.PizzaId });
 
@@ -42,8 +54,10 @@ namespace NELpizza.Databases
                 .WithMany(p => p.Ingredienten)
                 .HasForeignKey(ip => ip.PizzaId)
                 .OnDelete(DeleteBehavior.Cascade);
+        }
 
-            // BestelregelIngredient Pivot Table
+        private static void ConfigureBestelregelIngredientEntity(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<BestelregelIngredient>()
                 .HasOne(bi => bi.Bestelregel)
                 .WithMany(br => br.BestelregelIngredients)
@@ -55,8 +69,10 @@ namespace NELpizza.Databases
                 .WithMany()
                 .HasForeignKey(bi => bi.IngredientId)
                 .OnDelete(DeleteBehavior.Cascade);
+        }
 
-            // Klant-User Pivot Table
+        private static void ConfigureKlantUserEntity(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<KlantUser>()
                 .HasKey(ku => new { ku.KlantId, ku.UserId });
 
@@ -71,8 +87,10 @@ namespace NELpizza.Databases
                 .WithMany()
                 .HasForeignKey(ku => ku.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+        }
 
-            // Relationships
+        private static void ConfigureRelationships(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Bestelling>()
                 .HasOne(b => b.Klant)
                 .WithMany(k => k.Bestellingen)
@@ -90,23 +108,28 @@ namespace NELpizza.Databases
                 .WithMany()
                 .HasForeignKey(br => br.PizzaId)
                 .OnDelete(DeleteBehavior.Cascade);
+        }
 
-            // Pizza Model Configuration
+        private static void ConfigurePizzaEntity(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Pizza>()
                 .Property(p => p.Prijs)
                 .HasColumnType("DECIMAL(8,2)");
+        }
 
-            // Ingredient Model Configuration
+        private static void ConfigureIngredientEntity(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Ingredient>()
                 .Property(i => i.Prijs)
                 .HasColumnType("DECIMAL(8,2)");
+        }
 
-            // Enum Configuration for Order Statuses
+        private static void ConfigureEnums(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Bestelling>()
                 .Property(b => b.Status)
                 .HasConversion<string>();
 
-            // Enum Configuration for Pizza Sizes
             modelBuilder.Entity<Bestelregel>()
                 .Property(br => br.Afmeting)
                 .HasConversion<string>();
@@ -118,15 +141,12 @@ namespace NELpizza.Databases
             {
                 try
                 {
-                    // Drop the database (if needed during development)
-                    //context.Database.EnsureDeleted();
+                    // Drop and recreate the database if needed (development only)
+                    // context.Database.EnsureDeleted();
+                    // context.Database.EnsureCreated();
 
-                    // Create the database
-                    //context.Database.EnsureCreated();
-
-                    // Seed the database
+                    // Optional: Seed the database with initial data
                     // DatabaseSeeder.Seed(context);
-                    // KlantsTableSeeder.Seed(context);
                 }
                 catch (Exception ex)
                 {

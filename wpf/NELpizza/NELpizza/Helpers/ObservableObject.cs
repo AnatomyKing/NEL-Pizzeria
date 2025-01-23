@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace NELpizza.Helpers
 {
-    internal abstract class ObservableObject : INotifyPropertyChanged
+    public abstract class ObservableObject : INotifyPropertyChanged
     {
         #region implementatie INotifyPropertyChanged
         public event PropertyChangedEventHandler? PropertyChanged;
