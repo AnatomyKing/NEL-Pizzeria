@@ -5,9 +5,8 @@ using NELpizza.Model;
 
 namespace NELpizza.Databases
 {
-    public class AppDbContext : DbContext
+    internal class AppDbContext : DbContext
     {
-        // DbSets for database tables
         public DbSet<Klant> Klants { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Bestelling> Bestellings { get; set; }
@@ -19,35 +18,18 @@ namespace NELpizza.Databases
         public DbSet<KlantUser> KlantUsers { get; set; }
         public DbSet<BestelregelIngredient> BestelregelIngredienten { get; set; }
 
-        // Configuring the database connection
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                // Retrieve connection string from app.config or web.config
                 string connStr = ConfigurationManager.ConnectionStrings["MyConnStr"].ConnectionString;
-                optionsBuilder.UseMySQL(connStr); // Use MySQL as the database provider
+                optionsBuilder.UseMySQL(connStr);
             }
         }
 
-        // Configuring entity relationships and other configurations
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configure entities with methods
-            ConfigureIngredientPizzaEntity(modelBuilder);
-            ConfigureBestelregelIngredientEntity(modelBuilder);
-            ConfigureKlantUserEntity(modelBuilder);
-            ConfigureRelationships(modelBuilder);
-            ConfigurePizzaEntity(modelBuilder);
-            ConfigureIngredientEntity(modelBuilder);
-            ConfigureEnums(modelBuilder);
-
-            base.OnModelCreating(modelBuilder);
-        }
-
-        // Entity configuration for IngredientPizza
-        private static void ConfigureIngredientPizzaEntity(ModelBuilder modelBuilder)
-        {
+            // IngredientPizza Pivot Table
             modelBuilder.Entity<IngredientPizza>()
                 .HasKey(ip => new { ip.IngredientId, ip.PizzaId });
 
@@ -62,11 +44,8 @@ namespace NELpizza.Databases
                 .WithMany(p => p.Ingredienten)
                 .HasForeignKey(ip => ip.PizzaId)
                 .OnDelete(DeleteBehavior.Cascade);
-        }
 
-        // Entity configuration for BestelregelIngredient
-        private static void ConfigureBestelregelIngredientEntity(ModelBuilder modelBuilder)
-        {
+            // BestelregelIngredient Relationships
             modelBuilder.Entity<BestelregelIngredient>()
                 .HasOne(bi => bi.Bestelregel)
                 .WithMany(br => br.BestelregelIngredients)
@@ -78,36 +57,31 @@ namespace NELpizza.Databases
                 .WithMany()
                 .HasForeignKey(bi => bi.IngredientId)
                 .OnDelete(DeleteBehavior.Cascade);
-        }
 
-        // Entity configuration for KlantUser
-        private static void ConfigureKlantUserEntity(ModelBuilder modelBuilder)
-        {
+            // KlantUser Relationships
             modelBuilder.Entity<KlantUser>()
                 .HasKey(ku => new { ku.KlantId, ku.UserId });
 
             modelBuilder.Entity<KlantUser>()
                 .HasOne(ku => ku.Klant)
-                .WithMany()
+                .WithMany(k => k.KlantUsers) 
                 .HasForeignKey(ku => ku.KlantId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<KlantUser>()
                 .HasOne(ku => ku.User)
-                .WithMany()
+                .WithMany(u => u.KlantUsers)
                 .HasForeignKey(ku => ku.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
-        }
 
-        // Configuring general relationships
-        private static void ConfigureRelationships(ModelBuilder modelBuilder)
-        {
+            // Bestelling and Klant Relationship
             modelBuilder.Entity<Bestelling>()
                 .HasOne(b => b.Klant)
                 .WithMany(k => k.Bestellingen)
                 .HasForeignKey(b => b.KlantId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Bestelregel Relationships
             modelBuilder.Entity<Bestelregel>()
                 .HasOne(br => br.Bestelling)
                 .WithMany(b => b.Bestelregels)
@@ -119,27 +93,18 @@ namespace NELpizza.Databases
                 .WithMany()
                 .HasForeignKey(br => br.PizzaId)
                 .OnDelete(DeleteBehavior.Cascade);
-        }
 
-        // Configure the Pizza entity
-        private static void ConfigurePizzaEntity(ModelBuilder modelBuilder)
-        {
+            // Configure Pizza Entity
             modelBuilder.Entity<Pizza>()
                 .Property(p => p.Prijs)
                 .HasColumnType("DECIMAL(8,2)");
-        }
 
-        // Configure the Ingredient entity
-        private static void ConfigureIngredientEntity(ModelBuilder modelBuilder)
-        {
+            // Configure Ingredient Entity
             modelBuilder.Entity<Ingredient>()
                 .Property(i => i.Prijs)
                 .HasColumnType("DECIMAL(8,2)");
-        }
 
-        // Configure enums (e.g., order status, pizza sizes)
-        private static void ConfigureEnums(ModelBuilder modelBuilder)
-        {
+            // Enums to string conversion
             modelBuilder.Entity<Bestelling>()
                 .Property(b => b.Status)
                 .HasConversion<string>();
@@ -149,19 +114,16 @@ namespace NELpizza.Databases
                 .HasConversion<string>();
         }
 
-        // Method to initialize and optionally seed the database
         public static void InitializeDatabase()
         {
             using (var context = new AppDbContext())
             {
                 try
                 {
-                    // Development-only database initialization
-                    // Uncomment these lines during development
                     // context.Database.EnsureDeleted();
                     // context.Database.EnsureCreated();
 
-                    // Optional: Add seeding logic here (e.g., initial data for employees, pizzas)
+                    // Seeding initial data
                 }
                 catch (Exception ex)
                 {

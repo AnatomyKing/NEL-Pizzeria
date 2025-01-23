@@ -1,125 +1,84 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Microsoft.EntityFrameworkCore;
 using NELpizza.Databases;
 using NELpizza.Helpers;
 using NELpizza.Model;
 
-
-
 namespace NELpizza.ViewModels.Views
 {
-    internal class BakkerViewModel : ObservableObject
+    public class BakkerViewModel : ObservableObject
     {
         private readonly AppDbContext _context;
         private readonly LiveUpdateService _liveUpdateService;
 
-        public ObservableCollection<Bestelling> IncomingOrders { get; set; } = new();
-        public ObservableCollection<Bestelling> PreparingOrders { get; set; } = new();
-        public ObservableCollection<Bestelling> FurnaceOrders { get; set; } = new();
+        // ObservableCollection to hold "besteld" orders
+        public ObservableCollection<Bestelling> Bestellingen { get; } = new();
 
-        private Bestelling? _selectedOrder;
-        public Bestelling? SelectedOrder
-        {
-            get => _selectedOrder;
-            set => SetProperty(ref _selectedOrder, value);
-        }
-
-        public ICommand ProcessOrderCommand { get; }
+        // Command to manually refresh orders
+        public ICommand RefreshOrdersCommand { get; }
 
         public BakkerViewModel()
         {
             _context = new AppDbContext();
-            ProcessOrderCommand = new RelayCommand(ProcessOrder);
 
-            // Set up live update every 5 seconds
-            _liveUpdateService = new LiveUpdateService(LoadOrders, TimeSpan.FromSeconds(5));
+            // Initialize commands
+            RefreshOrdersCommand = new RelayCommand(async _ => await LoadBestellingen());
+
+            // Initialize LiveUpdateService to refresh every 5 seconds
+            _liveUpdateService = new LiveUpdateService(async () => await LoadBestellingen(), TimeSpan.FromSeconds(5));
             _liveUpdateService.Start();
 
-            LoadOrders().ConfigureAwait(false);
+            // Initial load
+            Task.Run(async () => await LoadBestellingen());
         }
 
         /// <summary>
-        /// Implements the SetProperty method to handle property changes.
+        /// Loads orders with status "besteld" from the database.
         /// </summary>
-        /// <typeparam name="T">Type of the property.</typeparam>
-        /// <param name="storage">Reference to the property's backing field.</param>
-        /// <param name="value">New value to set.</param>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <returns>True if the value was changed; otherwise, false.</returns>
-        protected bool SetProperty<T>(ref T storage, T value, [System.Runtime.CompilerServices.CallerMemberName] string? propertyName = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(storage, value))
-                return false;
-
-            storage = value;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
-        private async Task LoadOrders()
+        public async Task LoadBestellingen()
         {
             try
             {
-                var orders = await _context.Bestellings
+                // Fetch orders with status "besteld" including related Klant and Bestelregels
+                var bestellingen = await _context.Bestellings
+                    .Where(b => b.Status.ToLower() == "besteld")
                     .Include(b => b.Klant)
                     .Include(b => b.Bestelregels)
                         .ThenInclude(br => br.Pizza)
-                    .Include(b => b.Bestelregels)
-                        .ThenInclude(br => br.BestelregelIngredients)
-                        .ThenInclude(bi => bi.Ingredient)
                     .ToListAsync();
 
+                // Update the ObservableCollection on the UI thread
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    IncomingOrders.Clear();
-                    PreparingOrders.Clear();
-                    FurnaceOrders.Clear();
-
-                    foreach (var order in orders)
+                    Bestellingen.Clear();
+                    foreach (var bestelling in bestellingen)
                     {
-                        switch (order.Status)
-                        {
-                            case "besteld":
-                                IncomingOrders.Add(order);
-                                break;
-                            case "bereiden":
-                                PreparingOrders.Add(order);
-                                break;
-                            case "inoven":
-                                FurnaceOrders.Add(order);
-                                break;
-                                // Optionally handle other statuses
-                        }
+                        Bestellingen.Add(bestelling);
                     }
                 });
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error loading orders: {ex.Message}");
+                // Handle exceptions (e.g., log them)
+                MessageBox.Show($"Fout bij het laden van bestellingen: {ex.Message}", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private async void ProcessOrder(object? param)
+        /// <summary>
+        /// Stops the live update when disposing the ViewModel (optional).
+        /// </summary>
+        public void Dispose()
         {
-            if (param is Bestelling order)
-            {
-                try
-                {
-                    order.Status = BestelStatus.bereiden.ToString();
-                    _context.Bestellings.Update(order);
-                    await _context.SaveChangesAsync();
-                    await LoadOrders();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error updating order: {ex.Message}");
-                }
-            }
+            _liveUpdateService.Stop();
+            _context.Dispose();
         }
     }
 }
