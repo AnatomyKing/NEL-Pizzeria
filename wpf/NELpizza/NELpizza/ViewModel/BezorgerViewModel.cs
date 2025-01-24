@@ -51,14 +51,19 @@ namespace NELpizza.ViewModels.Views
         {
             try
             {
-                // Fetch orders from DB with needed includes
-                var orders = await _context.Bestellings
+                // Create a fresh context each time to ensure we see external changes (e.g. from Laravel).
+                using var freshContext = new AppDbContext();
+
+                // Use AsNoTracking() so EF doesn't track these entities (no stale local caching).
+                var orders = await freshContext.Bestellings
+                    .AsNoTracking()
                     .Include(b => b.Klant)
                     .Include(b => b.Bestelregels).ThenInclude(br => br.Pizza)
                     .Include(b => b.Bestelregels).ThenInclude(br => br.BestelregelIngredients)
                         .ThenInclude(bi => bi.Ingredient)
                     .ToListAsync();
 
+                // Update collections on the UI thread
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     ReadyForPickupOrders.Clear();

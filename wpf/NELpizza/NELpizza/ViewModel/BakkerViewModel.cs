@@ -81,7 +81,12 @@ namespace NELpizza.ViewModels.Views
         {
             try
             {
-                var orders = await _context.Bestellings
+                // Dispose of the old context if you want; or just create a new one each time
+                using var freshContext = new AppDbContext();
+
+                // Force a new query from DB (AsNoTracking is optional but recommended for read-only)
+                var orders = await freshContext.Bestellings
+                    .AsNoTracking()
                     .Include(b => b.Klant)
                     .Include(b => b.Bestelregels).ThenInclude(br => br.Pizza)
                     .Include(b => b.Bestelregels).ThenInclude(br => br.BestelregelIngredients)
@@ -111,7 +116,6 @@ namespace NELpizza.ViewModels.Views
                             case "geannuleerd":
                                 CancelledOrders.Add(order);
                                 break;
-                                // other statuses if needed
                         }
                     }
 
