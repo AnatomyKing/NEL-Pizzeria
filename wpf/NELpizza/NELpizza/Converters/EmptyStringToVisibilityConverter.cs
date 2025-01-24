@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace NELpizza.Helpers // <-- must match your XAML's clr-namespace
+namespace NELpizza.Converters // <-- must match your XAML's clr-namespace
 {
     public class EmptyStringToVisibilityConverter : IValueConverter
     {

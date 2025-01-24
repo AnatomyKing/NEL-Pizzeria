@@ -4,7 +4,7 @@ using System.IO;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace NELpizza.Helpers
+namespace NELpizza.Converters
 {
     public class ByteArrayToImageConverter : IValueConverter
     {

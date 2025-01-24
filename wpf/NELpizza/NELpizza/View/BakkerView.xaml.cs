@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using NELpizza.ViewModels.Views;
 
 namespace NELpizza.View
 {
@@ -19,6 +20,15 @@ namespace NELpizza.View
         public BakkerView()
         {
             InitializeComponent();
+        }
+
+        // This method is bound to the "Show Cancelled Orders" button's Click event in XAML
+        private void OpenDrawerButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is BakkerViewModel vm)
+            {
+                vm.IsRightDrawerOpen = !vm.IsRightDrawerOpen;
+            }
         }
     }
 }

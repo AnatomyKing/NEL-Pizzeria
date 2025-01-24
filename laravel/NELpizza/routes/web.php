@@ -42,7 +42,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard', [DashboardController::class, 'update'])->name('dashboard.update');
 });
 
-Route::get('/order/status/{id}', [StatusController::class, 'getStatus'])->name('order.status');
+Route::post('/order/statuses', [StatusController::class, 'getStatuses'])->name('order.statuses');
+
+// The individual route for updating one order's status stays the same:
 Route::post('/order/status/{id}', [StatusController::class, 'updateStatus'])->name('order.updateStatus');
 
 

@@ -11,30 +11,225 @@
         <viewmodels:BezorgerViewModel/>
     </UserControl.DataContext>
 
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <!-- Outer ScrollViewer with MaterialDesignPaper background -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled"
+                  Background="{DynamicResource MaterialDesignPaper}">
 
-        <!-- Input Section -->
-        <StackPanel Orientation="Vertical" Margin="10" Grid.Row="0">
-            <TextBox materialDesign:HintAssist.Hint="Enter placeholder text"
-                 Margin="0,0,0,10" />
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <Button Content="Test4" />
-        </StackPanel>
+            <!-- ========== READY FOR PICKUP (uitoven) ========== -->
+            <Border Grid.Row="0"
+                    CornerRadius="8"
+                    Background="{DynamicResource MaterialDesignCardBackground}"
+                    Padding="20"
+                    Margin="0,0,0,20">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Ready for Pickup"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Margin="0,0,0,10"
+                               Foreground="{DynamicResource MaterialDesignBody}" />
 
-        <!-- Display Section -->
-        <ListBox Margin="10" Grid.Row="1">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <TextBlock Text="Placeholder Item" VerticalAlignment="Center" FontSize="14" />
-                        <Button Content="Delete" Margin="10,0,0,0" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </Grid>
+                    <!-- Horizontal scroll for the cards, also set a height to allow internal vertical scrolling -->
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto"
+                                  Height="200">
+                        <ItemsControl ItemsSource="{Binding ReadyForPickupOrders}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <materialDesign:Card Margin="10"
+                                                         Padding="15"
+                                                         Width="300"
+                                                         materialDesign:ElevationAssist.Elevation="Dp3">
+                                        <StackPanel Orientation="Vertical">
+                                            <!-- Basic Order Info -->
+                                            <TextBlock FontWeight="Bold"
+                                                       FontSize="16"
+                                                       Foreground="{DynamicResource MaterialDesignBody}"
+                                                       Text="{Binding Id, StringFormat='Order ID: {0}'}"/>
+                                            <TextBlock FontSize="14"
+                                                       Foreground="{DynamicResource MaterialDesignBodySecondary}"
+                                                       Margin="0,5,0,0"
+                                                       Text="{Binding Klant.Naam, StringFormat='Customer: {0}'}"/>
+                                            <TextBlock FontSize="14"
+                                                       Foreground="{DynamicResource MaterialDesignBodySecondary}"
+                                                       Text="{Binding Klant.Adres, StringFormat='Address: {0}'}"/>
+                                            <TextBlock FontSize="14"
+                                                       Foreground="{DynamicResource MaterialDesignBodySecondary}"
+                                                       Text="{Binding Klant.Woonplaats, StringFormat='City: {0}'}"
+                                                       Margin="0,0,0,5"/>
+                                            <TextBlock FontSize="13"
+                                                       Foreground="{DynamicResource MaterialDesignBodySecondary}"
+                                                       Text="{Binding Datum, StringFormat='Date: {0:dd-MM-yyyy HH:mm}'}"/>
+                                            <TextBlock FontSize="13"
+                                                       Foreground="{DynamicResource MaterialDesignAccent}"
+                                                       Text="{Binding Status, StringFormat='Status: {0}'}"
+                                                       Margin="0,5,0,0"/>
+
+                                            <!-- Button to move from 'uitoven' -> 'onderweg' -->
+                                            <Button Content="Start Delivery"
+                                                    Command="{Binding DataContext.MoveToOnderwegCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                                    Margin="0,15,0,0"/>
+                                        </StackPanel>
+                                    </materialDesign:Card>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </StackPanel>
+            </Border>
+
+            <!-- ========== ONDERWEG SECTION (onderweg) ========== -->
+            <Border Grid.Row="1"
+                    CornerRadius="8"
+                    Background="{DynamicResource MaterialDesignCardBackground}"
+                    Padding="20"
+                    Margin="0,0,0,20">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Onderweg"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Margin="0,0,0,10"
+                               Foreground="{DynamicResource MaterialDesignBody}" />
+
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto"
+                                  Height="200">
+                        <ItemsControl ItemsSource="{Binding OnderwegOrders}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <materialDesign:Card Margin="10"
+                                                         Padding="15"
+                                                         Width="300"
+                                                         materialDesign:ElevationAssist.Elevation="Dp3">
+                                        <StackPanel Orientation="Vertical">
+                                            <!-- Basic Order Info -->
+                                            <TextBlock FontWeight="Bold"
+                                                       FontSize="16"
+                                                       Foreground="{DynamicResource MaterialDesignBody}"
+                                                       Text="{Binding Id, StringFormat='Order ID: {0}'}"/>
+                                            <TextBlock FontSize="14"
+                                                       Foreground="{DynamicResource MaterialDesignBodySecondary}"
+                                                       Margin="0,5,0,0"
+                                                       Text="{Binding Klant.Naam, StringFormat='Customer: {0}'}"/>
+                                            <!-- Show address/city so driver sees where to deliver -->
+                                            <TextBlock FontSize="14"
+                                                       Foreground="{DynamicResource MaterialDesignBodySecondary}"
+                                                       Text="{Binding Klant.Adres, StringFormat='Address: {0}'}"/>
+                                            <TextBlock FontSize="14"
+                                                       Foreground="{DynamicResource MaterialDesignBodySecondary}"
+                                                       Text="{Binding Klant.Woonplaats, StringFormat='City: {0}'}"
+                                                       Margin="0,0,0,5"/>
+                                            <TextBlock FontSize="13"
+                                                       Foreground="{DynamicResource MaterialDesignBodySecondary}"
+                                                       Text="{Binding Datum, StringFormat='Date: {0:dd-MM-yyyy HH:mm}'}"/>
+                                            <TextBlock FontSize="13"
+                                                       Foreground="{DynamicResource MaterialDesignAccent}"
+                                                       Text="{Binding Status, StringFormat='Status: {0}'}"
+                                                       Margin="0,5,0,0"/>
+
+                                            <!-- Button to mark as 'bezorgd' -->
+                                            <Button Content="Delivered"
+                                                    Command="{Binding DataContext.MarkAsBezorgdCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                                    Margin="0,15,0,0"/>
+                                        </StackPanel>
+                                    </materialDesign:Card>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </StackPanel>
+            </Border>
+
+            <!-- ========== BEZORGD SECTION (bezorgd) ========== -->
+            <Border Grid.Row="2"
+                    CornerRadius="8"
+                    Background="{DynamicResource MaterialDesignCardBackground}"
+                    Padding="20">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Bezorgd"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Margin="0,0,0,10"
+                               Foreground="{DynamicResource MaterialDesignBody}" />
+
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto"
+                                  Height="200">
+                        <ItemsControl ItemsSource="{Binding BezorgdOrders}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <materialDesign:Card Margin="10"
+                                                         Padding="15"
+                                                         Width="300"
+                                                         materialDesign:ElevationAssist.Elevation="Dp3">
+                                        <StackPanel Orientation="Vertical">
+                                            <!-- Basic Order Info -->
+                                            <TextBlock FontWeight="Bold"
+                                                       FontSize="16"
+                                                       Foreground="{DynamicResource MaterialDesignBody}"
+                                                       Text="{Binding Id, StringFormat='Order ID: {0}'}"/>
+                                            <TextBlock FontSize="14"
+                                                       Foreground="{DynamicResource MaterialDesignBodySecondary}"
+                                                       Margin="0,5,0,0"
+                                                       Text="{Binding Klant.Naam, StringFormat='Customer: {0}'}"/>
+                                            <TextBlock FontSize="14"
+                                                       Foreground="{DynamicResource MaterialDesignBodySecondary}"
+                                                       Text="{Binding Klant.Adres, StringFormat='Address: {0}'}"/>
+                                            <TextBlock FontSize="14"
+                                                       Foreground="{DynamicResource MaterialDesignBodySecondary}"
+                                                       Text="{Binding Klant.Woonplaats, StringFormat='City: {0}'}"
+                                                       Margin="0,0,0,5"/>
+                                            <TextBlock FontSize="13"
+                                                       Foreground="{DynamicResource MaterialDesignBodySecondary}"
+                                                       Text="{Binding Datum, StringFormat='Date: {0:dd-MM-yyyy HH:mm}'}"/>
+                                            <TextBlock FontSize="13"
+                                                       Foreground="{DynamicResource MaterialDesignAccent}"
+                                                       Text="{Binding Status, StringFormat='Status: {0}'}"
+                                                       Margin="0,5,0,0"/>
+
+                                            <!-- COMPLETION BUTTON: remove order & related data from DB (except Klant if user) -->
+                                            <Button Content="Complete"
+                                                    Command="{Binding DataContext.CompleteOrderCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                                    Margin="0,15,0,0"/>
+                                        </StackPanel>
+                                    </materialDesign:Card>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

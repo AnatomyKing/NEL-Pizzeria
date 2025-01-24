@@ -24,7 +24,7 @@ class BestellingFactory extends Factory
     {
         return [
             'datum' => $this->faker->dateTime(),
-            'status' => $this->faker->randomElement(["besteld","bereiden","inoven","uitoven","onderweg","bezorgd"]),
+            'status' => $this->faker->randomElement(["besteld","bereiden","inoven","uitoven","onderweg","bezorgd","geannuleerd"]),
             'klant_id' => Klant::factory(),
             'pizza_id' => Pizza::factory(),
         ];

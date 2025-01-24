@@ -20,7 +20,7 @@ namespace NELpizza.Model
         public DateTime Datum { get; set; } = DateTime.UtcNow;
 
         [Required]
-        [Column("status", TypeName = "ENUM('besteld','bereiden','inoven','uitoven','onderweg','bezorgd')")]
+        [Column("status", TypeName = "ENUM('besteld','bereiden','inoven','uitoven','onderweg','bezorgd','geannuleerd')")]
         public string Status { get; set; } = "besteld";
 
         [ForeignKey("Klant")]

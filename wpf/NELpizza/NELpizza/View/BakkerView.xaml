@@ -11,44 +11,412 @@
         <viewmodels:BakkerViewModel />
     </UserControl.DataContext>
 
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <materialDesign:DrawerHost x:Name="RootDrawerHost"
+                               IsRightDrawerOpen="{Binding IsRightDrawerOpen, Mode=TwoWay}">
 
-        <!-- Header -->
-        <TextBlock Text="Bestellingen (Besteld)" 
-                   FontSize="24" 
-                   FontWeight="Bold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <!-- Main content (left side) -->
+        <materialDesign:DrawerHost.Content>
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Background="{DynamicResource MaterialDesignPaper}">
 
-        <!-- Orders List -->
-        <ListView ItemsSource="{Binding Bestellingen}" Grid.Row="1" Name="OrdersListView">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Order ID" DisplayMemberBinding="{Binding Id}" Width="100"/>
-                    <GridViewColumn Header="Klant" DisplayMemberBinding="{Binding Klant.Naam}" Width="150"/>
-                    <GridViewColumn Header="Datum" DisplayMemberBinding="{Binding Datum, StringFormat=dd-MM-yyyy HH:mm}" Width="150"/>
-                    <GridViewColumn Header="Aantal Pizza's" Width="120">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Bestelregels.Count}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <!-- Row 0: Incoming Orders -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Row 1: Preparation -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Row 2: Furnace -->
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-        <!-- Refresh Button -->
-        <Button Content="Ververs" 
-                Command="{Binding RefreshOrdersCommand}" 
-                Grid.Row="2" 
-                HorizontalAlignment="Right" 
-                Width="100" 
-                Margin="0,20,0,0"/>
-    </Grid>
+                    <!-- BUTTON TO OPEN THE RIGHT DRAWER -->
+                    <!-- Place it somewhere convenient; here at top-right above 'Incoming Orders' -->
+                    <Button Content="Show Cancelled Orders"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Background="{DynamicResource MaterialDesignAccent}"
+                            Foreground="White"
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Grid.Row="0"
+                            Click="OpenDrawerButton_Click"/>
+
+                    <!-- ========== INCOMING ORDERS SECTION ========== -->
+                    <Border Grid.Row="0"
+                            CornerRadius="8"
+                            Background="{DynamicResource MaterialDesignCardBackground}"
+                            Padding="20"
+                            Margin="0,50,0,20">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Incoming Orders (Besteld)"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,10"
+                                       Foreground="{DynamicResource MaterialDesignBody}"/>
+
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                          VerticalScrollBarVisibility="Auto"
+                                          Height="200">
+                                <ItemsControl ItemsSource="{Binding IncomingOrders}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <materialDesign:Card Margin="5"
+                                                                 Padding="10"
+                                                                 materialDesign:ElevationAssist.Elevation="Dp2">
+                                                <StackPanel Orientation="Vertical">
+                                                    <!-- Basic Info -->
+                                                    <TextBlock FontWeight="Bold"
+                                                               Foreground="{DynamicResource MaterialDesignBody}">
+                                                        <Run Text="Order ID: "/>
+                                                        <Run Text="{Binding Id}"/>
+                                                    </TextBlock>
+                                                    <TextBlock Foreground="{DynamicResource MaterialDesignBody}">
+                                                        <Run Text="Customer: "/>
+                                                        <Run Text="{Binding Klant.Naam}"/>
+                                                    </TextBlock>
+                                                    <TextBlock Foreground="Gray">
+                                                        <Run Text="Date: "/>
+                                                        <Run Text="{Binding Datum, StringFormat=dd-MM-yyyy HH:mm}"/>
+                                                    </TextBlock>
+                                                    <TextBlock Foreground="Blue">
+                                                        <Run Text="Status: "/>
+                                                        <Run Text="{Binding Status}"/>
+                                                    </TextBlock>
+
+                                                    <!-- Pizza Details (with ingredients) -->
+                                                    <ItemsControl ItemsSource="{Binding Bestelregels}"
+                                                                  Margin="0,10,0,0">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                                                        BorderThickness="1"
+                                                                        Padding="5"
+                                                                        Margin="0,5,0,5">
+                                                                    <StackPanel Orientation="Vertical">
+                                                                        <TextBlock FontWeight="SemiBold"
+                                                                                   Foreground="{DynamicResource MaterialDesignBody}">
+                                                                            <Run Text="Pizza: "/>
+                                                                            <Run Text="{Binding Pizza.Naam}"/>
+                                                                        </TextBlock>
+                                                                        <TextBlock Foreground="{DynamicResource MaterialDesignBodySecondary}">
+                                                                            <Run Text="Size: "/>
+                                                                            <Run Text="{Binding Afmeting}"/>
+                                                                            <Run Text=", Quantity: "/>
+                                                                            <Run Text="{Binding Aantal}"/>
+                                                                        </TextBlock>
+
+                                                                        <!-- Ingredients -->
+                                                                        <ItemsControl ItemsSource="{Binding BestelregelIngredients}"
+                                                                                      Margin="10,5,0,0">
+                                                                            <ItemsControl.ItemTemplate>
+                                                                                <DataTemplate>
+                                                                                    <TextBlock FontStyle="Italic"
+                                                                                               Foreground="{DynamicResource MaterialDesignBodySecondary}">
+                                                                                        <Run Text="• Ingredient: "/>
+                                                                                        <Run Text="{Binding Ingredient.Naam}"/>
+                                                                                        <Run Text=", Qty: "/>
+                                                                                        <Run Text="{Binding Quantity}"/>
+                                                                                    </TextBlock>
+                                                                                </DataTemplate>
+                                                                            </ItemsControl.ItemTemplate>
+                                                                        </ItemsControl>
+                                                                    </StackPanel>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+
+                                                    <!-- Button to move order from 'besteld' -> 'bereiden' -->
+                                                    <Button Content="Prepare"
+                                                            Command="{Binding DataContext.ProcessOrderCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                            CommandParameter="{Binding}"
+                                                            Margin="0,10,0,0"
+                                                            Style="{StaticResource MaterialDesignRaisedButton}"/>
+                                                </StackPanel>
+                                            </materialDesign:Card>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ========== PREPARATION SECTION ========== -->
+                    <Border Grid.Row="1"
+                            CornerRadius="8"
+                            Background="{DynamicResource MaterialDesignCardBackground}"
+                            Padding="20"
+                            Margin="0,0,0,20">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Preparation (Bereiden)"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,10"
+                                       Foreground="{DynamicResource MaterialDesignBody}"/>
+
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                          VerticalScrollBarVisibility="Auto"
+                                          Height="200">
+                                <ItemsControl ItemsSource="{Binding PreparingOrders}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <materialDesign:Card Margin="5"
+                                                                 Padding="10"
+                                                                 materialDesign:ElevationAssist.Elevation="Dp2">
+                                                <StackPanel Orientation="Vertical">
+                                                    <!-- Basic Info -->
+                                                    <TextBlock FontWeight="Bold"
+                                                               Foreground="{DynamicResource MaterialDesignBody}">
+                                                        <Run Text="Order ID: "/>
+                                                        <Run Text="{Binding Id}"/>
+                                                    </TextBlock>
+                                                    <TextBlock Foreground="{DynamicResource MaterialDesignBody}">
+                                                        <Run Text="Customer: "/>
+                                                        <Run Text="{Binding Klant.Naam}"/>
+                                                    </TextBlock>
+                                                    <TextBlock Foreground="Gray">
+                                                        <Run Text="Date: "/>
+                                                        <Run Text="{Binding Datum, StringFormat=dd-MM-yyyy HH:mm}"/>
+                                                    </TextBlock>
+                                                    <TextBlock Foreground="Orange">
+                                                        <Run Text="Status: "/>
+                                                        <Run Text="{Binding Status}"/>
+                                                    </TextBlock>
+
+                                                    <!-- Pizza Details (with ingredients) -->
+                                                    <ItemsControl ItemsSource="{Binding Bestelregels}"
+                                                                  Margin="0,10,0,0">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                                                        BorderThickness="1"
+                                                                        Padding="5"
+                                                                        Margin="0,5,0,5">
+                                                                    <StackPanel Orientation="Vertical">
+                                                                        <TextBlock FontWeight="SemiBold"
+                                                                                   Foreground="{DynamicResource MaterialDesignBody}">
+                                                                            <Run Text="Pizza: "/>
+                                                                            <Run Text="{Binding Pizza.Naam}"/>
+                                                                        </TextBlock>
+                                                                        <TextBlock Foreground="{DynamicResource MaterialDesignBodySecondary}">
+                                                                            <Run Text="Size: "/>
+                                                                            <Run Text="{Binding Afmeting}"/>
+                                                                            <Run Text=", Quantity: "/>
+                                                                            <Run Text="{Binding Aantal}"/>
+                                                                        </TextBlock>
+
+                                                                        <!-- Ingredients -->
+                                                                        <ItemsControl ItemsSource="{Binding BestelregelIngredients}"
+                                                                                      Margin="10,5,0,0">
+                                                                            <ItemsControl.ItemTemplate>
+                                                                                <DataTemplate>
+                                                                                    <TextBlock FontStyle="Italic"
+                                                                                               Foreground="{DynamicResource MaterialDesignBodySecondary}">
+                                                                                        <Run Text="• Ingredient: "/>
+                                                                                        <Run Text="{Binding Ingredient.Naam}"/>
+                                                                                        <Run Text=", Qty: "/>
+                                                                                        <Run Text="{Binding Quantity}"/>
+                                                                                    </TextBlock>
+                                                                                </DataTemplate>
+                                                                            </ItemsControl.ItemTemplate>
+                                                                        </ItemsControl>
+                                                                    </StackPanel>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+
+                                                    <!-- Button to move order from 'bereiden' -> 'inoven' -->
+                                                    <Button Content="Move to Furnace"
+                                                            Command="{Binding DataContext.MoveToFurnaceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                            CommandParameter="{Binding}"
+                                                            Margin="0,10,0,0"
+                                                            Style="{StaticResource MaterialDesignRaisedButton}"/>
+                                                </StackPanel>
+                                            </materialDesign:Card>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ========== FURNACE SECTION ========== -->
+                    <Border Grid.Row="2"
+                            CornerRadius="8"
+                            Background="{DynamicResource MaterialDesignCardBackground}"
+                            Padding="20">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Furnace (Inoven)"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,10"
+                                       Foreground="{DynamicResource MaterialDesignBody}"/>
+
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                          VerticalScrollBarVisibility="Auto"
+                                          Height="200">
+                                <ItemsControl ItemsSource="{Binding FurnaceOrders}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <materialDesign:Card Margin="5"
+                                                                 Padding="10"
+                                                                 materialDesign:ElevationAssist.Elevation="Dp2">
+                                                <StackPanel Orientation="Vertical">
+                                                    <!-- Basic Info -->
+                                                    <TextBlock FontWeight="Bold"
+                                                               Foreground="{DynamicResource MaterialDesignBody}">
+                                                        <Run Text="Order ID: "/>
+                                                        <Run Text="{Binding Id}"/>
+                                                    </TextBlock>
+                                                    <TextBlock Foreground="{DynamicResource MaterialDesignBody}">
+                                                        <Run Text="Customer: "/>
+                                                        <Run Text="{Binding Klant.Naam}"/>
+                                                    </TextBlock>
+                                                    <TextBlock Foreground="Gray">
+                                                        <Run Text="Date: "/>
+                                                        <Run Text="{Binding Datum, StringFormat=dd-MM-yyyy HH:mm}"/>
+                                                    </TextBlock>
+                                                    <TextBlock Foreground="Green">
+                                                        <Run Text="Status: "/>
+                                                        <Run Text="{Binding Status}"/>
+                                                    </TextBlock>
+
+                                                    <!-- Pizza + Ingredients -->
+                                                    <ItemsControl ItemsSource="{Binding Bestelregels}"
+                                                                  Margin="0,10,0,0">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                                                        BorderThickness="1"
+                                                                        Padding="5"
+                                                                        Margin="0,5,0,5">
+                                                                    <StackPanel Orientation="Vertical">
+                                                                        <TextBlock FontWeight="SemiBold"
+                                                                                   Foreground="{DynamicResource MaterialDesignBody}">
+                                                                            <Run Text="Pizza: "/>
+                                                                            <Run Text="{Binding Pizza.Naam}"/>
+                                                                        </TextBlock>
+                                                                        <TextBlock Foreground="{DynamicResource MaterialDesignBodySecondary}">
+                                                                            <Run Text="Size: "/>
+                                                                            <Run Text="{Binding Afmeting}"/>
+                                                                            <Run Text=", Quantity: "/>
+                                                                            <Run Text="{Binding Aantal}"/>
+                                                                        </TextBlock>
+
+                                                                        <ItemsControl ItemsSource="{Binding BestelregelIngredients}"
+                                                                                      Margin="10,5,0,0">
+                                                                            <ItemsControl.ItemTemplate>
+                                                                                <DataTemplate>
+                                                                                    <TextBlock FontStyle="Italic"
+                                                                                               Foreground="{DynamicResource MaterialDesignBodySecondary}">
+                                                                                        <Run Text="• Ingredient: "/>
+                                                                                        <Run Text="{Binding Ingredient.Naam}"/>
+                                                                                        <Run Text=", Qty: "/>
+                                                                                        <Run Text="{Binding Quantity}"/>
+                                                                                    </TextBlock>
+                                                                                </DataTemplate>
+                                                                            </ItemsControl.ItemTemplate>
+                                                                        </ItemsControl>
+                                                                    </StackPanel>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+
+                                                    <!-- Button to finish cooking (inoven -> uitoven) -->
+                                                    <Button Content="Finish Cooking"
+                                                            Command="{Binding DataContext.FinishCookingCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                            CommandParameter="{Binding}"
+                                                            Margin="0,10,0,0"
+                                                            Style="{StaticResource MaterialDesignRaisedButton}"/>
+                                                </StackPanel>
+                                            </materialDesign:Card>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </ScrollViewer>
+        </materialDesign:DrawerHost.Content>
+
+        <!-- RIGHT DRAWER SHOWING CANCELLED ORDERS -->
+        <materialDesign:DrawerHost.RightDrawerContent>
+            <Border Background="{DynamicResource MaterialDesignCardBackground}"
+                    Padding="20">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Cancelled Orders"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Margin="0,0,0,10"
+                               Foreground="{DynamicResource MaterialDesignBody}"/>
+
+                    <!-- Scrollable list of CANCELLED (geannuleerd) orders -->
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto"
+                                  Height="400">
+                        <ItemsControl ItemsSource="{Binding CancelledOrders}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <materialDesign:Card Margin="5"
+                                                         Padding="10"
+                                                         Width="300"
+                                                         materialDesign:ElevationAssist.Elevation="Dp2">
+                                        <StackPanel Orientation="Vertical">
+                                            <!-- Basic Info -->
+                                            <TextBlock FontWeight="Bold"
+                                                       Foreground="{DynamicResource MaterialDesignBody}"
+                                                       Text="{Binding Id, StringFormat='Order ID: {0}'}"/>
+                                            <TextBlock Foreground="{DynamicResource MaterialDesignBody}"
+                                                       Text="{Binding Klant.Naam, StringFormat='Customer: {0}'}"/>
+                                            <TextBlock Foreground="Gray"
+                                                       Text="{Binding Datum, StringFormat='Date: {0:dd-MM-yyyy HH:mm}'}"/>
+                                            <TextBlock Foreground="Red"
+                                                       Text="{Binding Status, StringFormat='Status: {0}'}"/>
+
+                                            <!-- DELETE the cancelled order from DB -->
+                                            <Button Content="Delete Permanently"
+                                                    Margin="0,10,0,0"
+                                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                                    Background="Red" Foreground="White"
+                                                    Command="{Binding DataContext.DeleteCancelledOrderCommand,
+                                                              RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"/>
+                                        </StackPanel>
+                                    </materialDesign:Card>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </StackPanel>
+            </Border>
+        </materialDesign:DrawerHost.RightDrawerContent>
+    </materialDesign:DrawerHost>
 </UserControl>

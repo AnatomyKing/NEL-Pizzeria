@@ -13,6 +13,7 @@ namespace NELpizza.Model
         inoven,
         uitoven,
         onderweg,
-        bezorgd
+        bezorgd,
+        geannuleerd
     }
 }

@@ -5,94 +5,152 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:viewmodels="clr-namespace:NELpizza.ViewModels.Views"
-             xmlns:local="clr-namespace:NELpizza.Helpers"
+             xmlns:local="clr-namespace:NELpizza.Converters"
              mc:Ignorable="d">
 
 	<!-- Bind to ManagerViewModel -->
-	<UserControl.DataContext>
-		<viewmodels:ManagerViewModel />
-	</UserControl.DataContext>
+    <UserControl.Resources>
+        <local:ByteArrayToImageConverter x:Key="ByteArrayToImageConverter" />
+    </UserControl.Resources>
 
-	<!-- Converter for Image Binding -->
-	<UserControl.Resources>
-		<local:ByteArrayToImageConverter x:Key="ByteArrayToImageConverter" />
-	</UserControl.Resources>
+    <UserControl.DataContext>
+        <viewmodels:ManagerViewModel />
+    </UserControl.DataContext>
 
-	<Grid Margin="20">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*" />
-			<ColumnDefinition Width="*" />
-		</Grid.ColumnDefinitions>
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <!-- Pizza Management -->
+            <ColumnDefinition Width="2*" />
+            <!-- Employee Management -->
+            <ColumnDefinition Width="2*" />
+            <!-- Ingredient Management -->
+        </Grid.ColumnDefinitions>
 
-		<!-- Pizza Management Section -->
-		<StackPanel Margin="10" Grid.Column="0">
-			<TextBlock Text="Pizza's" FontSize="20" FontWeight="Bold" Margin="0,0,0,10" />
+        <!-- ================== PIZZA MANAGEMENT SECTION (Column 0) ================== -->
+        <StackPanel Margin="10" Grid.Column="0">
+            <TextBlock Text="Pizza's" FontSize="20" FontWeight="Bold" Margin="0,0,0,10" />
 
-			<!-- Pizza List with Scroll Support -->
-			<ScrollViewer VerticalScrollBarVisibility="Auto" Height="300">
-				<ItemsControl ItemsSource="{Binding Pizzas}">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<materialDesign:Card Margin="5" Padding="10" materialDesign:ElevationAssist.Elevation="Dp2">
-								<StackPanel Orientation="Vertical">
-									<TextBlock FontWeight="Bold" Text="{Binding Naam}" />
-									<TextBlock Text="{Binding Prijs, StringFormat=Prijs: €{0:F2}}" />
-									<TextBlock Foreground="Gray" Text="{Binding Beschrijving}" />
-									<Image Source="{Binding Image, Converter={StaticResource ByteArrayToImageConverter}}"
-                                           Height="75" Stretch="Uniform" Margin="0,5,0,0" />
-								</StackPanel>
-							</materialDesign:Card>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-			</ScrollViewer>
+            <!-- Pizza List with Selection (ListBox instead of ItemsControl) -->
+            <ListBox ItemsSource="{Binding Pizzas}"
+                     SelectedItem="{Binding SelectedPizza}"
+                     Margin="0,0,0,10"
+                     Height="200">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:Card Margin="5" Padding="10" materialDesign:ElevationAssist.Elevation="Dp2">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock FontWeight="Bold" Text="{Binding Naam}" />
+                                <TextBlock Text="{Binding Prijs, StringFormat=Prijs: €{0:F2}}" />
+                                <TextBlock Foreground="Gray" Text="{Binding Beschrijving}" />
+                                <Image Source="{Binding Image, Converter={StaticResource ByteArrayToImageConverter}}"
+                                       Height="75" Stretch="Uniform" Margin="0,5,0,0" />
+                            </StackPanel>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
-			<!-- Pizza Form -->
-			<TextBox Text="{Binding PizzaNaam, UpdateSourceTrigger=PropertyChanged}"
+            <!-- Pizza Form -->
+            <TextBox Text="{Binding PizzaNaam, UpdateSourceTrigger=PropertyChanged}"
                      materialDesign:HintAssist.Hint="Pizza Naam" Margin="0,10,0,0" />
-			<TextBox Text="{Binding PizzaPrijs, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox Text="{Binding PizzaPrijs, UpdateSourceTrigger=PropertyChanged}"
                      materialDesign:HintAssist.Hint="Prijs (€)" Margin="0,10,0,0" />
-			<TextBox Text="{Binding PizzaBeschrijving, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox Text="{Binding PizzaBeschrijving, UpdateSourceTrigger=PropertyChanged}"
                      materialDesign:HintAssist.Hint="Beschrijving" Margin="0,10,0,0" />
-			<Button Content="Upload Image" Command="{Binding UploadImageCommand}" Margin="0,10,0,0" />
+            <Button Content="Upload Image" Command="{Binding UploadImageCommand}" Margin="0,10,0,0" />
 
-			<!-- Pizza Action Buttons -->
-			<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-				<Button Content="Toevoegen" Command="{Binding AddPizzaCommand}" Margin="0,0,10,0" />
-				<Button Content="Bijwerken" Command="{Binding UpdatePizzaCommand}"
-                        IsEnabled="{Binding SelectedPizza}" Margin="0,0,10,0" />
-				<Button Content="Verwijderen" Command="{Binding DeletePizzaCommand}"
-                        IsEnabled="{Binding SelectedPizza}" />
-			</StackPanel>
-		</StackPanel>
+            <!-- Pizza Action Buttons -->
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                <Button Content="Toevoegen" Command="{Binding AddPizzaCommand}" Margin="0,0,10,0" />
+                <Button Content="Bijwerken" Command="{Binding UpdatePizzaCommand}" Margin="0,0,10,0" />
+                <Button Content="Verwijderen" Command="{Binding DeletePizzaCommand}" />
+            </StackPanel>
 
-		<!-- Employee Management Section -->
-		<StackPanel Margin="10" Grid.Column="1">
-			<TextBlock Text="Werknemers" FontSize="20" FontWeight="Bold" Margin="0,0,0,10" />
+            <!-- If a pizza is selected, show its ingredients + ability to add/remove. -->
+            <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" Margin="0,10,0,0">
+                <StackPanel>
+                    <TextBlock Text="Pizza Ingredients" FontSize="16" FontWeight="Bold" />
 
-			<!-- Employee List -->
-			<ListBox ItemsSource="{Binding Employees}"
+                    <!-- List of ingredients associated with the selected pizza -->
+                    <ListBox ItemsSource="{Binding SelectedPizzaIngredients}"
+                             SelectedItem="{Binding SelectedIngredientLink}"
+                             DisplayMemberPath="Naam"
+                             Margin="0,5,0,5"
+                             Height="100" />
+
+                    <StackPanel Orientation="Horizontal">
+                        <!-- ComboBox of available ingredients to link -->
+                        <ComboBox Width="150"
+                                  ItemsSource="{Binding AllIngredients}"
+                                  SelectedItem="{Binding IngredientToAdd}"
+                                  DisplayMemberPath="Naam"
+                                  Margin="0,0,10,0" />
+
+                        <Button Content="Add Ingredient"
+                                Command="{Binding AddIngredientToPizzaCommand}"
+                                Margin="0,0,10,0"/>
+                        <Button Content="Remove Ingredient"
+                                Command="{Binding RemoveIngredientFromPizzaCommand}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <!-- ================== EMPLOYEE MANAGEMENT SECTION (Column 1) ================== -->
+        <StackPanel Margin="10" Grid.Column="1">
+            <TextBlock Text="Werknemers" FontSize="20" FontWeight="Bold" Margin="0,0,0,10" />
+
+            <!-- Employee List -->
+            <ListBox ItemsSource="{Binding Employees}"
                      SelectedItem="{Binding SelectedEmployee}"
-                     DisplayMemberPath="Naam" />
+                     DisplayMemberPath="Naam"
+                     Height="150"
+                     Margin="0,0,0,10"/>
 
-			<!-- Employee Form -->
-			<TextBox Text="{Binding EmployeeNaam, UpdateSourceTrigger=PropertyChanged}"
+            <!-- Employee Form -->
+            <TextBox Text="{Binding EmployeeNaam, UpdateSourceTrigger=PropertyChanged}"
                      materialDesign:HintAssist.Hint="Naam" Margin="0,10,0,0" />
-			<TextBox Text="{Binding Functie, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox Text="{Binding Functie, UpdateSourceTrigger=PropertyChanged}"
                      materialDesign:HintAssist.Hint="Functie" Margin="0,10,0,0" />
-			<TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
                      materialDesign:HintAssist.Hint="Email" Margin="0,10,0,0" />
-			<TextBox Text="{Binding Telefoon, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox Text="{Binding Telefoon, UpdateSourceTrigger=PropertyChanged}"
                      materialDesign:HintAssist.Hint="Telefoon" Margin="0,10,0,0" />
 
-			<!-- Employee Action Buttons -->
-			<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-				<Button Content="Toevoegen" Command="{Binding AddEmployeeCommand}" Margin="0,0,10,0" />
-				<Button Content="Bijwerken" Command="{Binding UpdateEmployeeCommand}"
-                        IsEnabled="{Binding SelectedEmployee}" Margin="0,0,10,0" />
-				<Button Content="Verwijderen" Command="{Binding DeleteEmployeeCommand}"
-                        IsEnabled="{Binding SelectedEmployee}" />
-			</StackPanel>
-		</StackPanel>
-	</Grid>
+            <!-- Employee Action Buttons -->
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                <Button Content="Toevoegen" Command="{Binding AddEmployeeCommand}" Margin="0,0,10,0" />
+                <Button Content="Bijwerken" Command="{Binding UpdateEmployeeCommand}" Margin="0,0,10,0" />
+                <Button Content="Verwijderen" Command="{Binding DeleteEmployeeCommand}" />
+            </StackPanel>
+        </StackPanel>
+
+        <!-- ================== INGREDIENT MANAGEMENT SECTION (Column 2) ================== -->
+        <StackPanel Margin="10" Grid.Column="2">
+            <TextBlock Text="Ingredienten" FontSize="20" FontWeight="Bold" Margin="0,0,0,10" />
+
+            <!-- Ingredient List -->
+            <ListBox ItemsSource="{Binding AllIngredients}"
+                     SelectedItem="{Binding SelectedIngredient}"
+                     DisplayMemberPath="Naam"
+                     Height="150"
+                     Margin="0,0,0,10"/>
+
+            <!-- Ingredient Form -->
+            <TextBox Text="{Binding IngredientNaam, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Naam"
+                     Margin="0,10,0,0"/>
+            <TextBox Text="{Binding IngredientPrijs, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Prijs (€)"
+                     Margin="0,10,0,0"/>
+
+            <!-- Ingredient Action Buttons -->
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                <Button Content="Toevoegen" Command="{Binding AddIngredientCommand}" Margin="0,0,10,0" />
+                <Button Content="Bijwerken" Command="{Binding UpdateIngredientCommand}" Margin="0,0,10,0" />
+                <Button Content="Verwijderen" Command="{Binding DeleteIngredientCommand}" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
 </UserControl>
